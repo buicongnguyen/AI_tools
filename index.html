@@ -82,10 +82,60 @@ codex
     </div>
   </section>
 
+  <section class="card">
+    <span class="tag">Efficiency system</span>
+    <h2>Spend tokens on evidence, not repeated correction</h2>
+    <div class="grid">
+      <article>
+        <h3>1. Define “done”</h3>
+        <p>Give the agent observable acceptance criteria, named files, boundaries, and exact verification commands.</p>
+      </article>
+      <article>
+        <h3>2. Protect context</h3>
+        <p>Keep instruction files concise, use focused tests, summarize noisy exploration, and start fresh when history stops helping.</p>
+      </article>
+      <article>
+        <h3>3. Close the loop</h3>
+        <p>Let the agent run tests, inspect screenshots, compare outputs, and fix discrepancies before asking you to review.</p>
+      </article>
+      <article>
+        <h3>4. Systemize wins</h3>
+        <p>Stable rules go in AGENTS.md or CLAUDE.md; repeatable workflows become skills; mandatory checks become hooks or CI.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Choose the smallest effective workflow</h2>
+    <table>
+      <thead><tr><th>Work</th><th>Efficient pattern</th></tr></thead>
+      <tbody>
+        <tr><td>Small obvious edit</td><td>Implement directly, run one focused check, inspect the diff.</td></tr>
+        <tr><td>Unfamiliar or multi-file feature</td><td>Explore → plan → implement → verify.</td></tr>
+        <tr><td>Unclear bug</td><td>Reproduce → rank hypotheses → add regression test → smallest fix.</td></tr>
+        <tr><td>UI work</td><td>Reference → implement → browser/screenshot comparison → iterate.</td></tr>
+        <tr><td>Large repeated migration</td><td>Test 2–3 samples → refine prompt → bounded batch automation.</td></tr>
+        <tr><td>High-risk result</td><td>Builder → fresh independent reviewer → human approval.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
   <section class="grid">
     <article class="card"><h2>Prompt contract</h2><ol><li>Goal: observable outcome.</li><li>Context: files, users, constraints.</li><li>Scope: may/must not change.</li><li>Acceptance criteria.</li><li>Verification commands.</li><li>Evidence-based output.</li></ol></article>
     <article class="card"><h2>Debug loop</h2><ol><li>Reproduce.</li><li>Capture raw evidence.</li><li>Rank hypotheses.</li><li>Instrument one boundary.</li><li>Add failing test.</li><li>Smallest fix.</li><li>Focused then broad tests.</li><li>Review and monitor.</li></ol></article>
     <article class="card"><h2>Research ladder</h2><ol><li>Official primary source.</li><li>Independent reputable analysis.</li><li>Community report as lead only.</li></ol><p>Label facts, inference, estimates, conflicts, confidence, source dates, and verification date.</p></article>
+  </section>
+
+  <section class="card">
+    <span class="tag">Recent sources</span>
+    <h2>Learn from demonstrations; verify with current docs</h2>
+    <div class="grid">
+      <article><h3>Claude Code official guide</h3><p>Anthropic emphasizes verification, context management, selective planning, CLI tools, skills, hooks, and isolated reviewer sessions.</p><a href="https://code.claude.com/docs/en/best-practices">Read current best practices</a></article>
+      <article><h3>Claude Code videos</h3><p>Use the official getting-started walkthrough and Anthropic technical presentation to see real workflows in action.</p><a href="https://www.youtube.com/watch?v=6eBSHbLKuN0">Getting started</a> · <a href="https://www.youtube.com/watch?v=gv0WHhKelSE">Best practices</a></article>
+      <article><h3>OpenAI Codex Academy</h3><p>Current courses cover setup, better prompts, everyday tasks, app workflows, and practical workshops.</p><a href="https://openai.com/academy/codex/">Open Codex Academy</a></article>
+      <article><h3>2026 Codex workflow evidence</h3><p>OpenAI’s recent material describes parallel isolated tasks, skills, automations, remote supervision, and growing use in research and knowledge work.</p><a href="https://openai.com/index/introducing-the-codex-app/">Codex app guide</a> · <a href="https://openai.com/index/how-agents-are-transforming-work/">Recent research</a></article>
+    </div>
+    <p class="small">Source pass verified 2026-07-16. Check changelogs before relying on exact commands, availability, permissions, or model names.</p>
   </section>
 
   <section class="card">

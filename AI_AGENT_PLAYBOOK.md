@@ -396,3 +396,164 @@ A task is complete only when:
 - Deployment and rollback are documented when applicable.
 - Remaining assumptions and risks are visible to the human owner.
 
+## 13. The efficient AI-work operating model
+
+Recent official guidance from Anthropic and OpenAI points to the same pattern: AI tools become efficient when the human supplies a clear target and a verification loop, while the agent handles exploration and execution.
+
+### The 7-part efficiency stack
+
+| Layer | Purpose | Efficient practice |
+|---|---|---|
+| Outcome | Prevent wasted implementation | Describe observable behavior and “done,” not just an activity |
+| Context | Reduce search and correction cycles | Name relevant files, constraints, examples, and decisions |
+| Verification | Let the agent correct itself | Supply tests, screenshots, expected outputs, or measurable rubrics |
+| Persistence | Stop repeating stable instructions | Put universal repo rules in `AGENTS.md` or `CLAUDE.md` |
+| On-demand knowledge | Avoid filling every session | Put occasional workflows/reference material in skills |
+| Enforcement | Make mandatory rules deterministic | Use hooks/CI for formatting, validation, and prohibited actions |
+| Isolation | Protect focus and reduce bias | Use fresh reviewer sessions and isolated worktrees |
+
+Anthropic’s current best-practices guide calls verification the highest-leverage practice and warns that performance can degrade as the context window fills. Its recommended pattern is explore, plan, implement, and commit—but it also advises skipping planning for very small, obvious changes. OpenAI’s current Codex guidance similarly recommends a clear prompt, concise `AGENTS.md`, explicit testing, and review evidence.
+
+### Manage context like a budget
+
+Every file read, terminal log, pasted error, and conversation turn consumes context. Efficient users:
+
+- Start a fresh task when the previous task’s history is no longer useful.
+- Ask exploration agents to return summaries instead of dumping raw logs.
+- Reference filenames instead of pasting large files already in the repository.
+- Run focused tests first; avoid loading a full test suite’s output unless needed.
+- Keep always-loaded instruction files short.
+- Move optional domain references into skills or linked documents.
+- Save decisions in the repository so a future session can reload them cheaply.
+
+Use this checkpoint during long work:
+
+```text
+Before continuing, summarize the current goal, decisions, changed files,
+verification evidence, unresolved failures, and next smallest step. Remove
+obsolete hypotheses. Save durable decisions to docs/decisions/ if needed.
+```
+
+### Choose the smallest useful workflow
+
+| Task | Recommended workflow |
+|---|---|
+| Typo, rename, obvious one-file fix | Direct implementation + focused check |
+| Unfamiliar code or multi-file feature | Explore → plan → implement → verify |
+| Bug with unclear cause | Reproduce → hypothesis table → regression test → fix |
+| UI change | Reference image → implement → screenshot/browser QA → iterate |
+| Large migration | Sample 2–3 files → refine prompt → batch with bounded permissions |
+| Important change | Builder session → independent reviewer session → human decision |
+| Repeated process | Template first, then skill; add automation after it becomes stable |
+| Non-negotiable rule | Hook or CI check, not prompt text alone |
+
+### Give the agent a closed feedback loop
+
+Weak:
+
+```text
+Improve the dashboard.
+```
+
+Efficient:
+
+```text
+Improve the dashboard for mobile users. Preserve all existing content and URLs.
+At 390px width, cards must use one column, no horizontal scrollbar may appear,
+the theme toggle must remain keyboard accessible, and Lighthouse accessibility
+must score at least 95. Implement, open the page in a browser, test the critical
+flow in light and dark mode, fix discrepancies, and report screenshots and
+check results.
+```
+
+The second prompt costs more initially but reduces correction turns because the agent can evaluate its own output.
+
+## 14. Efficient use by tool
+
+### Claude Code
+
+- Run `/init`, then prune `CLAUDE.md`; keep only facts that prevent repeat mistakes.
+- Use Plan Mode for uncertain or multi-file changes, not routine edits.
+- Use CLI tools such as `gh`, cloud CLIs, and observability CLIs because structured command output is context-efficient.
+- Use skills for deployment, review, migration, or domain reference workflows.
+- Use hooks for actions that must always run or must always be blocked.
+- Use `claude -p` with JSON/stream JSON for repeatable scripts.
+- Test batch prompts on 2–3 examples before fanning out.
+- Scope unattended tools and maximum turns.
+- Use a fresh session as reviewer; the writer’s context can bias its review.
+- Follow the changelog because Claude Code releases frequently.
+
+### Codex
+
+- Put build, lint, test, architecture, and completion commands in concise `AGENTS.md`.
+- Use separate tasks/worktrees for independent parallel work.
+- Assign bounded jobs: exploration, implementation, tests, review, or research.
+- Ask every implementation task to run tests and inspect the diff.
+- Turn a successful repeated prompt into a skill.
+- Use hooks for deterministic validators and secret/policy checks.
+- Use automations only after the manual workflow is stable and reviewable.
+- Keep the main task focused; delegate noisy file scans or logs to isolated tasks when supported.
+- Use the diff, terminal output, screenshots, and citations as the review interface.
+
+OpenAI’s 2026 Codex app guidance emphasizes parallel isolated agents, skills, reviewable automations, and built-in worktrees. OpenAI also reports rapidly increasing non-coding use for research, analysis, documents, and workflow automation—so the same verification rules should be applied to knowledge work, not only source code.
+
+### ChatGPT and GPT-5.6
+
+- Use ChatGPT for framing, synthesis, research, comparison, critique, and artifact creation.
+- Use Projects or durable project files for related work rather than re-explaining the whole project.
+- Ask for web search and direct citations whenever facts may have changed.
+- Request a claim/evidence table for research-heavy work.
+- Choose a GPT-5.6 tier according to the work: Sol for hardest reasoning, Terra for balanced workloads, Luna for high-volume cost sensitivity.
+- For API applications, freeze test cases and compare quality, latency, and cost before switching models or prompts.
+- Use structured outputs when another program will consume the result.
+
+## 15. A 30-minute daily workflow
+
+```mermaid
+flowchart LR
+    A[3 min: choose one outcome] --> B[5 min: define context and tests]
+    B --> C[5 min: agent explores or plans]
+    C --> D[10 min: implement and self-verify]
+    D --> E[5 min: independent review]
+    E --> F[2 min: record learning]
+```
+
+1. Pick one outcome that can be verified today.
+2. Write acceptance criteria and the smallest relevant test.
+3. Let the agent inspect the necessary context.
+4. Implement a reviewable slice.
+5. Run focused checks and inspect the diff/artifact.
+6. Ask a fresh agent or session to challenge the result.
+7. Save one durable learning to instructions, a test, a skill, or a runbook.
+
+## 16. Recent learning resources
+
+Use videos for demonstrations and official written documentation for exact current commands.
+
+### Official and primary
+
+- [Claude Code: Best Practices](https://code.claude.com/docs/en/best-practices) — current Anthropic guide covering verification, context, planning, CLI tools, MCP, hooks, non-interactive use, and parallel sessions.
+- [Claude Code power-user tips](https://support.claude.com/en/articles/14554000-claude-code-power-user-tips) — recently updated tips collected from the Claude Code team.
+- [Claude Code changelog](https://code.claude.com/docs/en/changelog) — check before relying on new commands or behaviors.
+- [OpenAI Academy: Codex](https://openai.com/academy/codex/) — current learning hub for setup, prompts, practical workflows, and app usage.
+- [Working with ChatGPT Codex](https://openai.com/academy/working-with-codex/) — outcome, file, and completion-criteria guidance.
+- [Introducing the Codex app](https://openai.com/index/introducing-the-codex-app/) — official explanation of worktrees, parallel tasks, skills, and automations; updated for Windows in March 2026.
+- [How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/) — June 2026 evidence and workflow observations about agentic work.
+
+### Video demonstrations
+
+- [Getting Started with Claude Code](https://www.youtube.com/watch?v=6eBSHbLKuN0) — official Anthropic introductory walkthrough.
+- [Claude Code best practices — Code w/ Claude](https://www.youtube.com/watch?v=gv0WHhKelSE) — presentation by Anthropic technical staff member Cal Rueb.
+- [Creating your first Claude Code skill](https://claude.com/resources/tutorials/creating-your-first-skill) — Anthropic tutorial with embedded video.
+- [OpenAI Academy Codex media and workshops](https://openai.com/academy/codex/) — current official video/course collection; use this hub because individual media URLs may change.
+
+### How to judge third-party videos
+
+Before adopting advice from YouTube, blogs, or social media:
+
+- Check the upload date and tool version.
+- Compare commands against the current official documentation.
+- Distinguish personal preference from measured improvement.
+- Reproduce the claimed benefit on a small test set.
+- Reject advice that disables permissions broadly, exposes secrets, skips tests, or treats generated code as automatically correct.
+- Prefer demonstrations that show full prompts, diffs, failures, test evidence, and corrections.
