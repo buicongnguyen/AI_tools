@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Tools Operating System</title>
   <style>
-    :root { --ink:#172033; --muted:#5d687a; --paper:#f5f7fb; --card:#fff; --blue:#2457d6; --green:#087f5b; --amber:#a15c00; --line:#dbe1ea; }
+    :root { color-scheme:light; --ink:#172033; --muted:#5d687a; --paper:#f5f7fb; --card:#fff; --blue:#2457d6; --green:#087f5b; --amber:#a15c00; --line:#dbe1ea; --code:#111827; --code-ink:#e5e7eb; --table-head:#eef2f8; --hero-a:#101a34; --hero-b:#284fa4; --tag-bg:#e9efff; --gate-bg:#fff8e8; --ok-bg:#edfff8; }
+    [data-theme="dark"] { color-scheme:dark; --ink:#e8edf7; --muted:#aeb9cb; --paper:#0b1020; --card:#151d2f; --blue:#8aafff; --green:#63d4ad; --amber:#ffc66d; --line:#2b3850; --code:#080c16; --code-ink:#e8edf7; --table-head:#202b42; --hero-a:#070b15; --hero-b:#172f67; --tag-bg:#21345d; --gate-bg:#35270e; --ok-bg:#103226; }
     * { box-sizing:border-box; }
     body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif; }
-    header { padding:64px 24px 48px; background:linear-gradient(135deg,#101a34,#284fa4); color:#fff; }
+    header { padding:64px 24px 48px; background:linear-gradient(135deg,var(--hero-a),var(--hero-b)); color:#fff; }
     header div, main { max-width:1120px; margin:auto; }
+    .header-top { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:28px; }
     h1 { margin:0 0 12px; font-size:clamp(2.3rem,6vw,4.8rem); line-height:1; letter-spacing:-.04em; }
     h2 { margin-top:0; font-size:1.55rem; }
     h3 { margin-bottom:6px; }
@@ -18,28 +20,38 @@
     main { padding:32px 20px 72px; }
     .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; margin:22px 0; }
     .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:0 8px 24px rgba(19,33,68,.06); }
-    .tag { display:inline-block; border-radius:99px; padding:4px 9px; background:#e9efff; color:var(--blue); font-size:.8rem; font-weight:700; }
-    pre { overflow:auto; padding:16px; border-radius:12px; background:#111827; color:#e5e7eb; }
+    .tag { display:inline-block; border-radius:99px; padding:4px 9px; background:var(--tag-bg); color:var(--blue); font-size:.8rem; font-weight:700; }
+    header .tag { color:#dbe7ff; }
+    .theme-toggle { display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:9px 14px; color:#fff; background:rgba(255,255,255,.1); font:inherit; font-weight:700; cursor:pointer; }
+    .theme-toggle:hover { background:rgba(255,255,255,.2); }
+    .theme-toggle:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+    pre { overflow:auto; padding:16px; border-radius:12px; background:var(--code); color:var(--code-ink); }
     code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
     table { width:100%; border-collapse:collapse; background:#fff; }
     th,td { padding:12px; border:1px solid var(--line); text-align:left; vertical-align:top; }
-    th { background:#eef2f8; }
+    th { background:var(--table-head); }
     .flow { display:grid; grid-template-columns:repeat(9,1fr); align-items:center; gap:8px; margin:24px 0; }
     .step { min-height:92px; display:grid; place-items:center; text-align:center; padding:10px; border:2px solid #b9c7e8; border-radius:14px; background:#fff; font-weight:700; }
     .arrow { text-align:center; color:var(--blue); font-size:1.5rem; }
-    .gate { border-color:#f0b95c; background:#fff8e8; }
-    .ok { border-color:#76c7ae; background:#edfff8; }
+    .gate { border-color:#f0b95c; background:var(--gate-bg); }
+    .ok { border-color:#76c7ae; background:var(--ok-bg); }
     .sequence { display:grid; grid-template-columns:1fr 70px 1fr 70px 1fr; gap:8px; align-items:center; }
     .actor { border-top:5px solid var(--blue); }
     .small { color:var(--muted); font-size:.9rem; }
     a { color:var(--blue); }
     @media(max-width:800px) { .flow { grid-template-columns:1fr; } .arrow { transform:rotate(90deg); } .sequence { grid-template-columns:1fr; } .sequence .arrow { transform:rotate(90deg); } }
-    @media print { body { background:#fff; } .card { box-shadow:none; break-inside:avoid; } header { padding:30px 20px; } }
+    @media print { body { background:#fff; color:#172033; } .card { box-shadow:none; break-inside:avoid; } header { padding:30px 20px; } .theme-toggle { display:none; } }
   </style>
 </head>
 <body>
 <header><div>
-  <div class="tag">Verified 2026-07-16</div>
+  <div class="header-top">
+    <div class="tag">Verified 2026-07-16</div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <span aria-hidden="true" id="theme-icon">☾</span>
+      <span id="theme-label">Dark mode</span>
+    </button>
+  </div>
   <h1>AI Tools<br>Operating System</h1>
   <p class="lede">A practical workflow for Claude Code, Codex, ChatGPT, and GPT-5.6: install, initialize, research, evaluate ideas, build, test, debug, review, and deploy with evidence.</p>
 </div></header>
@@ -106,5 +118,32 @@ codex
 
   <p class="small">Open <a href="AI_AGENT_PLAYBOOK.md">AI_AGENT_PLAYBOOK.md</a> for complete commands and reusable prompts. See <a href="SOURCES.md">SOURCES.md</a> for official references.</p>
 </main>
+<script>
+  (() => {
+    const root = document.documentElement;
+    const button = document.getElementById("theme-toggle");
+    const label = document.getElementById("theme-label");
+    const icon = document.getElementById("theme-icon");
+    const stored = localStorage.getItem("ai-tools-theme");
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    function applyTheme(theme) {
+      const dark = theme === "dark";
+      root.dataset.theme = theme;
+      button.setAttribute("aria-pressed", String(dark));
+      button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+      label.textContent = dark ? "Light mode" : "Dark mode";
+      icon.textContent = dark ? "☀" : "☾";
+    }
+
+    applyTheme(stored || (systemDark ? "dark" : "light"));
+
+    button.addEventListener("click", () => {
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("ai-tools-theme", next);
+      applyTheme(next);
+    });
+  })();
+</script>
 </body>
 </html>
