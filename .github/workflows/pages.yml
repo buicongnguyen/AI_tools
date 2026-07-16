@@ -1,0 +1,69 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Verify required files and HTML structure
+        shell: pwsh
+        run: |
+          $required = @(
+            "index.html",
+            "README.md",
+            "AI_AGENT_PLAYBOOK.md",
+            "SOURCES.md"
+          )
+          foreach ($file in $required) {
+            if (-not (Test-Path -LiteralPath $file)) {
+              throw "Missing required file: $file"
+            }
+          }
+          $html = Get-Content -Raw -LiteralPath "index.html"
+          if ($html -notmatch "(?i)<!doctype html>" -or $html -notmatch "(?i)</html>") {
+            throw "index.html failed the structure check"
+          }
+
+  deploy:
+    name: Deploy site
+    needs: validate
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+

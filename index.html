@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Tools Operating System</title>
+  <style>
+    :root { --ink:#172033; --muted:#5d687a; --paper:#f5f7fb; --card:#fff; --blue:#2457d6; --green:#087f5b; --amber:#a15c00; --line:#dbe1ea; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif; }
+    header { padding:64px 24px 48px; background:linear-gradient(135deg,#101a34,#284fa4); color:#fff; }
+    header div, main { max-width:1120px; margin:auto; }
+    h1 { margin:0 0 12px; font-size:clamp(2.3rem,6vw,4.8rem); line-height:1; letter-spacing:-.04em; }
+    h2 { margin-top:0; font-size:1.55rem; }
+    h3 { margin-bottom:6px; }
+    p { margin-top:6px; }
+    .lede { max-width:780px; font-size:1.18rem; opacity:.9; }
+    main { padding:32px 20px 72px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; margin:22px 0; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:0 8px 24px rgba(19,33,68,.06); }
+    .tag { display:inline-block; border-radius:99px; padding:4px 9px; background:#e9efff; color:var(--blue); font-size:.8rem; font-weight:700; }
+    pre { overflow:auto; padding:16px; border-radius:12px; background:#111827; color:#e5e7eb; }
+    code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    table { width:100%; border-collapse:collapse; background:#fff; }
+    th,td { padding:12px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:#eef2f8; }
+    .flow { display:grid; grid-template-columns:repeat(9,1fr); align-items:center; gap:8px; margin:24px 0; }
+    .step { min-height:92px; display:grid; place-items:center; text-align:center; padding:10px; border:2px solid #b9c7e8; border-radius:14px; background:#fff; font-weight:700; }
+    .arrow { text-align:center; color:var(--blue); font-size:1.5rem; }
+    .gate { border-color:#f0b95c; background:#fff8e8; }
+    .ok { border-color:#76c7ae; background:#edfff8; }
+    .sequence { display:grid; grid-template-columns:1fr 70px 1fr 70px 1fr; gap:8px; align-items:center; }
+    .actor { border-top:5px solid var(--blue); }
+    .small { color:var(--muted); font-size:.9rem; }
+    a { color:var(--blue); }
+    @media(max-width:800px) { .flow { grid-template-columns:1fr; } .arrow { transform:rotate(90deg); } .sequence { grid-template-columns:1fr; } .sequence .arrow { transform:rotate(90deg); } }
+    @media print { body { background:#fff; } .card { box-shadow:none; break-inside:avoid; } header { padding:30px 20px; } }
+  </style>
+</head>
+<body>
+<header><div>
+  <div class="tag">Verified 2026-07-16</div>
+  <h1>AI Tools<br>Operating System</h1>
+  <p class="lede">A practical workflow for Claude Code, Codex, ChatGPT, and GPT-5.6: install, initialize, research, evaluate ideas, build, test, debug, review, and deploy with evidence.</p>
+</div></header>
+<main>
+  <section class="grid">
+    <article class="card"><span class="tag">Claude Code</span><h2>Terminal agent</h2><pre><code>winget install Anthropic.ClaudeCode
+claude
+claude doctor
+# inside Claude: /init</code></pre><p>Store durable repository guidance in <code>CLAUDE.md</code>.</p></article>
+    <article class="card"><span class="tag">Codex</span><h2>Coding agent</h2><pre><code>npm install -g @openai/codex
+codex
+# inside Codex: /init</code></pre><p>Store durable repository guidance in <code>AGENTS.md</code>.</p></article>
+    <article class="card"><span class="tag">ChatGPT</span><h2>Research and synthesis</h2><p>Use a Project, attach context and rubrics, request web search for current claims, and require direct citations plus a verification date.</p></article>
+    <article class="card"><span class="tag">GPT-5.6</span><h2>Production model family</h2><p><code>gpt-5.6</code> for complex work, Terra for balance, Luna for cost-sensitive volume. Check live availability before hard-coding.</p></article>
+  </section>
+
+  <section class="card">
+    <h2>The end-to-end flow</h2>
+    <div class="flow">
+      <div class="step">Idea</div><div class="arrow">→</div>
+      <div class="step">Research + citations</div><div class="arrow">→</div>
+      <div class="step">Acceptance tests</div><div class="arrow">→</div>
+      <div class="step">Build + debug</div><div class="arrow">→</div>
+      <div class="step gate">Independent review</div><div class="arrow">→</div>
+      <div class="step ok">Preview deploy</div><div class="arrow">→</div>
+      <div class="step gate">Human gate</div><div class="arrow">→</div>
+      <div class="step ok">Production + monitor</div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="card"><h2>Prompt contract</h2><ol><li>Goal: observable outcome.</li><li>Context: files, users, constraints.</li><li>Scope: may/must not change.</li><li>Acceptance criteria.</li><li>Verification commands.</li><li>Evidence-based output.</li></ol></article>
+    <article class="card"><h2>Debug loop</h2><ol><li>Reproduce.</li><li>Capture raw evidence.</li><li>Rank hypotheses.</li><li>Instrument one boundary.</li><li>Add failing test.</li><li>Smallest fix.</li><li>Focused then broad tests.</li><li>Review and monitor.</li></ol></article>
+    <article class="card"><h2>Research ladder</h2><ol><li>Official primary source.</li><li>Independent reputable analysis.</li><li>Community report as lead only.</li></ol><p>Label facts, inference, estimates, conflicts, confidence, source dates, and verification date.</p></article>
+  </section>
+
+  <section class="card">
+    <h2>Test-set architecture</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>What it proves</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>Happy path</td><td>Primary user outcome works</td><td>Assertions + critical-flow smoke test</td></tr>
+        <tr><td>Boundary/invalid</td><td>Limits fail safely</td><td>Error/status assertions</td></tr>
+        <tr><td>Security/adversarial</td><td>Secrets, permissions, and trust boundaries hold</td><td>Negative tests + review</td></tr>
+        <tr><td>Regression</td><td>Known failures stay fixed</td><td>Frozen fixtures</td></tr>
+        <tr><td>Human rubric</td><td>Usefulness, clarity, accessibility</td><td>Blind scored review</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>Deployment sequence</h2>
+    <div class="sequence">
+      <div class="card actor"><b>Human owner</b><p>Defines risk, approves preview and production.</p></div><div class="arrow">→</div>
+      <div class="card actor"><b>AI agent</b><p>Implements, tests, reviews, and reports evidence.</p></div><div class="arrow">→</div>
+      <div class="card actor"><b>CI + monitoring</b><p>Validates clean build, deploys version, checks health and rollback.</p></div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="card"><h2>Idea gate</h2><p><b>Proceed:</b> ≥75 and no fatal risk.<br><b>Experiment:</b> 55–74 or key assumptions untested.<br><b>Pause:</b> &lt;55 or unacceptable risk.</p></article>
+    <article class="card"><h2>Definition of done</h2><p>Criteria met, tests pass, diff reviewed, claims cited, risks visible, preview verified, rollback ready, and a human owns the final production decision.</p></article>
+  </section>
+
+  <p class="small">Open <a href="AI_AGENT_PLAYBOOK.md">AI_AGENT_PLAYBOOK.md</a> for complete commands and reusable prompts. See <a href="SOURCES.md">SOURCES.md</a> for official references.</p>
+</main>
+</body>
+</html>
