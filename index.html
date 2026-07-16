@@ -62,9 +62,22 @@
     .quick-start { counter-reset:start; }
     .quick-start article { position:relative; padding-left:54px; }
     .quick-start article::before { counter-increment:start; content:counter(start); position:absolute; left:0; top:0; width:38px; height:38px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--blue); font-weight:850; }
+    .prompt-formula { display:grid; grid-template-columns:repeat(6,minmax(120px,1fr)); gap:9px; margin:20px 0; overflow-x:auto; }
+    .prompt-part { min-width:120px; border:1px solid var(--line); border-top:4px solid var(--blue); border-radius:12px; padding:13px; background:var(--card); }
+    .prompt-part b { display:block; margin-bottom:5px; }
+    .prompt-card { margin:12px 0; border:1px solid var(--line); border-radius:12px; background:var(--card); overflow:hidden; }
+    .prompt-card summary { padding:15px 17px; font-weight:800; cursor:pointer; }
+    .prompt-card[open] summary { border-bottom:1px solid var(--line); }
+    .prompt-body { padding:16px; }
+    .prompt-actions { display:flex; justify-content:flex-end; margin:-4px 0 8px; }
+    .copy-button { border:1px solid var(--line); border-radius:8px; padding:7px 10px; color:var(--ink); background:var(--paper); font:inherit; font-size:.88rem; font-weight:700; cursor:pointer; }
+    .compare { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .bad-prompt,.good-prompt { border-radius:12px; padding:14px; }
+    .bad-prompt { border:1px solid #d77272; background:color-mix(in srgb,#d77272 10%,var(--card)); }
+    .good-prompt { border:1px solid #55aa89; background:color-mix(in srgb,#55aa89 10%,var(--card)); }
     .small { color:var(--muted); font-size:.9rem; }
     a { color:var(--blue); }
-    @media(max-width:800px) { .sequence,.case-grid { grid-template-columns:1fr; } .sequence .arrow { transform:rotate(90deg); } }
+    @media(max-width:800px) { .sequence,.case-grid,.compare { grid-template-columns:1fr; } .sequence .arrow { transform:rotate(90deg); } }
     @media print { body { background:#fff; color:#172033; } .card { box-shadow:none; break-inside:avoid; } header { padding:30px 20px; } .theme-toggle { display:none; } }
   </style>
 </head>
@@ -87,6 +100,7 @@
 <nav aria-label="Page sections">
   <div class="nav-inner">
     <a href="#start">Quick start</a>
+    <a href="#prompts">Prompts</a>
     <a href="#real-cases">Real cases</a>
     <a href="#workflow">Workflow</a>
     <a href="#tools">Tools</a>
@@ -106,6 +120,147 @@
       <article><h3>Build one vertical slice</h3><p>Connect the minimum real path end-to-end, then debug and review it before adding scope.</p></article>
     </div>
     <div class="warning"><b>Reality rule:</b> a generated design is a hypothesis. A passing compiler, simulation, or attractive demo is not sufficient evidence for production or hardware signoff.</div>
+  </section>
+
+  <section class="card" id="prompts">
+    <span class="tag">Prompt engineering</span>
+    <h2>A good prompt is an executable engineering brief</h2>
+    <p>For important tasks, use six blocks. Add only the detail that changes the result.</p>
+    <div class="prompt-formula" aria-label="Six parts of a good engineering prompt">
+      <div class="prompt-part"><b>1. Goal</b><span>Observable outcome</span></div>
+      <div class="prompt-part"><b>2. Context</b><span>System, files, symptom</span></div>
+      <div class="prompt-part"><b>3. Constraints</b><span>Scope, safety, compatibility</span></div>
+      <div class="prompt-part"><b>4. References</b><span>Patterns, logs, designs, specs</span></div>
+      <div class="prompt-part"><b>5. Verification</b><span>Tests, metrics, measurements</span></div>
+      <div class="prompt-part"><b>6. Output</b><span>Evidence and remaining risks</span></div>
+    </div>
+    <div class="compare">
+      <div class="bad-prompt"><b>Weak</b><p>“Add notifications and make the UI modern.”</p><p class="small">No user outcome, boundaries, reference, or way to prove completion.</p></div>
+      <div class="good-prompt"><b>Stronger</b><p>“Notify a signed-in user when their export finishes. Follow the billing-alert pattern, preserve the existing queue, test authorization and duplicate events, run the browser flow, and report migration and rollback evidence.”</p></div>
+    </div>
+
+    <details class="prompt-card" open>
+      <summary>Coding: implement a software feature</summary>
+      <div class="prompt-body">
+        <div class="prompt-actions"><button class="copy-button" data-copy-target="prompt-coding" type="button">Copy prompt</button></div>
+        <pre id="prompt-coding"><code>Goal:
+Add an in-app notification when a background export finishes. A signed-in user
+must see only their own completed exports and can mark a notification as read.
+
+Context:
+Read AGENTS.md and trace the existing export job, authorization, event handling,
+and the billing-alert notification pattern.
+
+Constraints:
+Preserve the public API and existing queue. Avoid broad refactoring or new
+dependencies. Never expose another user's export metadata.
+
+References:
+Follow the billing-alert implementation, migration style, and design-system
+component patterns already in the repository.
+
+Verification:
+Test success, duplicate events, authorization, empty state, unread count, and
+mark-as-read. Run focused tests, type check, lint, and the critical browser flow.
+
+Output:
+Report changed files, data flow, commands/results, migration and rollback,
+security review, assumptions, and remaining risks.</code></pre>
+      </div>
+    </details>
+
+    <details class="prompt-card">
+      <summary>Software engineer: diagnose a production bug</summary>
+      <div class="prompt-body">
+        <div class="prompt-actions"><button class="copy-button" data-copy-target="prompt-debug" type="button">Copy prompt</button></div>
+        <pre id="prompt-debug"><code>Goal:
+Find and fix the root cause of login failure after an access token expires.
+
+Context:
+Users remain on the spinner after about 60 minutes. A network trace shows a 401
+from /session/refresh followed by repeated profile requests. Confirm the real flow.
+
+Constraints:
+Diagnose before editing. Do not hide the 401, extend token lifetime, add blind
+retries, or weaken authentication.
+
+References:
+Use the captured network trace, auth integration tests, and git history for the
+refresh-token implementation.
+
+Verification:
+Reproduce the failure, rank hypotheses, add a failing regression test, implement
+the smallest root-cause fix, then run auth tests and the browser expiry flow.
+
+Output:
+Report reproduction, root cause, before/after evidence, changed files, commands,
+security impact, and unresolved edge cases.</code></pre>
+      </div>
+    </details>
+
+    <details class="prompt-card">
+      <summary>Software architecture: make a design decision</summary>
+      <div class="prompt-body">
+        <div class="prompt-actions"><button class="copy-button" data-copy-target="prompt-architecture" type="button">Copy prompt</button></div>
+        <pre id="prompt-architecture"><code>Goal:
+Recommend the simplest architecture for [CAPABILITY] that meets the next
+12 months of requirements.
+
+Context:
+Current architecture, expected load, SLO, team skills, integrations, and known
+growth are [DETAILS].
+
+Constraints:
+Preserve [COMPATIBILITY]. Include migration, failure handling, operations,
+observability, cost, and rollback—not only a component diagram.
+
+References:
+Inspect the existing repository and deployment. Verify current service limits
+and APIs using primary official documentation.
+
+Verification:
+Compare at least three options across latency, throughput, consistency,
+availability, security, complexity, cost, migration, and failure scenarios.
+
+Output:
+Write an ADR with an option table, recommendation, diagrams, rejected
+alternatives, migration phases, test plan, risks, and revisit conditions.</code></pre>
+      </div>
+    </details>
+
+    <details class="prompt-card">
+      <summary>Design system: audit and improve consistency</summary>
+      <div class="prompt-body">
+        <div class="prompt-actions"><button class="copy-button" data-copy-target="prompt-design-system" type="button">Copy prompt</button></div>
+        <pre id="prompt-design-system"><code>Goal:
+Audit the current design system and propose a bounded plan to improve
+consistency, accessibility, and developer usability.
+
+Context:
+Inspect tokens, components, Storybook/examples, CSS, approved designs, and the
+three most-used product flows.
+
+Constraints:
+Do not redesign the brand or replace the framework. Preserve public component
+APIs unless migration is justified. Meet WCAG 2.2 AA and support keyboard,
+dark mode, responsive layouts, reduced motion, and localization.
+
+References:
+Compare implementation to approved designs and existing product patterns, not
+personal taste.
+
+Verification:
+Inventory tokens/components, find duplicate values and missing states, sample
+real screens at mobile/desktop widths, run accessibility checks, and manually
+test focus and keyboard behavior.
+
+Output:
+Return a ranked audit, proposed token hierarchy, component-state matrix,
+before/after examples, migration phases, risks, and measurable completion criteria.</code></pre>
+      </div>
+    </details>
+
+    <p><a class="button" href="PROMPT_LIBRARY.md">Open the full prompt library →</a></p>
   </section>
 
   <section class="card" id="real-cases">
@@ -281,8 +436,10 @@ codex
     <h2>Learn from demonstrations; verify with current docs</h2>
     <div class="grid">
       <article><h3>Claude Code official guide</h3><p>Anthropic emphasizes verification, context management, selective planning, CLI tools, skills, hooks, and isolated reviewer sessions.</p><a href="https://code.claude.com/docs/en/best-practices">Read current best practices</a></article>
+      <article><h3>Anthropic prompt library</h3><p>Current examples show outcome-first prompts, reference artifacts, measurable targets, and verification in the same request.</p><a href="https://code.claude.com/docs/en/prompt-library">Browse official prompts</a></article>
       <article><h3>Claude Code videos</h3><p>Use the official getting-started walkthrough and Anthropic technical presentation to see real workflows in action.</p><a href="https://www.youtube.com/watch?v=6eBSHbLKuN0">Getting started</a> · <a href="https://www.youtube.com/watch?v=gv0WHhKelSE">Best practices</a></article>
       <article><h3>OpenAI Codex Academy</h3><p>Current courses cover setup, better prompts, everyday tasks, app workflows, and practical workshops.</p><a href="https://openai.com/academy/codex/">Open Codex Academy</a></article>
+      <article><h3>OpenAI prompting guidance</h3><p>OpenAI recommends stating the goal, useful context, output needs, and boundaries, followed by a final check for important work.</p><a href="https://learn.chatgpt.com/docs/prompting">Read prompting guidance</a></article>
       <article><h3>2026 Codex workflow evidence</h3><p>OpenAI’s recent material describes parallel isolated tasks, skills, automations, remote supervision, and growing use in research and knowledge work.</p><a href="https://openai.com/index/introducing-the-codex-app/">Codex app guide</a> · <a href="https://openai.com/index/how-agents-are-transforming-work/">Recent research</a></article>
     </div>
     <p class="small">Source pass verified 2026-07-16. Check changelogs before relying on exact commands, availability, permissions, or model names.</p>
@@ -360,6 +517,22 @@ codex
         const current = tabs.indexOf(tab);
         const direction = event.key === "ArrowRight" ? 1 : -1;
         tabs[(current + direction + tabs.length) % tabs.length].click();
+      });
+    });
+
+    document.querySelectorAll(".copy-button").forEach((copyButton) => {
+      copyButton.addEventListener("click", async () => {
+        const source = document.getElementById(copyButton.dataset.copyTarget);
+        if (!source) return;
+        try {
+          await navigator.clipboard.writeText(source.innerText);
+          const previous = copyButton.textContent;
+          copyButton.textContent = "Copied";
+          window.setTimeout(() => { copyButton.textContent = previous; }, 1400);
+        } catch {
+          copyButton.textContent = "Select and copy";
+          source.focus?.();
+        }
       });
     });
   })();

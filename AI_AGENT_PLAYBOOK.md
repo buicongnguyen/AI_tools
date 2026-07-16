@@ -742,3 +742,33 @@ In addition to the general definition of done:
 - Security, privacy, safety, compliance, reliability, and manufacturing risks are reviewed.
 - Release artifacts are traceable to source, configuration, tool versions, and test evidence.
 - Deployment, firmware update, rollback, recovery, and field-monitoring procedures are tested.
+
+## 20. Write better engineering prompts
+
+Use the **G-C-C-R-V-O** pattern:
+
+1. **Goal** — observable result.
+2. **Context** — relevant system state, files, users, and symptoms.
+3. **Constraints** — scope, compatibility, security, safety, and budgets.
+4. **References** — existing patterns, tests, logs, designs, specifications, or datasheets.
+5. **Verification** — tests, measurements, screenshots, waveforms, or thresholds.
+6. **Output** — evidence, decisions, changed artifacts, and remaining risks.
+
+For small tasks, Goal + Verification may be sufficient. For ambiguous, expensive,
+or safety-relevant tasks, use all six sections and ask the agent to interview you
+or plan before implementation.
+
+See [`PROMPT_LIBRARY.md`](PROMPT_LIBRARY.md) for copy-ready examples covering:
+
+- Rough idea to engineering specification.
+- Codebase understanding.
+- Software feature implementation.
+- Root-cause debugging.
+- Software architecture.
+- Code review and testing.
+- Performance and security.
+- Design-system audit and component implementation.
+- Screenshot/Figma-to-frontend work.
+- API design.
+- Firmware, FPGA/RTL, and hardware bring-up.
+- Deployment and technical web research.

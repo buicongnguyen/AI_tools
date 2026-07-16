@@ -16,6 +16,8 @@ Verified 2026-07-16. Product documentation changes frequently; recheck before in
 - [Claude Code changelog](https://code.claude.com/docs/en/changelog)
 - [Claude Code extensions overview](https://code.claude.com/docs/en/features-overview)
 - [Claude Code routines](https://code.claude.com/docs/en/routines)
+- [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library)
+- [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works)
 
 ## OpenAI / Codex / ChatGPT / GPT-5.6
 
@@ -32,6 +34,7 @@ Verified 2026-07-16. Product documentation changes frequently; recheck before in
 - [Work with Codex from anywhere](https://openai.com/index/work-with-codex-from-anywhere/)
 - [Codex for knowledge work](https://openai.com/index/codex-for-knowledge-work/)
 - [How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)
+- [OpenAI prompting guide](https://learn.chatgpt.com/docs/prompting)
 
 ## Official video and course resources
 

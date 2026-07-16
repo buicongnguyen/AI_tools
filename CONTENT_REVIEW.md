@@ -31,6 +31,7 @@ Initial assessment: **6.5/10**
 | Tables and flow boxes used white backgrounds | Dark-mode contrast was inconsistent | Switched them to theme variables |
 | Long flow diagrams did not scale well | Layout could become cramped | Changed flows to horizontally scrollable flex sequences |
 | No navigation | Long page was difficult to revisit | Added sticky section navigation |
+| No dedicated prompt-writing system | Users had examples but no reusable construction method | Added the G-C-C-R-V-O pattern and a role-based prompt library |
 
 ## Content principles applied
 
@@ -49,4 +50,3 @@ Initial assessment: **6.5/10**
 - Record short screen-capture walkthroughs using the three case studies.
 - Add filters for role, project phase, and tool once the content grows further.
 - Revisit model names, installation commands, and product features monthly.
-
