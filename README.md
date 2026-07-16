@@ -37,6 +37,7 @@ flowchart LR
 
 - `AI_AGENT_PLAYBOOK.md` — full reference.
 - `index.html` — visual, printable dashboard with diagrams.
+- `CONTENT_REVIEW.md` — content audit, problems found, and improvement roadmap.
 - `templates/PROJECT_CONTEXT.md` — shared project specification.
 - `templates/AGENTS.md` — durable Codex instructions.
 - `templates/CLAUDE.md` — durable Claude Code instructions.
