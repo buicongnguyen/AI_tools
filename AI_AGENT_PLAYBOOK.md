@@ -2,6 +2,21 @@
 
 Last verified: 2026-07-16
 
+## Mission
+
+This playbook helps coding, software, firmware, embedded, FPGA, and hardware
+engineers move from an idea to a verified result:
+
+```text
+idea → requirements → architecture → implementation → test → debug
+     → independent review → prototype/preview → deployment → monitoring
+```
+
+AI is used as an engineering collaborator: it researches, explains, plans,
+implements, generates tests, analyzes logs and measurements, reviews artifacts,
+and prepares deployment. The engineer remains responsible for requirements,
+physical safety, security, evidence quality, and production or lab approval.
+
 ## 1. Choose the correct surface
 
 | Need | Best starting surface | Durable instruction file |
@@ -557,3 +572,173 @@ Before adopting advice from YouTube, blogs, or social media:
 - Reproduce the claimed benefit on a small test set.
 - Reject advice that disables permissions broadly, exposes secrets, skips tests, or treats generated code as automatically correct.
 - Prefer demonstrations that show full prompts, diffs, failures, test evidence, and corrections.
+
+## 17. Idea-to-deployment paths for engineers
+
+### Shared engineering gates
+
+Every software or hardware idea should pass these gates:
+
+| Gate | Question | Required evidence |
+|---|---|---|
+| Problem | Is the user or engineering problem real? | Interviews, incidents, measurements, or source evidence |
+| Feasibility | Can the design satisfy its constraints? | Architecture analysis, prototype, simulation, or benchmark |
+| Specification | Is expected behavior testable? | Interfaces, limits, acceptance criteria, and test vectors |
+| Implementation | Is the smallest useful slice working? | Reviewable code, schematic, HDL, firmware, or configuration |
+| Verification | Does it work across normal and failure cases? | Tests, waveforms, logs, measurements, screenshots, or reports |
+| Safety/security | Can it fail safely? | Threat/risk analysis and negative tests |
+| Release | Can it be deployed and reversed? | Versioned artifact, deployment steps, monitoring, and rollback |
+
+### Software engineering track
+
+```mermaid
+flowchart LR
+    A[User problem] --> B[Acceptance criteria]
+    B --> C[Architecture and interfaces]
+    C --> D[Small vertical slice]
+    D --> E[Unit and integration tests]
+    E --> F[Debug and profile]
+    F --> G[Security and code review]
+    G --> H[Preview or staging]
+    H --> I[Production deploy]
+    I --> J[Observe and rollback]
+```
+
+Use AI to:
+
+- Trace an unfamiliar codebase and map data/control flow.
+- Convert product requirements into acceptance tests.
+- Compare architecture options and make assumptions explicit.
+- Implement the smallest vertical slice.
+- Generate unit, integration, contract, end-to-end, performance, and security tests.
+- Reproduce bugs, rank hypotheses, inspect logs, and profile bottlenecks.
+- Review diffs for correctness, regressions, unsafe dependencies, and missing tests.
+- Prepare CI/CD, infrastructure configuration, release notes, observability, and rollback.
+
+Do not let the agent treat a successful compilation as proof of correct behavior.
+
+### Firmware, embedded, FPGA, and hardware track
+
+```mermaid
+flowchart LR
+    A[Use case and constraints] --> B[Requirements and budgets]
+    B --> C[Architecture and interfaces]
+    C --> D[Model or simulation]
+    D --> E[RTL firmware PCB prototype]
+    E --> F[Bench bring-up]
+    F --> G[Measure and debug]
+    G --> H[Stress fault compliance]
+    H --> I[Pilot release]
+    I --> J[Field monitoring]
+```
+
+Capture engineering budgets before implementation:
+
+- Performance, latency, throughput, frequency, and real-time deadlines.
+- Power, thermal envelope, voltage/current, and battery life.
+- Area, memory, bandwidth, storage, BOM, and manufacturing cost.
+- Signal integrity, timing, clock/reset, CDC, and interface limits.
+- Reliability, lifetime, environmental, safety, and regulatory constraints.
+
+Use AI to:
+
+- Compare components, protocols, architectures, and datasheet requirements.
+- Draft interface-control documents, register maps, state machines, and timing diagrams.
+- Generate synthesizable RTL or firmware scaffolding with explicit assumptions.
+- Create testbenches, assertions, test vectors, mocks, simulators, and hardware-in-loop plans.
+- Analyze compiler output, synthesis/timing reports, waveforms, traces, serial logs, and measurements.
+- Correlate failures across application, driver, firmware, RTL, and physical layers.
+- Create bring-up checklists and automate repeatable lab captures.
+- Review schematics, constraints, pin assignments, reset sequencing, and failure modes.
+
+AI output is not proof that a circuit is electrically safe, timing-clean, manufacturable,
+or compliant. Verify against current datasheets, EDA reports, calibrated instruments,
+design rules, and qualified human review.
+
+### Cross-layer hardware/software debug
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Driver as Driver/OS
+    participant FW as Firmware
+    participant RTL as RTL/Logic
+    participant HW as Board/Physical
+    App->>Driver: Request and timestamp
+    Driver->>FW: Command/register transaction
+    FW->>RTL: State transition/event marker
+    RTL->>HW: Interface activity
+    HW-->>RTL: Measurement/status
+    RTL-->>FW: Trace/event
+    FW-->>Driver: Response/error code
+    Driver-->>App: Result and latency
+```
+
+For each layer, record a shared correlation ID or timestamp when possible. Ask the
+agent to build a timeline from application logs, kernel/driver traces, firmware
+events, logic-analyzer captures, RTL waveforms, and bench measurements. Locate the
+first layer where actual behavior diverges from expected behavior.
+
+## 18. Engineering prompts
+
+### Turn an idea into an executable plan
+
+```text
+Act as a senior software-and-hardware systems engineer. Read
+ENGINEERING_IDEA_BRIEF.md. Separate verified facts from assumptions. Convert the
+idea into measurable functional and non-functional requirements, interfaces,
+budgets, failure modes, and acceptance tests. Compare 2-3 architecture options.
+Recommend the smallest prototype that falsifies the riskiest assumption. Identify
+what can be simulated, what requires real hardware, and what needs human or safety
+approval. Cite current datasheets, standards, APIs, and tools from primary sources.
+```
+
+### Implement a software slice
+
+```text
+Read AGENTS.md/CLAUDE.md and the engineering brief. Trace the existing architecture
+and identify the smallest end-to-end slice that proves the idea. Implement it
+without broad refactoring. Add unit and integration tests, run static checks,
+exercise the user flow, inspect the diff, and report performance/security impacts,
+commands, results, assumptions, and rollback.
+```
+
+### Implement and validate firmware or RTL
+
+```text
+Read the requirements, interfaces, clock/reset rules, resource budgets, and target
+toolchain. List ambiguous electrical or timing assumptions before implementation.
+Create the smallest synthesizable/compilable module plus a self-checking testbench
+or host simulator. Add assertions for protocol, reset, bounds, timeout, and illegal
+states. Run lint, build/synthesis, simulation, CDC/timing checks where available,
+and report warnings without hiding them. Do not claim hardware validation from
+simulation alone; provide the bench and hardware-in-loop validation plan.
+```
+
+### Analyze a lab or field failure
+
+```text
+Diagnose before changing the design. Build a time-correlated evidence table from
+software logs, driver traces, firmware events, waveforms, logic-analyzer captures,
+scope measurements, power/thermal data, board revision, and tool versions. Rank
+hypotheses and specify one distinguishing measurement for each. Identify the first
+layer where observed behavior diverges from the specification. Propose the smallest
+safe experiment, regression test, and rollback. Clearly label missing evidence.
+```
+
+## 19. Engineering definition of done
+
+In addition to the general definition of done:
+
+- Requirements and constraints are measurable and versioned.
+- Interfaces, units, ranges, timing, and failure behavior are documented.
+- Software tests pass on a clean environment.
+- Firmware/RTL passes applicable lint, compile, simulation, assertions, synthesis,
+  timing, CDC, and hardware-in-loop checks.
+- Physical prototypes have recorded board/device revision, setup, instrument,
+  calibration, environmental conditions, raw data, and pass/fail criteria.
+- Performance, power, thermal, memory, bandwidth, and cost budgets are measured
+  where relevant.
+- Security, privacy, safety, compliance, reliability, and manufacturing risks are reviewed.
+- Release artifacts are traceable to source, configuration, tool versions, and test evidence.
+- Deployment, firmware update, rollback, recovery, and field-monitoring procedures are tested.

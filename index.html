@@ -53,9 +53,23 @@
     </button>
   </div>
   <h1>AI Tools<br>Operating System</h1>
-  <p class="lede">A practical workflow for Claude Code, Codex, ChatGPT, and GPT-5.6: install, initialize, research, evaluate ideas, build, test, debug, review, and deploy with evidence.</p>
+  <p class="lede">For coding, software, firmware, embedded, FPGA, and hardware engineers: use Claude Code, Codex, ChatGPT, and GPT-5.6 to turn ideas into implemented, debugged, tested, and safely deployed systems.</p>
 </div></header>
 <main>
+  <section class="card">
+    <span class="tag">Engineering mission</span>
+    <h2>Move ideas through evidence-based engineering gates</h2>
+    <div class="flow">
+      <div class="step">Idea + real problem</div><div class="arrow">→</div>
+      <div class="step">Requirements + budgets</div><div class="arrow">→</div>
+      <div class="step">Architecture + interfaces</div><div class="arrow">→</div>
+      <div class="step">Code / RTL / firmware / prototype</div><div class="arrow">→</div>
+      <div class="step gate">Test + debug + review</div><div class="arrow">→</div>
+      <div class="step ok">Preview / bench / pilot</div><div class="arrow">→</div>
+      <div class="step gate">Engineer approval</div><div class="arrow">→</div>
+      <div class="step ok">Deploy + monitor + recover</div>
+    </div>
+  </section>
   <section class="grid">
     <article class="card"><span class="tag">Claude Code</span><h2>Terminal agent</h2><pre><code>winget install Anthropic.ClaudeCode
 claude
@@ -116,6 +130,47 @@ codex
         <tr><td>UI work</td><td>Reference → implement → browser/screenshot comparison → iterate.</td></tr>
         <tr><td>Large repeated migration</td><td>Test 2–3 samples → refine prompt → bounded batch automation.</td></tr>
         <tr><td>High-risk result</td><td>Builder → fresh independent reviewer → human approval.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <span class="tag">Software track</span>
+      <h2>Idea to production</h2>
+      <ol>
+        <li>Turn the user problem into acceptance tests.</li>
+        <li>Trace architecture, interfaces, data, and trust boundaries.</li>
+        <li>Build the smallest vertical slice.</li>
+        <li>Run unit, integration, end-to-end, performance, and security checks.</li>
+        <li>Debug from reproduction evidence, not guesses.</li>
+        <li>Review, stage, deploy, observe, and preserve rollback.</li>
+      </ol>
+    </article>
+    <article class="card">
+      <span class="tag">Hardware track</span>
+      <h2>Idea to fielded system</h2>
+      <ol>
+        <li>Define performance, power, thermal, area, cost, and safety budgets.</li>
+        <li>Document clocks, resets, protocols, register maps, and failure behavior.</li>
+        <li>Model or simulate before committing to hardware.</li>
+        <li>Build RTL, firmware, PCB, or prototype with self-checking tests.</li>
+        <li>Bring up safely and correlate logs, traces, waveforms, and measurements.</li>
+        <li>Stress, fault-test, pilot, update, monitor, and verify recovery.</li>
+      </ol>
+    </article>
+  </section>
+
+  <section class="card">
+    <h2>AI across the engineering stack</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>AI can help</th><th>Engineer must verify</th></tr></thead>
+      <tbody>
+        <tr><td>Product/system</td><td>Research, requirements, architecture options, risk register</td><td>User need, business constraints, safety and compliance</td></tr>
+        <tr><td>Application/cloud</td><td>Implementation, tests, profiling, CI/CD, observability</td><td>Correctness, security, data handling, production approval</td></tr>
+        <tr><td>OS/driver/firmware</td><td>Interfaces, register access, traces, state machines, error recovery</td><td>Concurrency, timing, privilege, device behavior</td></tr>
+        <tr><td>RTL/FPGA/ASIC</td><td>Modules, assertions, testbenches, report and waveform analysis</td><td>Synthesis, CDC/RDC, timing, PPA, tool warnings, signoff</td></tr>
+        <tr><td>Board/physical</td><td>Bring-up plan, datasheet comparison, measurement correlation</td><td>Electrical safety, SI/PI, thermal, instruments, manufacturing</td></tr>
       </tbody>
     </table>
   </section>

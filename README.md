@@ -2,7 +2,9 @@
 
 Last verified: 2026-07-16
 
-This repository is a practical system for using Claude Code, Codex, ChatGPT, and GPT-5.6 from idea to verified deployment.
+This repository is a practical system for coding, software, firmware, embedded,
+FPGA, and hardware engineers using Claude Code, Codex, ChatGPT, and GPT-5.6 to
+turn ideas into verified implementations and deployments.
 
 ## Start here
 
@@ -41,6 +43,8 @@ flowchart LR
 - `templates/IDEA_EVALUATION.md` — evidence-based idea review prompt.
 - `templates/RESEARCH_AND_VERIFY.md` — web research and verification protocol.
 - `templates/DEBUG_RUNBOOK.md` — reproducible debugging workflow.
+- `templates/ENGINEERING_IDEA_BRIEF.md` — shared software/hardware idea specification.
+- `templates/HARDWARE_VALIDATION.md` — hardware, firmware, FPGA, and lab validation plan.
 - `test-set/agent-evals.csv` — starter evaluation dataset.
 - `scripts/check-environment.ps1` — read-only local tool/version checks.
 - `SOURCES.md` — official sources and verification date.
@@ -48,4 +52,3 @@ flowchart LR
 ## Core rule
 
 Do not accept “looks good” as completion. Require changed files, commands run, test results, unresolved risks, and source links for current facts.
-
