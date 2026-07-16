@@ -35,6 +35,9 @@ Verified 2026-07-16. Product documentation changes frequently; recheck before in
 - [Codex for knowledge work](https://openai.com/index/codex-for-knowledge-work/)
 - [How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)
 - [OpenAI prompting guide](https://learn.chatgpt.com/docs/prompting)
+- [Unlocking the Codex harness](https://openai.com/index/unlocking-the-codex-harness/)
+- [Harness engineering with Codex](https://openai.com/index/harness-engineering/)
+- [Claude Code sandboxing](https://www.anthropic.com/engineering/claude-code-sandboxing)
 
 ## Official video and course resources
 

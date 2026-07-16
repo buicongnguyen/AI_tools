@@ -37,6 +37,7 @@ flowchart LR
 
 - `AI_AGENT_PLAYBOOK.md` — full reference.
 - `PROMPT_LIBRARY.md` — copy-ready engineering prompts and prompt-writing system.
+- `AI_HARNESS_GUIDE.md` — how agent harnesses work and how to engineer them efficiently.
 - `index.html` — visual, printable dashboard with diagrams.
 - `CONTENT_REVIEW.md` — content audit, problems found, and improvement roadmap.
 - `templates/PROJECT_CONTEXT.md` — shared project specification.

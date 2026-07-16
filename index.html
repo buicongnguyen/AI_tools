@@ -75,6 +75,14 @@
     .bad-prompt,.good-prompt { border-radius:12px; padding:14px; }
     .bad-prompt { border:1px solid #d77272; background:color-mix(in srgb,#d77272 10%,var(--card)); }
     .good-prompt { border:1px solid #55aa89; background:color-mix(in srgb,#55aa89 10%,var(--card)); }
+    .harness-loop { display:grid; grid-template-columns:repeat(5,minmax(130px,1fr)); gap:10px; align-items:stretch; margin:20px 0; overflow-x:auto; }
+    .harness-node { min-width:130px; display:grid; place-items:center; min-height:92px; padding:12px; border:1px solid var(--line); border-radius:14px; text-align:center; background:var(--card); font-weight:780; }
+    .harness-node.model { border:2px solid var(--blue); }
+    .harness-node.verify { border:2px solid var(--green); }
+    .harness-core { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; margin:18px 0; }
+    .harness-core article { border:1px solid var(--line); border-radius:12px; padding:14px; background:var(--paper); }
+    .level { display:flex; gap:12px; align-items:flex-start; border-left:4px solid var(--blue); padding:10px 14px; margin:9px 0; background:var(--paper); border-radius:0 10px 10px 0; }
+    .level b { min-width:88px; }
     .small { color:var(--muted); font-size:.9rem; }
     a { color:var(--blue); }
     @media(max-width:800px) { .sequence,.case-grid,.compare { grid-template-columns:1fr; } .sequence .arrow { transform:rotate(90deg); } }
@@ -101,6 +109,7 @@
   <div class="nav-inner">
     <a href="#start">Quick start</a>
     <a href="#prompts">Prompts</a>
+    <a href="#harness">AI harness</a>
     <a href="#real-cases">Real cases</a>
     <a href="#workflow">Workflow</a>
     <a href="#tools">Tools</a>
@@ -261,6 +270,46 @@ before/after examples, migration phases, risks, and measurable completion criter
     </details>
 
     <p><a class="button" href="PROMPT_LIBRARY.md">Open the full prompt library →</a></p>
+  </section>
+
+  <section class="card" id="harness">
+    <span class="tag">AI harness</span>
+    <h2>The model thinks; the harness makes engineering work possible</h2>
+    <p>An AI harness is the controlled system around a model: context, tools, execution, permissions, verification, memory, and feedback. Claude Code is the harness around Claude; Codex provides the same kind of agent runtime around OpenAI models.</p>
+    <div class="harness-loop" aria-label="AI harness feedback loop">
+      <div class="harness-node">Human goal<br>and boundaries</div>
+      <div class="harness-node">Context<br>and instructions</div>
+      <div class="harness-node model">Model reasons<br>and selects tools</div>
+      <div class="harness-node">Harness reads,<br>edits, and executes</div>
+      <div class="harness-node verify">Tests and evidence<br>feed the next turn</div>
+    </div>
+    <div class="harness-core">
+      <article><h3>Context</h3><p>Repository files, concise instructions, specifications, decisions, and relevant history.</p></article>
+      <article><h3>Tools</h3><p>Shell, Git, browser, simulators, EDA tools, cloud CLIs, MCP, and external systems.</p></article>
+      <article><h3>Control</h3><p>Sandbox, scoped permissions, secrets boundaries, isolated branches, and human approval gates.</p></article>
+      <article><h3>Verification</h3><p>Tests, screenshots, metrics, traces, waveforms, timing reports, and calibrated measurements.</p></article>
+      <article><h3>Reuse</h3><p>AGENTS.md, CLAUDE.md, skills, hooks, scripts, templates, and CI encode successful workflows.</p></article>
+    </div>
+
+    <h3>Use a harness efficiently</h3>
+    <div class="grid">
+      <article><b>Make the project legible</b><p>Document exact build, test, simulation, run, and release commands plus architecture and constraints.</p></article>
+      <article><b>Close the feedback loop</b><p>Give the agent evidence it can inspect and objective pass criteria it can iterate against.</p></article>
+      <article><b>Treat context as a budget</b><p>Keep persistent instructions short; send noisy research to isolated tasks and request summaries.</p></article>
+      <article><b>Bound autonomy</b><p>Allow routine work inside a sandbox; require approval for destructive, external, or production actions.</p></article>
+      <article><b>Separate judgment and enforcement</b><p>Use skills for reasoning workflows and hooks/CI for rules that must execute every time.</p></article>
+      <article><b>Make the system observable</b><p>Expose structured logs, traces, screenshots, reports, events, and measurements to the agent.</p></article>
+    </div>
+
+    <h3>Harness maturity ladder</h3>
+    <div class="level"><b>Level 0</b><span>Chat only. The human copies context, executes everything, and checks results manually.</span></div>
+    <div class="level"><b>Level 1</b><span>Tool access. The agent reads, edits, and runs commands inside a controlled repository.</span></div>
+    <div class="level"><b>Level 2</b><span>Self-verifying. Automated tests, browser checks, simulations, or measurements feed the loop.</span></div>
+    <div class="level"><b>Level 3</b><span>Repeatable. Skills, hooks, templates, and CI preserve reliable workflows.</span></div>
+    <div class="level"><b>Level 4</b><span>Parallel. Isolated agents and worktrees handle independent tasks with coordinated review.</span></div>
+    <div class="level"><b>Level 5</b><span>Operational. Deployment, monitoring, rollback, audit, and policy are integrated.</span></div>
+    <div class="warning"><b>Do not jump directly to high autonomy.</b> Increase autonomy only after the current level repeatedly produces correct, reviewable evidence inside safe boundaries.</div>
+    <p><a class="button" href="AI_HARNESS_GUIDE.md">Open the complete AI harness guide →</a></p>
   </section>
 
   <section class="card" id="real-cases">

@@ -772,3 +772,21 @@ See [`PROMPT_LIBRARY.md`](PROMPT_LIBRARY.md) for copy-ready examples covering:
 - API design.
 - Firmware, FPGA/RTL, and hardware bring-up.
 - Deployment and technical web research.
+
+## 21. Engineer the AI harness
+
+The model is only one part of an engineering agent. The harness provides:
+
+- Context and durable project instructions.
+- File, shell, Git, browser, simulator, EDA, and external-service tools.
+- Sandboxing, permissions, and credential boundaries.
+- The gather-context → act → verify loop.
+- Skills, hooks, MCP/connectors, subagents, and worktrees.
+- Tests, screenshots, metrics, waveforms, measurements, and review artifacts.
+
+Harness efficiency comes from making the project and its behavior legible to the
+agent, closing the verification loop, keeping context focused, and allowing
+autonomy only inside safe boundaries.
+
+See [`AI_HARNESS_GUIDE.md`](AI_HARNESS_GUIDE.md) for the full explanation,
+software and hardware examples, maturity ladder, and review checklist.
