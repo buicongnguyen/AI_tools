@@ -139,6 +139,7 @@
       <a class="button primary" href="#start">Start today</a>
       <a class="button ghost" href="#roadmap">Follow the 6-week roadmap</a>
       <a class="button ghost" href="#practice">Track your progress</a>
+      <a class="button ghost" href="software-engineering-cases.html">Practice real cases</a>
       <a class="button ghost" href="index.html">← AI Engineering Launchpad</a>
     </div>
   </div>
@@ -153,6 +154,7 @@
     <a href="#techniques">Techniques</a>
     <a href="#tools">Claude + Codex</a>
     <a href="#prompts">Prompts</a>
+    <a href="software-engineering-cases.html">Practical cases</a>
     <a href="#roadmap">6-week plan</a>
     <a href="#practice">Practice</a>
     <a href="#scorecard">Scorecard</a>
@@ -177,6 +179,21 @@
       <article class="mini"><h3>Review and record</h3><p>Inspect the diff, use a fresh reviewer, record results, and convert one repeated mistake into a test, rule, hook, or skill.</p><a href="test-set/professional-practice-scorecard.csv">Open the practice scorecard →</a></article>
     </div>
     <div class="callout"><b>Professional standard:</b> the output is not “the agent answered.” The output is a reviewable change plus reproducible evidence, known limitations, and a human decision.</div>
+  </section>
+
+  <section class="card" id="practical-cases">
+    <span class="tag">Hands-on casebook</span>
+    <h2>Practice six situations from real software teams</h2>
+    <p>Move from general technique to concrete engineering judgment. Every case includes a ticket, constraints, acceptance evidence, common wrong fixes, copy-ready prompt, review score, and synchronized Claude Code/Codex execution paths.</p>
+    <div class="grid">
+      <article class="mini"><h3>Debugging</h3><p>Reproduce and fix a concurrent refresh-token race without hiding 401s or weakening rotation.</p></article>
+      <article class="mini"><h3>Backend correctness</h3><p>Make a payment webhook idempotent under duplicate, concurrent, and out-of-order delivery.</p></article>
+      <article class="mini"><h3>Performance</h3><p>Reduce an N+1 dashboard endpoint from p95 780 ms to ≤250 ms with a valid baseline.</p></article>
+      <article class="mini"><h3>Frontend reliability</h3><p>Build optimistic settings where latest intent wins and failures recover accessibly.</p></article>
+      <article class="mini"><h3>Migration</h3><p>Rename a database field through expand/contract while mixed versions and rollback remain safe.</p></article>
+      <article class="mini"><h3>Production incident</h3><p>Stop consumer memory growth without message loss, duplicate effects, or blind tuning.</p></article>
+    </div>
+    <p><a class="button" href="software-engineering-cases.html">Open the practical software-engineering casebook →</a></p>
   </section>
 
   <section class="card" id="assessment" data-tool-section>

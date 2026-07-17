@@ -10,11 +10,12 @@ turn ideas into verified implementations and deployments.
 
 1. Open [`index.html`](index.html) in a browser for the visual launchpad.
 2. Use [`professional-ai-engineering.html`](professional-ai-engineering.html) to assess your level and follow the six-week curriculum.
-3. Start real work from [`templates/PROFESSIONAL_TASK_BRIEF.md`](templates/PROFESSIONAL_TASK_BRIEF.md).
-4. Record deliberate practice in [`test-set/professional-practice-scorecard.csv`](test-set/professional-practice-scorecard.csv).
-5. Read [`AI_AGENT_PLAYBOOK.md`](AI_AGENT_PLAYBOOK.md) for commands, workflows, prompts, and checklists.
-6. Copy the relevant files in [`templates`](templates) into a real project.
-7. Run [`scripts/check-environment.ps1`](scripts/check-environment.ps1) in PowerShell.
+3. Try the six realistic exercises in [`software-engineering-cases.html`](software-engineering-cases.html).
+4. Start real work from [`templates/PROFESSIONAL_TASK_BRIEF.md`](templates/PROFESSIONAL_TASK_BRIEF.md).
+5. Record deliberate practice in [`test-set/professional-practice-scorecard.csv`](test-set/professional-practice-scorecard.csv).
+6. Read [`AI_AGENT_PLAYBOOK.md`](AI_AGENT_PLAYBOOK.md) for commands, workflows, prompts, and checklists.
+7. Copy the relevant files in [`templates`](templates) into a real project.
+8. Run [`scripts/check-environment.ps1`](scripts/check-environment.ps1) in PowerShell.
 
 ## The operating loop
 
@@ -41,6 +42,7 @@ flowchart LR
 - `PROMPT_LIBRARY.md` — copy-ready engineering prompts and prompt-writing system.
 - `AI_HARNESS_GUIDE.md` — how agent harnesses work and how to engineer them efficiently.
 - `professional-ai-engineering.html` — software-engineering-first guide with synchronized Claude Code/Codex views, task modes, prompts, curriculum, and interactive practice.
+- `software-engineering-cases.html` — six realistic debugging, backend, performance, frontend, migration, and incident exercises with tool-specific paths.
 - `PROFESSIONAL_PRACTICE_GUIDE.md` — printable Markdown companion to the professional practice page.
 - `loop-engineering.html` — deep visual implementation playbook for safe, convergent, evaluated AI agent loops.
 - `index.html` — visual, printable dashboard with diagrams.
@@ -62,6 +64,7 @@ flowchart LR
 - `test-set/agent-evals.csv` — starter evaluation dataset.
 - `test-set/loop-engineering-evals.csv` — success, unsafe, flaky, blocked, and hardware loop cases.
 - `test-set/professional-practice-scorecard.csv` — twelve deliberate-practice exercises and measurable professional outcomes.
+- `test-set/software-engineering-practice-cases.csv` — case metadata, minimum acceptance, review focus, and results fields for the six practical exercises.
 - `scripts/check-environment.ps1` — read-only local tool/version checks.
 - `SOURCES.md` — official sources and verification date.
 

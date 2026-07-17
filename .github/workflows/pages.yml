@@ -28,6 +28,7 @@ jobs:
             "index.html",
             "loop-engineering.html",
             "professional-ai-engineering.html",
+            "software-engineering-cases.html",
             "README.md",
             "AI_AGENT_PLAYBOOK.md",
             "PROFESSIONAL_PRACTICE_GUIDE.md",
@@ -39,7 +40,8 @@ jobs:
             "templates/MAKER_PROMPT.md",
             "templates/VERIFIER_PROMPT.md",
             "test-set/loop-engineering-evals.csv",
-            "test-set/professional-practice-scorecard.csv"
+            "test-set/professional-practice-scorecard.csv",
+            "test-set/software-engineering-practice-cases.csv"
           )
           foreach ($file in $required) {
             if (-not (Test-Path -LiteralPath $file)) {
@@ -69,6 +71,16 @@ jobs:
               $professionalHtml -notmatch "Your professional practice checklist" -or
               $professionalHtml -notmatch "data-tool-choice") {
             throw "professional-ai-engineering.html is missing required content"
+          }
+          $caseHtml = Get-Content -Raw -LiteralPath "software-engineering-cases.html"
+          if ($caseHtml -notmatch "(?i)<!doctype html>" -or $caseHtml -notmatch "(?i)</html>") {
+            throw "software-engineering-cases.html failed the structure check"
+          }
+          if ($caseHtml -notmatch "Practical Software Engineering with Claude Code \+ Codex" -or
+              $caseHtml -notmatch "Users are randomly logged out during token refresh" -or
+              $caseHtml -notmatch "Stop consumer memory growth without losing messages" -or
+              $caseHtml -notmatch "data-tool-choice") {
+            throw "software-engineering-cases.html is missing required content"
           }
 
   deploy:

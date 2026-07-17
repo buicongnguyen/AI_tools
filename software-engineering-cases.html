@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Six realistic software-engineering cases for practicing Claude Code and Codex: debugging, backend features, performance, frontend reliability, migrations, and production incidents.">
+  <title>Practical Software Engineering Cases · Claude Code + Codex</title>
+  <style>
+    :root{color-scheme:light;--ink:#172033;--muted:#5f6b7d;--paper:#f4f7fb;--card:#fff;--line:#d8e0eb;--accent:#315bc5;--accent2:#087f72;--gold:#a45f00;--soft:#edf2ff;--green:#e8f8f4;--warn:#fff4df;--code:#101722;--code-ink:#edf3f8;--hero-a:#111a38;--hero-b:#224aa0;--shadow:0 10px 28px rgba(22,39,82,.08)}
+    [data-theme="dark"]{color-scheme:dark;--ink:#edf1fa;--muted:#aeb9cc;--paper:#090f1d;--card:#141d31;--line:#2b3852;--accent:#91afff;--accent2:#63d8c2;--gold:#ffc66d;--soft:#1c2949;--green:#123830;--warn:#392a10;--code:#050913;--code-ink:#eef3fb;--hero-a:#050814;--hero-b:#152d65;--shadow:none}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--accent)}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+    header{padding:24px 0 58px;color:#fff;background:radial-gradient(circle at 82% 18%,rgba(112,163,255,.28),transparent 27%),linear-gradient(135deg,var(--hero-a),var(--hero-b))}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .eyebrow,.tag,.level{display:inline-flex;align-items:center;border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:850;letter-spacing:.03em}.eyebrow{color:#e4ecff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24)}.tag{color:var(--accent);background:var(--soft)}.level{color:var(--accent2);background:var(--green)}
+    .theme{border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:8px 12px;color:#fff;background:rgba(255,255,255,.08);font:inherit;font-weight:760;cursor:pointer}h1{max-width:980px;margin:42px 0 16px;font-size:clamp(2.5rem,6.5vw,5.5rem);line-height:.96;letter-spacing:-.052em}h2{margin:8px 0 10px;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.15;letter-spacing:-.025em}h3{margin:4px 0 7px}p{margin-top:7px}.lede{max-width:850px;color:#e9efff;font-size:clamp(1.05rem,2vw,1.28rem)}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 15px;border:1px solid var(--line);border-radius:10px;color:var(--ink);background:var(--card);font-weight:780;text-decoration:none;cursor:pointer}.button.primary{color:#12275a;background:#dce7ff;border-color:#dce7ff}.button.ghost{color:#fff;background:transparent;border-color:rgba(255,255,255,.4)}
+    nav{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(12px)}nav .wrap{display:flex;gap:5px;overflow-x:auto;padding-top:9px;padding-bottom:9px}nav a{flex:0 0 auto;padding:7px 10px;border-radius:8px;color:var(--muted);font-size:.87rem;font-weight:760;text-decoration:none}nav a:hover{color:var(--ink);background:var(--card)}
+    main{padding:34px 0 74px}section,article{scroll-margin-top:72px}.card,.case{margin:22px 0;padding:clamp(20px,3vw,30px);border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:var(--shadow)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;margin:18px 0}.mini{padding:16px;border:1px solid var(--line);border-radius:13px;background:var(--paper)}.mini h3{margin-top:0}
+    .flow{display:flex;align-items:center;gap:7px;margin:20px 0;overflow-x:auto;padding-bottom:10px}.node{flex:1 0 130px;min-width:130px;min-height:86px;display:grid;place-items:center;padding:11px;border:2px solid var(--line);border-radius:13px;text-align:center;background:var(--paper);font-weight:800}.node.verify{border-color:var(--accent2)}.node.gate{border-color:var(--gold)}.arrow{color:var(--accent);font-size:1.35rem;font-weight:900}
+    .filter-bar,.tool-switch{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:17px 0}.filter,.tool-choice{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);background:var(--card);font:inherit;font-size:.9rem;font-weight:770;cursor:pointer}.filter[aria-pressed="true"],.tool-choice[aria-pressed="true"]{color:#fff;background:var(--accent);border-color:var(--accent)}.tool-switch{padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--paper)}.tool-switch b{margin-right:3px;color:var(--muted);font-size:.88rem}
+    .case[hidden]{display:none}.case-head{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}.case-meta{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}.situation{margin:18px 0;padding:15px 17px;border-left:4px solid var(--accent);border-radius:8px;background:var(--soft)}.reality{margin:18px 0;padding:15px 17px;border-left:4px solid var(--gold);border-radius:8px;background:var(--warn)}
+    .tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:16px 0}.tool-path{padding:16px;border:1px solid var(--line);border-radius:13px;background:var(--paper)}.tool-path[data-tool="claude"]{border-top:4px solid var(--accent2)}.tool-path[data-tool="codex"]{border-top:4px solid var(--accent)}[data-tool-view="claude"] [data-tool="codex"],[data-tool-view="codex"] [data-tool="claude"]{display:none}
+    .acceptance{list-style:none;padding:0}.acceptance li{position:relative;margin:8px 0;padding-left:25px}.acceptance li::before{content:"✓";position:absolute;left:0;color:var(--accent2);font-weight:900}.sequence{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.sequence div{min-height:78px;padding:12px;border-top:4px solid var(--accent);border-radius:9px;background:var(--paper)}
+    details{margin:12px 0;border:1px solid var(--line);border-radius:12px;background:var(--paper)}summary{padding:14px 16px;cursor:pointer;font-weight:820}details>div{padding:0 16px 16px}pre{overflow:auto;padding:17px;border-radius:12px;color:var(--code-ink);background:var(--code)}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.copy-row{display:flex;justify-content:flex-end;margin:8px 0}.copy{border:1px solid var(--line);border-radius:8px;padding:7px 10px;color:var(--ink);background:var(--card);font:inherit;font-weight:740;cursor:pointer}
+    table{width:100%;border-collapse:collapse;background:var(--card)}th,td{padding:11px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--paper)}.table-wrap{overflow-x:auto}.small{color:var(--muted);font-size:.9rem}footer{padding:27px 0 45px;color:var(--muted);border-top:1px solid var(--line)}
+    @media(max-width:760px){.case-head{grid-template-columns:1fr}.case-meta{justify-content:flex-start}.sequence{grid-template-columns:1fr 1fr}}@media(max-width:480px){.wrap{width:min(100% - 28px,1160px)}.sequence{grid-template-columns:1fr}}@media print{nav,.theme,.actions,.filter-bar,.tool-switch,.copy{display:none}body{background:#fff;color:#172033}.card,.case{box-shadow:none}.case[hidden],[data-tool]{display:block!important}}
+  </style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="topbar"><span class="eyebrow">6 REALISTIC CASES · SOFTWARE ENGINEERING</span><button class="theme" id="theme" type="button" aria-label="Switch to dark mode">☾ Dark</button></div>
+  <h1>Practical Software Engineering with Claude Code + Codex</h1>
+  <p class="lede">Practice on work that resembles a real sprint: ambiguous bugs, production constraints, incomplete evidence, reviews, migrations, and deployment gates. Every case shows the shared contract and the different Claude Code and Codex execution paths.</p>
+  <div class="actions"><a class="button primary" href="#cases">Choose a case</a><a class="button ghost" href="#how">How to practice</a><a class="button ghost" href="professional-ai-engineering.html">← Professional guide</a><a class="button ghost" href="index.html">Launchpad</a></div>
+</div></header>
+<nav aria-label="Casebook navigation"><div class="wrap"><a href="#how">Method</a><a href="#case-auth">Bug</a><a href="#case-webhook">Backend</a><a href="#case-performance">Performance</a><a href="#case-frontend">Frontend</a><a href="#case-migration">Migration</a><a href="#case-incident">Incident</a><a href="#score">Score</a></div></nav>
+<main class="wrap">
+  <section class="card" id="how">
+    <span class="tag">Practice method</span><h2>Run each case like a small production change</h2>
+    <p>Do not paste the prompt and accept the first patch. Give the agent a repository, observe its inspection and evidence, and stop at the same gates you would use with a human teammate.</p>
+    <div class="flow" aria-label="Practical case workflow"><div class="node">Read ticket<br>and constraints</div><div class="arrow">→</div><div class="node">Inspect real<br>repository</div><div class="arrow">→</div><div class="node">Reproduce or<br>write contract</div><div class="arrow">→</div><div class="node">Smallest<br>change</div><div class="arrow">→</div><div class="node verify">Tests + raw<br>evidence</div><div class="arrow">→</div><div class="node gate">Fresh review<br>and gate</div></div>
+    <div class="grid"><article class="mini"><h3>First pass</h3><p>Run the shared prompt with no tool hint. Record corrections, time, and missing evidence.</p></article><article class="mini"><h3>Second pass</h3><p>Select Claude Code or Codex and compare verified-result time—not answer speed.</p></article><article class="mini"><h3>Fresh review</h3><p>Give a new context only the ticket, final diff, and raw evidence.</p></article><article class="mini"><h3>Encode learning</h3><p>Turn one repeated failure into a test, instruction, hook, skill, or eval.</p></article></div>
+    <div class="reality"><b>Reality rule:</b> the expected output is not identical code. It is a small, explainable diff that satisfies acceptance without weakening tests, hiding errors, or changing unrelated behavior.</div>
+  </section>
+  <section class="card" id="cases">
+    <span class="tag">Case selector</span><h2>Choose the work you want to practice</h2>
+    <div class="filter-bar" role="group" aria-label="Filter software engineering cases"><button class="filter" type="button" data-filter="all" aria-pressed="true">All 6</button><button class="filter" type="button" data-filter="debug" aria-pressed="false">Debugging</button><button class="filter" type="button" data-filter="backend" aria-pressed="false">Backend</button><button class="filter" type="button" data-filter="performance" aria-pressed="false">Performance</button><button class="filter" type="button" data-filter="frontend" aria-pressed="false">Frontend</button><button class="filter" type="button" data-filter="migration" aria-pressed="false">Migration</button><button class="filter" type="button" data-filter="incident" aria-pressed="false">Incident</button></div>
+    <p class="small" id="filter-status" aria-live="polite">Showing all 6 cases.</p><p class="small" id="copy-status" aria-live="polite"></p>
+  </section>
+
+  <article class="case" id="case-auth" data-category="debug" data-tool-section>
+    <div class="case-head"><div><span class="tag">Case 1 · Debugging</span><h2>Users are randomly logged out during token refresh</h2></div><div class="case-meta"><span class="level">Intermediate</span><span class="level">60–90 min</span></div></div>
+    <div class="situation"><b>Ticket:</b> A React + Node application sends several refresh requests when API calls race near token expiry. One rotates the refresh token; a late call fails and logs the user out. Slow networks expose it, but current unit tests do not.</div>
+    <div class="sequence" aria-label="Authentication race sequence"><div><b>Browser</b><br>3 calls see expiry</div><div><b>Interceptor</b><br>starts 3 refreshes</div><div><b>Auth service</b><br>rotates once</div><div><b>Failure</b><br>late call logs out</div></div>
+    <div class="grid"><section class="mini"><h3>Context</h3><ul><li><code>src/api/client.ts</code></li><li><code>src/auth/session.ts</code></li><li>Auth tests and rotation contract</li></ul></section><section class="mini"><h3>Acceptance</h3><ul class="acceptance"><li>One refresh per session.</li><li>Waiters resume with new token.</li><li>Failure logs out once.</li><li>Deterministic regression.</li><li>No token values in logs.</li></ul></section><section class="mini"><h3>Wrong fixes</h3><ul><li>Disable rotation.</li><li>Add sleeps or broad retries.</li><li>Swallow 401s.</li><li>Use one lock for all users.</li></ul></section></div>
+    <div class="tool-grid"><section class="tool-path" data-tool="claude"><h3>Claude Code path</h3><ol><li>Read <code>CLAUDE.md</code>, auth flow, tests, and contract.</li><li>Use Plan mode to draw concurrent state before editing.</li><li>Create a deterministic failure with deferred promises/barriers.</li><li>Implement a session-scoped single-flight promise.</li><li>Use a fresh subagent for race and secret review.</li></ol></section><section class="tool-path" data-tool="codex"><h3>Codex path</h3><ol><li>Read applicable <code>AGENTS.md</code> and trace auth flow.</li><li>Use <code>/plan</code> for invariants and reproduction.</li><li>Require the baseline-failing concurrency test.</li><li>Make the smallest change and run client tests.</li><li>Run <code>/review</code> against ticket, diff, and output.</li></ol></section></div>
+    <details><summary>Copy-ready prompt</summary><div><div class="copy-row"><button class="copy" type="button" data-copy="prompt-auth">Copy prompt</button></div><pre id="prompt-auth"><code>Goal: Find and fix the refresh-token race that randomly logs users out.
+
+Inspect repository instructions, client/session code, auth tests, and the
+rotation contract. Before editing, draw the concurrent sequence, state the
+session invariants, and add a deterministic regression using controlled
+promises/barriers. It must fail on current code without sleeps.
+
+Constraints: preserve rotation and public APIs; never log tokens; do not swallow
+401s or add broad retries. Done: one refresh per session, waiters resume, failure
+logs out once, focused and broader tests pass, and fresh review finds no
+unresolved concurrency or secret issue. Return evidence and residual risks.</code></pre></div></details>
+  </article>
+
+  <article class="case" id="case-webhook" data-category="backend" data-tool-section>
+    <div class="case-head"><div><span class="tag">Case 2 · Backend</span><h2>Add idempotent payment-webhook processing</h2></div><div class="case-meta"><span class="level">Intermediate</span><span class="level">90–120 min</span></div></div>
+    <div class="situation"><b>Ticket:</b> A payment provider retries events for 72 hours. The endpoint updates an order and sends an email on every delivery. Duplicate and out-of-order events have caused repeated emails and an invalid status regression.</div>
+    <div class="sequence" aria-label="Webhook sequence"><div><b>Provider</b><br>signed event ID</div><div><b>HTTP edge</b><br>verify raw body</div><div><b>Transaction</b><br>claim + transition</div><div><b>Outbox</b><br>notify after commit</div></div>
+    <div class="grid"><section class="mini"><h3>Acceptance</h3><ul class="acceptance"><li>Verify raw-body signature.</li><li>Event ID changes state once.</li><li>Older event cannot regress state.</li><li>Notification is created once.</li><li>Concurrent duplicate test.</li></ul></section><section class="mini"><h3>Decisions</h3><ul><li>Unique provider/event constraint</li><li>State-transition table</li><li>Transaction boundary</li><li>Outbox and retention</li></ul></section><section class="mini"><h3>Wrong fixes</h3><ul><li>In-memory seen-ID set.</li><li>Trust timestamp ordering.</li><li>Return 200 before commit.</li><li>Email inside unsafe retry.</li></ul></section></div>
+    <div class="tool-grid"><section class="tool-path" data-tool="claude"><h3>Claude Code path</h3><ol><li>Plan route, ORM transactions, schema, and outbox patterns.</li><li>Define invariant and transaction diagram.</li><li>Implement migration, handler, and tests as a vertical slice.</li><li>Use a security subagent for signature/replay review.</li></ol></section><section class="tool-path" data-tool="codex"><h3>Codex path</h3><ol><li>Use <code>/plan</code> to trace body handling and state rules.</li><li>Write duplicate, concurrent, out-of-order, and invalid-signature tests.</li><li>Implement the migration and slice in a worktree if needed.</li><li>Use <code>/review</code> for transaction safety and rollback.</li></ol></section></div>
+    <details><summary>Copy-ready prompt</summary><div><div class="copy-row"><button class="copy" type="button" data-copy="prompt-webhook">Copy prompt</button></div><pre id="prompt-webhook"><code>Goal: Make payment webhooks safe under duplicate, concurrent, delayed, and
+out-of-order delivery while preserving order APIs.
+
+Inspect the route, raw-body/signature middleware, state machine, transaction
+patterns, outbox/email code, migrations, and tests. Plan event identity, durable
+uniqueness, allowed transitions, transaction boundary, side effects, retention,
+and rollback before editing.
+
+Acceptance: invalid signatures make no change; concurrent duplicate applies
+once; older events cannot regress state; notification is produced once after
+commit. Implement the smallest vertical slice, add integration tests, run schema
+and backend checks, then perform fresh security/correctness review.</code></pre></div></details>
+  </article>
+
+  <article class="case" id="case-performance" data-category="performance" data-tool-section>
+    <div class="case-head"><div><span class="tag">Case 3 · Performance</span><h2>Reduce dashboard API p95 without hiding the bottleneck</h2></div><div class="case-meta"><span class="level">Advanced</span><span class="level">90–150 min</span></div></div>
+    <div class="situation"><b>Ticket:</b> <code>GET /api/projects/:id/dashboard</code> has p95 780 ms at 30 RPS and makes 101 queries for 50 widgets. Target: p95 ≤ 250 ms without stale authorization or an unbounded cache.</div>
+    <div class="grid"><section class="mini"><h3>Baseline</h3><ul><li>Fixed dataset/seed</li><li>Query count</li><li>p50/p95/p99</li><li>CPU, memory, DB time</li><li>Authorized/forbidden cases</li></ul></section><section class="mini"><h3>Acceptance</h3><ul class="acceptance"><li>≤5 queries.</li><li>p95 ≤250 ms at 30 RPS.</li><li>Authorization unchanged.</li><li>Response contract unchanged.</li><li>Benchmark committed.</li></ul></section><section class="mini"><h3>Wrong fixes</h3><ul><li>Cache everything forever.</li><li>Measure one warm request.</li><li>Remove auth joins.</li><li>Change data between runs.</li></ul></section></div>
+    <div class="tool-grid"><section class="tool-path" data-tool="claude"><h3>Claude Code path</h3><ol><li>Inspect traces, ORM, query logs, and benchmark tools.</li><li>Use Plan mode to separate query, serialization, and lock hypotheses.</li><li>Create fixed-data benchmark and query assertion.</li><li>Change one query shape and compare baseline/candidate.</li></ol></section><section class="tool-path" data-tool="codex"><h3>Codex path</h3><ol><li>Use <code>/plan</code> to map fan-out, auth, and measurement.</li><li>Create a reproducible benchmark artifact and baseline report.</li><li>Implement one optimization and retain before/after data.</li><li>Use <code>/review</code> for auth, memory, contract, and validity.</li></ol></section></div>
+    <details><summary>Copy-ready prompt</summary><div><div class="copy-row"><button class="copy" type="button" data-copy="prompt-performance">Copy prompt</button></div><pre id="prompt-performance"><code>Goal: Reduce dashboard p95 to ≤250 ms at 30 RPS while preserving authorization
+and the response contract.
+
+Do not optimize yet. Inspect tracing, ORM/query code, serialization, indexes,
+auth, dataset shape, and benchmark tooling. Build a fixed baseline recording
+query count, p50/p95/p99, CPU, memory, and DB time for allowed/forbidden users.
+Rank bottlenecks and run the cheapest distinguishing measurement.
+
+Implement one bounded change. Do not add an unbounded cache or remove security
+checks. Done: ≤5 queries, p95 target met, unchanged contract/auth tests, committed
+benchmark, and fresh review of correctness and measurement validity.</code></pre></div></details>
+  </article>
+
+  <article class="case" id="case-frontend" data-category="frontend" data-tool-section>
+    <div class="case-head"><div><span class="tag">Case 4 · Frontend</span><h2>Build optimistic settings that safely roll back</h2></div><div class="case-meta"><span class="level">Intermediate</span><span class="level">60–100 min</span></div></div>
+    <div class="situation"><b>Ticket:</b> Notification settings should feel instant, but the API can reject policy changes or fail offline. Rapid toggles let late responses overwrite newer intent, and screen-reader users do not hear save failures.</div>
+    <div class="grid"><section class="mini"><h3>States</h3><ul><li>Saved server snapshot</li><li>Optimistic value</li><li>Mutation identity</li><li>Pending/offline</li><li>Error/retry</li></ul></section><section class="mini"><h3>Acceptance</h3><ul class="acceptance"><li>Latest intent wins.</li><li>Rejection restores server truth.</li><li>Offline retry is visible.</li><li>Error is announced.</li><li>Focus stays predictable.</li></ul></section><section class="mini"><h3>Wrong fixes</h3><ul><li>Disable all controls.</li><li>Rollback to stale value.</li><li>Ignore late responses.</li><li>Color-only error toast.</li></ul></section></div>
+    <div class="tool-grid"><section class="tool-path" data-tool="claude"><h3>Claude Code path</h3><ol><li>Inspect state, API, design system, and accessibility tests.</li><li>Use Plan mode for the overlapping-request state machine.</li><li>Implement one preference with controlled responses.</li><li>Run browser checks and fresh accessibility review.</li></ol></section><section class="tool-path" data-tool="codex"><h3>Codex path</h3><ol><li>Trace component, request/cache layer, and a11y patterns.</li><li>Use <code>/plan</code> for optimistic/server state and ordering.</li><li>Implement the slice and run component/browser tests.</li><li>Use <code>/review</code> for race, focus, announcements, recovery.</li></ol></section></div>
+    <details><summary>Copy-ready prompt</summary><div><div class="copy-row"><button class="copy" type="button" data-copy="prompt-frontend">Copy prompt</button></div><pre id="prompt-frontend"><code>Goal: Implement optimistic notification settings where newest intent wins and
+failed changes recover accessibly.
+
+Inspect the component, API/cache layer, design-system patterns, announcements,
+and tests. Before editing, model saved, optimistic, pending, error, offline, and
+overlapping request states. Draw two rapid toggles with reversed responses.
+
+Acceptance: instant update; late response cannot overwrite newer intent; policy
+rejection restores server truth; offline state is retryable; error has an
+accessible live announcement; focus is stable. Add deterministic success,
+rejection, offline, and reversed-response tests plus browser/a11y evidence.</code></pre></div></details>
+  </article>
+
+  <article class="case" id="case-migration" data-category="migration" data-tool-section>
+    <div class="case-head"><div><span class="tag">Case 5 · Migration</span><h2>Rename a database field without downtime</h2></div><div class="case-meta"><span class="level">Advanced</span><span class="level">2–4 hours</span></div></div>
+    <div class="situation"><b>Ticket:</b> Rename <code>users.full_name</code> to <code>display_name</code>. Three versions may coexist during rolling deploy, a report reads the old column, and rollback must work for 24 hours.</div>
+    <div class="flow" aria-label="Expand and contract migration"><div class="node">Expand:<br>add field</div><div class="arrow">→</div><div class="node">Dual read/write<br>with metrics</div><div class="arrow">→</div><div class="node verify">Backfill +<br>verify parity</div><div class="arrow">→</div><div class="node gate">Contract in<br>separate release</div></div>
+    <div class="grid"><section class="mini"><h3>Compatibility</h3><ul><li>Old app + old schema</li><li>Old app + expanded schema</li><li>New app + expanded schema</li><li>Reporting job</li><li>Application rollback</li></ul></section><section class="mini"><h3>Acceptance</h3><ul class="acceptance"><li>Mixed versions work.</li><li>Backfill is resumable.</li><li>Parity metrics exist.</li><li>Rollback works.</li><li>Drop is separately gated.</li></ul></section><section class="mini"><h3>Wrong fixes</h3><ul><li>Rename in one migration.</li><li>Locking backfill transaction.</li><li>Forget jobs/reports.</li><li>Drop before rollback closes.</li></ul></section></div>
+    <div class="tool-grid"><section class="tool-path" data-tool="claude"><h3>Claude Code path</h3><ol><li>Use Plan mode to find all readers/writers and build the matrix.</li><li>Produce expand, compatibility, backfill, verify, and contract phases.</li><li>Implement only the approved phase.</li><li>Fresh review focuses on rollback and hidden consumers.</li></ol></section><section class="tool-path" data-tool="codex"><h3>Codex path</h3><ol><li>Use <code>/plan</code> to inspect schema, jobs, analytics, deployment.</li><li>Write phased plan with explicit gates and telemetry.</li><li>Implement expand-compatible phase in a worktree.</li><li>Use <code>/review</code> against compatibility/rollback matrix.</li></ol></section></div>
+    <details><summary>Copy-ready prompt</summary><div><div class="copy-row"><button class="copy" type="button" data-copy="prompt-migration">Copy prompt</button></div><pre id="prompt-migration"><code>Goal: Migrate users.full_name to display_name with zero downtime, mixed-version
+compatibility, and a verified 24-hour rollback window.
+
+Inspect schema history, every reader/writer, serializers, jobs/reports, deployment
+order, data size, and rollback. Do not edit before a compatibility matrix and
+expand/contract plan. Plan additive schema, compatible reads/writes, bounded
+resumable backfill, parity metrics, consumer migration, rollback rehearsal, and
+a separately approved drop release.
+
+Implement only the approved phase. Add mixed-version contracts, migration tests,
+observability, and operator runbook. Report locks, duration, rollback commands,
+raw results, and remaining consumers.</code></pre></div></details>
+  </article>
+
+  <article class="case" id="case-incident" data-category="incident" data-tool-section>
+    <div class="case-head"><div><span class="tag">Case 6 · Incident</span><h2>Stop consumer memory growth without losing messages</h2></div><div class="case-meta"><span class="level">Advanced</span><span class="level">90–180 min</span></div></div>
+    <div class="situation"><b>Incident:</b> A Node event consumer grows from 300 MB to 2.2 GB in four hours, then restarts. Queue lag spikes. Heap snapshots retain messages, but the cause may be unbounded concurrency, listeners, failed acknowledgements, or tracing baggage.</div>
+    <div class="grid"><section class="mini"><h3>Evidence</h3><ul><li>Heap snapshots over time</li><li>Retainer paths</li><li>In-flight and lag</li><li>Ack/nack/retry metrics</li><li>Listeners and timers</li></ul></section><section class="mini"><h3>Acceptance</h3><ul class="acceptance"><li>Bounded steady memory.</li><li>No lost/duplicate effect.</li><li>Bounded in-flight work.</li><li>Safe drain/requeue.</li><li>Canary rollback thresholds.</li></ul></section><section class="mini"><h3>Wrong fixes</h3><ul><li>Only increase memory.</li><li>Force periodic GC.</li><li>Ack before completion.</li><li>Reduce concurrency blindly.</li></ul></section></div>
+    <div class="tool-grid"><section class="tool-path" data-tool="claude"><h3>Claude Code path</h3><ol><li>Analyze heap, queue metrics, lifecycle, and ack semantics.</li><li>Use Plan mode for ranked hypotheses and load experiments.</li><li>Add soak test and observability before the fix.</li><li>Stop at canary gate after fresh reliability review.</li></ol></section><section class="tool-path" data-tool="codex"><h3>Codex path</h3><ol><li>Inspect lifecycle, queue client, tracing, shutdown, artifacts.</li><li>Use <code>/plan</code> for hypotheses, soak, and rollback thresholds.</li><li>Implement backpressure/lifecycle correction with evidence.</li><li>Use <code>/review</code>; stop for human canary approval.</li></ol></section></div>
+    <details><summary>Copy-ready prompt</summary><div><div class="copy-row"><button class="copy" type="button" data-copy="prompt-incident">Copy prompt</button></div><pre id="prompt-incident"><code>Goal: Fix event-consumer memory growth without message loss, duplicate side
+effects, or unacceptable throughput regression.
+
+Inspect heap/retainer paths, in-flight/lag metrics, ack/nack semantics, listeners,
+timers, tracing, shutdown, and recent diffs. Do not propose a fix until evidence
+separates concurrency, listener, retained-failure, and tracing hypotheses.
+
+Build a fixed-workload soak test recording memory, GC, in-flight, throughput, lag,
+errors, and delivery. Done: bounded memory, preserved delivery, backpressure,
+safe shutdown, acceptable throughput, and canary rollback thresholds. Stop before
+production deployment and request human approval.</code></pre></div></details>
+  </article>
+
+  <section class="card" id="score">
+    <span class="tag">Review score</span><h2>Score the result—not how polished the answer sounds</h2>
+    <div class="table-wrap"><table><thead><tr><th>Dimension</th><th>0</th><th>1</th><th>2</th></tr></thead><tbody>
+      <tr><td>Problem evidence</td><td>Assumed</td><td>Partially measured</td><td>Deterministic reproduction/baseline</td></tr>
+      <tr><td>Scope</td><td>Broad unrelated change</td><td>Mostly focused</td><td>Smallest coherent change</td></tr>
+      <tr><td>Verification</td><td>Claim only</td><td>Focused checks</td><td>Focused + risk-appropriate broad evidence</td></tr>
+      <tr><td>Failure handling</td><td>Hidden</td><td>Some cases</td><td>Boundary, retry, rollback, stop tested</td></tr>
+      <tr><td>Review</td><td>Maker approves itself</td><td>General review</td><td>Fresh ticket/diff/evidence review</td></tr>
+      <tr><td>Operations</td><td>No metrics/rollback</td><td>Partial</td><td>Observability, gate, rollback, risks</td></tr>
+    </tbody></table></div>
+    <div class="reality"><b>Target:</b> do not complete below 10/12, with no zero in evidence, verification, or failure handling. Human owners still accept product and production risk.</div>
+    <p><a class="button" href="test-set/software-engineering-practice-cases.csv">Download the six-case dataset →</a></p>
+  </section>
+</main>
+<footer><div class="wrap">Part of the <a href="professional-ai-engineering.html">Professional Claude Code + Codex guide</a> · Use a real repository · Preserve raw evidence</div></footer>
+<script>
+  (() => {
+    const root=document.documentElement,themeButton=document.getElementById("theme");let savedTheme=null;try{savedTheme=localStorage.getItem("software-cases-theme")}catch(_){}
+    const initialTheme=savedTheme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+    function setTheme(theme){root.dataset.theme=theme;const dark=theme==="dark";themeButton.textContent=dark?"☀ Light":"☾ Dark";themeButton.setAttribute("aria-label",dark?"Switch to light mode":"Switch to dark mode")}
+    setTheme(initialTheme);themeButton.addEventListener("click",()=>{const next=root.dataset.theme==="dark"?"light":"dark";try{localStorage.setItem("software-cases-theme",next)}catch(_){}setTheme(next)});
+    const toolSections=[...document.querySelectorAll("[data-tool-section]")];toolSections.forEach(section=>{const switcher=document.createElement("div");switcher.className="tool-switch";switcher.setAttribute("role","group");switcher.setAttribute("aria-label","Tool view for "+section.querySelector("h2").textContent);switcher.innerHTML='<b>View this case:</b><button class="tool-choice" type="button" data-tool-choice="both">Compare both</button><button class="tool-choice" type="button" data-tool-choice="claude">Claude Code</button><button class="tool-choice" type="button" data-tool-choice="codex">Codex</button>';section.querySelector(".situation").insertAdjacentElement("beforebegin",switcher)});
+    function setToolView(view){root.dataset.toolView=view;document.querySelectorAll("[data-tool-choice]").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.toolChoice===view)));try{localStorage.setItem("software-cases-tool-view",view)}catch(_){}}
+    let savedToolView="both";try{savedToolView=localStorage.getItem("software-cases-tool-view")||"both"}catch(_){}if(!["both","claude","codex"].includes(savedToolView))savedToolView="both";setToolView(savedToolView);document.querySelectorAll("[data-tool-choice]").forEach(button=>button.addEventListener("click",()=>setToolView(button.dataset.toolChoice)));
+    const filters=[...document.querySelectorAll("[data-filter]")],cases=[...document.querySelectorAll(".case[data-category]")],status=document.getElementById("filter-status");filters.forEach(button=>button.addEventListener("click",()=>{const selected=button.dataset.filter;filters.forEach(item=>item.setAttribute("aria-pressed",String(item===button)));let visible=0;cases.forEach(item=>{const show=selected==="all"||item.dataset.category===selected;item.hidden=!show;if(show)visible+=1});status.textContent=selected==="all"?"Showing all 6 cases.":"Showing "+visible+" "+selected+" case."}));
+    const copyStatus=document.getElementById("copy-status");document.querySelectorAll("[data-copy]").forEach(button=>button.addEventListener("click",async()=>{const text=document.getElementById(button.dataset.copy).innerText;copyStatus.textContent="Copying prompt…";try{await Promise.race([navigator.clipboard.writeText(text),new Promise((_,reject)=>setTimeout(()=>reject(new Error("Clipboard timeout")),1500))]);copyStatus.textContent="Prompt copied."}catch(_){copyStatus.textContent="Copy unavailable. Select the prompt manually."}}));
+  })();
+</script>
+</body>
+</html>
