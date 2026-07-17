@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "run_id": "ci-main-9f31-unit-timeout-20260717T020000Z",
+  "task_id": "github-check-18422",
+  "loop_name": "repair-failing-ci",
+  "loop_spec_sha256": "replace-with-spec-hash",
+  "status": "RETRYABLE",
+  "owner": "agent-loop-controller",
+  "lease_expires_at": "2026-07-17T02:20:00Z",
+  "source": {
+    "repository": "owner/repository",
+    "baseline_commit": "9f31replace",
+    "trigger": "github_check_failure",
+    "failure_signature": "integration:cancelDuringUpload:timeout"
+  },
+  "workspace": {
+    "kind": "disposable_worktree",
+    "branch": "agent/ci-main-9f31-unit-timeout",
+    "path_ref": "redacted-local-reference",
+    "candidate_commit": "candidate-sha-after-attempt"
+  },
+  "attempt": 1,
+  "current_hypothesis": "cancellation is not observed during retry delay",
+  "normalized_failure": "cancelDuringUpload exceeds 2s in 2 of 20 trials",
+  "acceptance": {
+    "target_regression": "FAIL",
+    "affected_suite": "NOT_RUN",
+    "static_checks": "PASS",
+    "independent_review": "NOT_RUN"
+  },
+  "evidence": [
+    {
+      "kind": "test_result",
+      "command": "npm test -- --runInBand tests/regression --repeat=20",
+      "tool_version": "replace-with-version",
+      "exit_code": 1,
+      "duration_seconds": 74,
+      "artifact": ".loop/artifacts/run-id/attempt-1-test.txt",
+      "sha256": "replace-with-artifact-hash",
+      "candidate_commit": "candidate-sha-after-attempt"
+    }
+  ],
+  "decision": {
+    "value": "RETRYABLE",
+    "reason": "specific failure reproduced and budget remains",
+    "next_experiment": "make retry wait cancellation-aware; repeat 20 trials"
+  },
+  "budget": {
+    "max_attempts": 4,
+    "attempts_used": 1,
+    "max_wall_minutes": 45,
+    "wall_minutes_used": 11,
+    "max_cost_usd": 12,
+    "estimated_cost_usd_used": 2.4
+  },
+  "timestamps": {
+    "created_at": "2026-07-17T02:00:00Z",
+    "updated_at": "2026-07-17T02:11:00Z"
+  }
+}
+

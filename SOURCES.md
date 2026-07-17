@@ -43,6 +43,10 @@ Verified 2026-07-17. Product documentation changes frequently; recheck before in
 - [Claude Code scheduled tasks and `/loop`](https://code.claude.com/docs/en/scheduled-tasks)
 - [Claude Code routines](https://code.claude.com/docs/en/routines)
 - [Anthropic-verified Ralph Loop plugin](https://claude.com/plugins/ralph-loop)
+- [OpenAI Symphony orchestration](https://openai.com/index/open-source-codex-orchestration-symphony/)
+- [OpenAI / Codex scheduled tasks](https://learn.chatgpt.com/docs/automations)
+- [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
+- [Anthropic: Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
 
 ## Loop Engineering — emerging terminology
 
@@ -67,3 +71,4 @@ harness, scheduling, sandboxing, and verification sources.
 - Search-engine snippets can lag or conflict with live documentation. The playbook uses the live official pages opened on the verification date.
 - Video advice is treated as demonstration material. Current commands and security behavior are verified against written official documentation.
 - Recent-source pass completed 2026-07-17, including current agent-loop, routines, scheduling, safety, and Loop Engineering material.
+- The Loop Engineering state model, verifier ladder, convergence rules, threat model, scorecard, and templates are an engineering synthesis of these sources, not a vendor-defined standard.

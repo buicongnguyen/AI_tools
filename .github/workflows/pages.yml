@@ -29,7 +29,13 @@ jobs:
             "loop-engineering.html",
             "README.md",
             "AI_AGENT_PLAYBOOK.md",
-            "SOURCES.md"
+            "SOURCES.md",
+            "templates/LOOP_SPEC.md",
+            "templates/loop-config.example.yml",
+            "templates/loop-state.example.json",
+            "templates/MAKER_PROMPT.md",
+            "templates/VERIFIER_PROMPT.md",
+            "test-set/loop-engineering-evals.csv"
           )
           foreach ($file in $required) {
             if (-not (Test-Path -LiteralPath $file)) {
@@ -44,7 +50,10 @@ jobs:
           if ($loopHtml -notmatch "(?i)<!doctype html>" -or $loopHtml -notmatch "(?i)</html>") {
             throw "loop-engineering.html failed the structure check"
           }
-          if ($loopHtml -notmatch "Loop Engineering" -or $loopHtml -notmatch "Budget calculator") {
+          if ($loopHtml -notmatch "Loop Engineering" -or
+              $loopHtml -notmatch "Budget calculator" -or
+              $loopHtml -notmatch "Convergence engineering" -or
+              $loopHtml -notmatch "Verifier architecture") {
             throw "loop-engineering.html is missing required content"
           }
 

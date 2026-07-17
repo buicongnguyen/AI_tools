@@ -55,6 +55,11 @@
     .layers { display:grid; grid-template-columns:repeat(4,minmax(180px,1fr)); gap:10px; overflow-x:auto; padding-bottom:8px; }
     .layer { min-width:180px; min-height:145px; padding:16px; border:1px solid var(--line); border-top:5px solid var(--accent2); border-radius:13px; background:var(--card); }
     .layer:last-child { border-top-color:var(--accent); }
+    .nested { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:20px 0; }
+    .ring { position:relative; min-height:210px; display:flex; flex-direction:column; justify-content:center; padding:22px; border:2px solid var(--line); border-radius:50%; text-align:center; background:var(--paper); }
+    .ring::before { content:attr(data-speed); position:absolute; top:8px; left:50%; transform:translateX(-50%); padding:3px 9px; border-radius:999px; color:var(--accent); background:var(--card); font-size:.75rem; font-weight:850; white-space:nowrap; }
+    .ring:nth-child(2) { border-color:var(--accent2); }
+    .ring:nth-child(3) { border-color:var(--accent); }
     .loop { display:flex; align-items:center; gap:8px; overflow-x:auto; padding:12px 2px 18px; }
     .node { flex:1 0 142px; min-width:142px; min-height:96px; display:grid; place-items:center; padding:12px; border:2px solid var(--line); border-radius:50%; text-align:center; background:var(--card); font-weight:800; }
     .node.verify { border-color:var(--good); }
@@ -67,6 +72,11 @@
     .step { display:grid; grid-template-columns:46px 1fr; gap:14px; margin:13px 0; padding:16px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
     .step-num { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--accent); font-weight:900; }
     .step h3 { margin:0; }
+    .state-flow { display:flex; align-items:center; gap:7px; overflow-x:auto; padding:12px 2px 18px; }
+    .state { flex:0 0 auto; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--paper); font-weight:800; white-space:nowrap; }
+    .state.terminal { border-color:var(--good); color:var(--good); }
+    .state.stop { border-color:var(--accent); color:var(--accent); }
+    .formula { margin:16px 0; padding:16px; border:1px dashed var(--accent2); border-radius:12px; background:var(--paper); font-family:ui-monospace,SFMono-Regular,Consolas,monospace; overflow-x:auto; }
     pre { overflow:auto; padding:17px; border-radius:12px; color:var(--code-ink); background:var(--code); }
     code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
     .code-note { color:var(--muted); font-size:.86rem; }
@@ -78,11 +88,30 @@
     .metric b { display:block; color:var(--accent); font-size:1.55rem; }
     .checklist { columns:2; column-gap:28px; padding-left:21px; }
     .checklist li { break-inside:avoid; margin:8px 0; }
+    .template-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:18px 0; }
+    .template-link { display:block; min-height:135px; padding:16px; border:1px solid var(--line); border-radius:13px; color:var(--ink); background:var(--paper); text-decoration:none; }
+    .template-link:hover { border-color:var(--accent2); transform:translateY(-1px); }
+    .template-link b { display:block; color:var(--accent2); margin-bottom:5px; }
+    details { margin:12px 0; border:1px solid var(--line); border-radius:12px; background:var(--paper); }
+    summary { padding:14px 16px; cursor:pointer; font-weight:820; }
+    details > div { padding:0 16px 16px; }
+    .timeline { display:grid; gap:10px; margin:18px 0; }
+    .phase { display:grid; grid-template-columns:92px 1fr; gap:14px; padding:14px; border-left:4px solid var(--accent2); border-radius:8px; background:var(--paper); }
+    .phase b:first-child { color:var(--accent2); }
+    .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; }
+    .kpi { padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--paper); }
+    .kpi b { display:block; color:var(--accent); font-size:1.02rem; }
+    .risk-high { color:#b42318; font-weight:800; }
+    [data-theme="dark"] .risk-high { color:#ff8b82; }
     footer { padding:26px 0 44px; color:var(--muted); border-top:1px solid var(--line); }
     @media(max-width:760px) {
       .wrap { width:min(100% - 28px,1120px); }
       .calculator,.result { grid-template-columns:1fr 1fr; }
+      .nested { grid-template-columns:1fr; }
+      .ring { min-height:auto; border-radius:18px; }
+      .ring::before { position:static; transform:none; align-self:center; margin-bottom:8px; }
       .checklist { columns:1; }
+      .phase { grid-template-columns:1fr; }
     }
     @media(max-width:480px) { .calculator,.result { grid-template-columns:1fr; } }
     @media print { nav,.theme,.actions,.calculator button { display:none; } body { background:#fff; color:#172033; } .card { box-shadow:none; } }
@@ -100,6 +129,7 @@
     <div class="actions">
       <a class="button primary" href="#build">Build your first loop</a>
       <a class="button ghost" href="#examples">See real engineering loops</a>
+      <a class="button ghost" href="#templates">Copy the templates</a>
       <a class="button ghost" href="index.html">← AI Engineering Launchpad</a>
     </div>
   </div>
@@ -108,10 +138,18 @@
 <nav aria-label="Page sections">
   <div class="wrap">
     <a href="#definition">Definition</a>
+    <a href="#system">System model</a>
     <a href="#anatomy">Anatomy</a>
     <a href="#build">How to build</a>
     <a href="#controller">Controller</a>
+    <a href="#convergence">Convergence</a>
+    <a href="#verification">Verification</a>
+    <a href="#operations">Claude + Codex</a>
+    <a href="#templates">Templates</a>
+    <a href="#case-study">Case study</a>
     <a href="#examples">Examples</a>
+    <a href="#security">Security</a>
+    <a href="#evaluation">Evaluation</a>
     <a href="#failures">Failure modes</a>
     <a href="#budget">Budget</a>
     <a href="#checklist">Checklist</a>
@@ -131,6 +169,52 @@
       <article class="layer"><h3>Harness engineering</h3><p>Optimizes one agent run.</p><b>Output:</b> tools, permissions, execution, and verification.</article>
       <article class="layer"><h3>Loop engineering</h3><p>Optimizes repeated agent work.</p><b>Output:</b> triggers, state, isolation, agents, gates, and stop rules.</article>
     </div>
+  </section>
+
+  <section class="card" id="system">
+    <span class="tag">Deep system model</span>
+    <h2>There are three loops, operating at different speeds</h2>
+    <p>An agent already has an internal reason–act–observe cycle. Loop Engineering adds an <b>external, inspectable control loop</b> around one or more agent runs. A third loop connects shipped results to real users and operating data. Keep their state, evidence, and stop rules separate.</p>
+    <div class="nested" aria-label="Three levels of engineering loops">
+      <article class="ring" data-speed="SECONDS → MINUTES"><h3>1. Agent action loop</h3><p>Read context → choose tool → act → observe. The harness manages this inside one session.</p><b>Stops:</b> response, tool limit, error, or agent judgment.</article>
+      <article class="ring" data-speed="MINUTES → HOURS"><h3>2. Engineering loop</h3><p>Shape task → make change → verify → retry or hand off. Your controller owns this.</p><b>Stops:</b> evidence, policy, risk, or budget.</article>
+      <article class="ring" data-speed="DAYS → WEEKS"><h3>3. Product learning loop</h3><p>Deploy → observe telemetry/users → evaluate impact → change backlog, tests, or harness.</p><b>Stops:</b> product decision or next experiment.</article>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Loop</th><th>Primary state</th><th>Truth source</th><th>Owner</th><th>Typical mistake</th></tr></thead>
+        <tbody>
+          <tr><td>Agent action</td><td>Conversation and tool results</td><td>Files, commands, tools</td><td>Agent harness</td><td>Assuming a fluent answer proves correctness</td></tr>
+          <tr><td>Engineering</td><td>Run record, branch, evidence, budget</td><td>Tests, measurements, policy, review</td><td>Loop controller</td><td>Letting the maker decide that it passed</td></tr>
+          <tr><td>Product learning</td><td>Release, experiment, incidents, feedback</td><td>Production telemetry and user outcomes</td><td>Engineering/product team</td><td>Optimizing tests while real outcomes regress</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Minimal mathematical model</h3>
+    <div class="formula">Sₜ = {goal, attempt, workspace, hypothesis, evidence, budget, policy}<br>
+Uₜ = Maker(goal, Sₜ) → candidate change<br>
+Eₜ₊₁ = Verify(candidate, immutable requirements, protected checks)<br>
+Dₜ₊₁ = Controller(Eₜ₊₁, progress, risk, remaining budget)<br>
+Sₜ₊₁ = Record(Sₜ, Uₜ, Eₜ₊₁, Dₜ₊₁)</div>
+    <p>The model matters because it locates responsibility. The maker proposes an action. The verifier produces evidence. The controller—not the maker—decides whether the run passes, retries, blocks, escalates, or exhausts its budget.</p>
+
+    <h3>Named state transitions</h3>
+    <div class="state-flow" aria-label="Loop state machine">
+      <span class="state">NEW</span><span class="arrow">→</span>
+      <span class="state">READY</span><span class="arrow">→</span>
+      <span class="state">RUNNING</span><span class="arrow">→</span>
+      <span class="state">VERIFYING</span><span class="arrow">→</span>
+      <span class="state terminal">PASSED</span>
+    </div>
+    <div class="state-flow" aria-label="Loop retry and stop branches">
+      <span class="state">VERIFYING</span><span class="arrow">→</span>
+      <span class="state">RETRYABLE</span><span class="arrow">↺</span>
+      <span class="state">READY</span>
+      <span class="arrow"> · </span><span class="state stop">BLOCKED</span>
+      <span class="state stop">ESCALATED</span><span class="state stop">BUDGET_EXHAUSTED</span>
+    </div>
+    <div class="callout"><b>Design rule:</b> every run must end in exactly one named terminal or handoff state. “Still trying,” “probably fixed,” and “looks good” are not states.</div>
   </section>
 
   <section class="card" id="anatomy">
@@ -239,6 +323,174 @@ decision:
     </div>
   </section>
 
+  <section class="card" id="convergence">
+    <span class="tag">Convergence engineering</span>
+    <h2>Make every retry earn the right to exist</h2>
+    <p>A bounded loop should move toward a measurable acceptance region. It should not merely generate more activity. Define an <b>acceptance vector</b> rather than one vague score, because an average can hide a critical regression.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Acceptance dimension</th><th>Example threshold</th><th>Invariant that cannot regress</th></tr></thead>
+        <tbody>
+          <tr><td>Functional correctness</td><td>Target regression and affected suite pass</td><td>No test deletion, skip, or weakened assertion</td></tr>
+          <tr><td>Scope</td><td>≤ 8 files; approved paths only</td><td>No unrelated refactor or generated-file churn</td></tr>
+          <tr><td>Performance</td><td>p95 ≤ 250 ms; memory ≤ 300 MB</td><td>Baseline error rate and throughput retained</td></tr>
+          <tr><td>Security</td><td>No new high-severity finding</td><td>No permission, secret, or network expansion</td></tr>
+          <tr><td>Hardware</td><td>3 repeated HIL trials within tolerance</td><td>Safety limits, timing margin, and thermal ceiling retained</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The retry contract</h3>
+    <div class="grid">
+      <article class="mini"><h3>1. Specific failure</h3><p>Retry only from a reproducible failure signature, a reviewer finding, or a measured gap—not a generic “improve it.”</p></article>
+      <article class="mini"><h3>2. Changed hypothesis</h3><p>The next attempt must state what it now believes and how that differs from the previous attempt.</p></article>
+      <article class="mini"><h3>3. Smallest experiment</h3><p>Prefer a diagnostic or narrow patch that can disprove the hypothesis before a large implementation.</p></article>
+      <article class="mini"><h3>4. Regression comparison</h3><p>Compare the new evidence with the last best candidate. Roll back changes that move any protected dimension backward.</p></article>
+      <article class="mini"><h3>5. Patience window</h3><p>Stop after the same normalized failure repeats, after no metric improves for N attempts, or when evidence is too noisy.</p></article>
+      <article class="mini"><h3>6. Capability diagnosis</h3><p>Escalate whether the missing piece is context, permission, tool, environment, verifier, requirement, or human judgment.</p></article>
+    </div>
+    <div class="formula">progressₜ = accepted_dimensionsₜ − regressionsₜ<br>
+retry only if: failure is reproducible AND hypothesis changed AND budget remains<br>
+stop if: pass OR unsafe OR blocked OR repeated_failure ≥ patience OR budget exhausted</div>
+    <div class="callout"><b>For noisy systems:</b> use repeated measurements, confidence bands, warm-up rules, and a required number of consecutive passes. One lucky benchmark or one intermittent hardware run is not convergence.</div>
+  </section>
+
+  <section class="card" id="verification">
+    <span class="tag">Verifier architecture</span>
+    <h2>Verification is a stack, not a single critic prompt</h2>
+    <p>No one layer catches every defect. Build from deterministic checks upward, and require the layers appropriate to the change’s risk. AI review is useful for semantic gaps, but it should not replace executable or physical evidence.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Level</th><th>Evidence</th><th>Good for</th><th>Weakness</th></tr></thead>
+        <tbody>
+          <tr><td>L0 · Maker report</td><td>Claim, diff summary, commands it says it ran</td><td>Navigation only</td><td>Not independent; never sufficient</td></tr>
+          <tr><td>L1 · Static</td><td>Format, lint, typecheck, compile, schema</td><td>Fast deterministic rejection</td><td>Does not prove behavior</td></tr>
+          <tr><td>L2 · Behavioral</td><td>Unit, integration, contract, UI flow, golden vectors</td><td>Requirements expressed as executable behavior</td><td>Only covers modeled cases</td></tr>
+          <tr><td>L3 · Nonfunctional</td><td>Security, accessibility, load, timing, power, thermal</td><td>Engineering constraints</td><td>Often noisy or environment-dependent</td></tr>
+          <tr><td>L4 · Independent review</td><td>Fresh-context agent reviews requirement, diff, and evidence</td><td>Missing cases, scope, maintainability, threat reasoning</td><td>Model-as-judge errors and correlated bias</td></tr>
+          <tr><td>L5 · Human/real-world gate</td><td>Owner judgment, lab signoff, canary, user/production evidence</td><td>Irreversible, subjective, legal, safety, and material risk</td><td>Slower and scarce</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Protect the verifier from the maker</h3>
+    <ul class="checklist">
+      <li>Mount acceptance tests and policy files read-only where practical.</li>
+      <li>Compare test/spec diffs and reject deleted, skipped, or weakened checks.</li>
+      <li>Give the reviewer immutable requirements, not only the maker summary.</li>
+      <li>Use a fresh context or separate agent for semantic review.</li>
+      <li>Run verification from a clean checkout at the candidate commit.</li>
+      <li>Capture exit code, stdout/stderr, version, duration, and artifact hash.</li>
+      <li>Mark flaky, skipped, unavailable, and inconclusive as distinct outcomes.</li>
+      <li>Make “verifier unavailable” fail closed for required gates.</li>
+    </ul>
+
+    <details>
+      <summary>Copy-ready independent verifier prompt</summary>
+      <div><pre><code>You are the independent verifier. Do not modify the candidate.
+
+Immutable goal:
+{{goal_and_acceptance_criteria}}
+
+Inputs:
+- baseline commit: {{baseline}}
+- candidate commit: {{candidate}}
+- changed files: {{diff_manifest}}
+- raw check artifacts: {{evidence_paths}}
+
+Evaluate correctness, regression risk, security, scope, and evidence quality.
+Do not trust the maker summary. Reproduce required checks from a clean checkout.
+Return exactly one decision: PASS, RETRYABLE, BLOCKED, or HUMAN_GATE.
+For every failure, cite the requirement, file/evidence, reproduction command,
+and the smallest useful next experiment. Never approve missing required evidence.</code></pre></div>
+    </details>
+  </section>
+
+  <section class="card" id="operations">
+    <span class="tag">Claude Code + Codex</span>
+    <h2>Choose the smallest automation surface that fits the lifetime</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Need</th><th>Claude Code</th><th>Codex</th><th>Recommended boundary</th></tr></thead>
+        <tbody>
+          <tr><td>One supervised engineering run</td><td>Interactive CLI session with <code>CLAUDE.md</code></td><td>CLI/app/IDE task with <code>AGENTS.md</code></td><td>Human approves commands and final change</td></tr>
+          <tr><td>Short polling loop</td><td><code>/loop 5m check the deploy…</code> while the session remains available</td><td>Schedule follow-up work in the current app task</td><td>Read-only observation; stop on completion/error</td></tr>
+          <tr><td>Reusable project loop</td><td><code>.claude/loop.md</code> for a bare <code>/loop</code></td><td>Repo instructions + task prompt/skill</td><td>Version the contract; keep controller state external</td></tr>
+          <tr><td>Durable scheduled work</td><td>Cloud Routine or Desktop scheduled task</td><td>Scheduled task in ChatGPT web/desktop</td><td>Isolated worktree; least privilege; review early runs</td></tr>
+          <tr><td>Event-driven CI</td><td>Claude Code GitHub Actions or a scoped controller</td><td><code>codex exec</code> / Codex GitHub Action or orchestrator</td><td>Draft PR only; protected merge/deploy gates</td></tr>
+          <tr><td>Task-board orchestration</td><td>Routine/API/GitHub triggers or custom service</td><td>Symphony-style task state machine</td><td>One workspace per task; ticket is durable state</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">Exact product surfaces and availability can change. Claude Code documents <code>/loop</code> as session-scoped and points to Routines/Desktop/GitHub for durable scheduling. Current Codex guidance places scheduled-task management in ChatGPT web/desktop, while the CLI is useful for preparing prompts and running noninteractive jobs.</p>
+
+    <h3>Safe adoption path</h3>
+    <div class="timeline">
+      <div class="phase"><b>LEVEL 0</b><div><b>Manual replay.</b> A human runs the maker prompt, checks evidence, and records the decision. Optimize clarity before autonomy.</div></div>
+      <div class="phase"><b>LEVEL 1</b><div><b>Agent makes; human verifies.</b> The agent may edit an isolated branch, but humans choose retry/pass.</div></div>
+      <div class="phase"><b>LEVEL 2</b><div><b>Automated verification.</b> Controller runs protected deterministic checks; only passing candidates reach review.</div></div>
+      <div class="phase"><b>LEVEL 3</b><div><b>Bounded retry.</b> Permit 2–4 attempts with changed hypotheses, fixed permissions, and full audit state.</div></div>
+      <div class="phase"><b>LEVEL 4</b><div><b>Event/scheduled discovery.</b> Add triggers after stop behavior is reliable; open draft changes, never silently deploy.</div></div>
+      <div class="phase"><b>LEVEL 5</b><div><b>Portfolio operation.</b> Track success, escapes, cost, rollback, scope drift, and disable poorly performing loop classes.</div></div>
+    </div>
+
+    <details>
+      <summary>Example: Claude Code session loop for deployment monitoring</summary>
+      <div><pre><code>/loop 5m Check deployment {{id}} using read-only commands.
+Stop the loop and report when it succeeds, fails, rolls back, requests approval,
+or exceeds 45 minutes. On each iteration record status, timestamp, new evidence,
+and whether the state changed. Do not edit code or restart production.</code></pre></div>
+    </details>
+    <details>
+      <summary>Example: Codex manual loop prompt before scheduling</summary>
+      <div><pre><code>Goal: keep draft PR {{number}} review-ready.
+On this run: inspect new CI failures and unresolved review feedback. If a failure
+is reproducible and within the existing scope, implement the smallest fix in the
+isolated worktree, run the declared checks, and report evidence. Stop and ask me
+if permissions, requirements, dependencies, or deployment state must change.
+Never merge, deploy, close review threads without evidence, or broaden scope.</code></pre></div>
+    </details>
+  </section>
+
+  <section class="card" id="templates">
+    <span class="tag">Repository kit</span>
+    <h2>Copy the loop contract into a real project</h2>
+    <p>The repository now includes a compact set of version-controlled artifacts. Start with the specification, then replace every placeholder with project facts. The example formats are intentionally provider-neutral.</p>
+    <div class="template-grid">
+      <a class="template-link" href="templates/LOOP_SPEC.md"><b>LOOP_SPEC.md</b>Goal, trigger, acceptance vector, permissions, verifiers, states, budget, evidence, and human gates.</a>
+      <a class="template-link" href="templates/loop-config.example.yml"><b>loop-config.example.yml</b>Illustrative controller configuration for one bounded CI-repair loop.</a>
+      <a class="template-link" href="templates/loop-state.example.json"><b>loop-state.example.json</b>Auditable persisted state with attempt history, evidence, budget, and decision.</a>
+      <a class="template-link" href="templates/MAKER_PROMPT.md"><b>MAKER_PROMPT.md</b>Change-producing agent contract that requires a hypothesis and bounded output.</a>
+      <a class="template-link" href="templates/VERIFIER_PROMPT.md"><b>VERIFIER_PROMPT.md</b>Independent reviewer contract with exact decisions and evidence rules.</a>
+      <a class="template-link" href="test-set/loop-engineering-evals.csv"><b>loop-engineering-evals.csv</b>Starter cases for success, regression, unsafe scope, flaky evidence, and hardware gates.</a>
+    </div>
+    <div class="callout"><b>Suggested layout:</b> <code>.loop/spec.md</code>, <code>.loop/config.yml</code>, <code>.loop/prompts/</code>, <code>.loop/state/</code>, and <code>.loop/artifacts/</code>. Commit the contract and prompts; keep per-run state/artifacts out of Git when they contain secrets, large logs, or sensitive data.</div>
+  </section>
+
+  <section class="card" id="case-study">
+    <span class="tag">Worked case study</span>
+    <h2>CI repair: what three disciplined attempts look like</h2>
+    <p><b>Signal:</b> Windows integration test <code>cancelDuringUpload</code> times out after a retry refactor. <b>Goal:</b> restore cancellation within 2 seconds without weakening the test, changing public API, or adding an unbounded retry. <b>Budget:</b> 3 attempts, 45 minutes, 8 files, draft PR only.</p>
+    <div class="timeline">
+      <div class="phase"><b>DISCOVER</b><div>Controller deduplicates the failed check by task + commit + failure signature, creates a worktree, records baseline SHA and raw job log, then marks the run <code>READY</code>.</div></div>
+      <div class="phase"><b>ATTEMPT 1</b><div>Maker reproduces locally and hypothesizes a missing cancellation check before retry sleep. Patch passes the target once but fails 2 of 20 stress runs. Verifier returns <code>RETRYABLE</code> with the two failing seeds.</div></div>
+      <div class="phase"><b>ATTEMPT 2</b><div>New hypothesis: cancellation is checked, but the sleep itself is not interruptible. Maker replaces sleep with a cancellation-aware wait. All behavioral checks pass; independent review rejects a broad catch block that hides unrelated failures.</div></div>
+      <div class="phase"><b>ATTEMPT 3</b><div>Maker narrows exception handling and adds the failing seed as a regression case. Target passes 20/20, affected suite and static checks pass, reviewer returns <code>PASS</code>.</div></div>
+      <div class="phase"><b>HANDOFF</b><div>Controller opens a draft PR containing diff, hypotheses, command versions, raw results, known limitations, elapsed budget, and rollback note. A human still owns merge.</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attempt</th><th>New information</th><th>Candidate change</th><th>Verifier evidence</th><th>Decision</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Cancellation correlates with retry wait</td><td>Pre-wait cancellation check</td><td>18/20 stress passes</td><td>Retry: still flaky</td></tr>
+          <tr><td>2</td><td>Wait must be interruptible</td><td>Cancellation-aware delay</td><td>Behavior passes; broad catch found</td><td>Retry: semantic risk</td></tr>
+          <tr><td>3</td><td>Exception scope is the remaining defect</td><td>Narrow catch + regression seed</td><td>All required layers pass</td><td>Draft PR</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>Why this converged:</b> every retry came from new evidence, changed one hypothesis, preserved protected tests, and had an independent decision. Re-running attempt 1 with a more forceful prompt would not have been engineering.</p>
+  </section>
+
   <section class="card" id="examples">
     <span class="tag">Practical patterns</span>
     <h2>Loops that produce useful engineering evidence</h2>
@@ -251,6 +503,75 @@ decision:
       <article class="mini"><h3>FPGA optimization loop</h3><p><b>Goal:</b> throughput under correctness/PPA limits.<br><b>Maker:</b> one architecture variant.<br><b>Verify:</b> golden vectors, assertions, timing, resources, board benchmark.</p></article>
     </div>
     <div class="callout"><b>Hardware rule:</b> keep simulation, implementation reports, and physical measurements as separate verifiers. A loop must not treat simulation success as electrical, timing, thermal, or field signoff.</div>
+  </section>
+
+  <section class="card" id="security">
+    <span class="tag">Threat model</span>
+    <h2>The loop amplifies both capability and mistakes</h2>
+    <p>Repeated autonomy increases exposure: the agent sees more untrusted inputs, calls more tools, and gets more chances to affect state. Model every external string—issue text, logs, web pages, test fixtures, dependency metadata, and review comments—as untrusted data, not instructions.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Threat</th><th>Failure path</th><th>Control</th><th>Mandatory stop</th></tr></thead>
+        <tbody>
+          <tr><td>Prompt injection</td><td>Issue/log/web text tells the agent to reveal secrets or ignore policy</td><td>Separate instructions from data; source labels; tool allowlists; no secret echo</td><td>Instruction conflicts with loop policy</td></tr>
+          <tr><td>Verifier sabotage</td><td>Maker skips, deletes, rewrites, or narrows tests</td><td>Protected paths; baseline diff; read-only checks; clean verifier checkout</td><td>Required verifier changed without approval</td></tr>
+          <tr><td>Secret exfiltration</td><td>Logs, patches, artifacts, or network calls expose credentials</td><td>Short-lived scoped secrets; redaction; egress allowlist; artifact scanning</td><td>Unexpected secret access or outbound destination</td></tr>
+          <tr><td>Supply-chain compromise</td><td>Loop installs arbitrary package/action/tool to make progress</td><td>Lockfiles, pinned actions/versions, approved registries, dependency review</td><td>New source or unsigned/unreviewed executable required</td></tr>
+          <tr><td>Privilege creep</td><td>Agent asks for more filesystem, connector, branch, or production access</td><td>Least privilege; separate credentials; fail closed; human approval</td><td>Any capability expansion</td></tr>
+          <tr><td>State/branch race</td><td>Concurrent runs overwrite state or work on the same branch</td><td>Idempotency key, lock/lease, atomic append log, one worktree per run</td><td>Ownership/lease cannot be proven</td></tr>
+          <tr><td>Artifact spoofing</td><td>Old or unrelated result is presented as current evidence</td><td>Commit SHA, command/version, timestamp, run ID, hashes, provenance</td><td>Evidence cannot be tied to candidate commit</td></tr>
+          <tr><td>Unsafe side effect</td><td>Passing tests trigger merge, deploy, device flash, or destructive action</td><td>Two-phase plan/apply, protected environments, human gate, rollback</td><td class="risk-high">Irreversible or material-risk action</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><b>Permission rule:</b> retry logic must never increase authority automatically. A loop that cannot progress inside its original capability envelope is <code>BLOCKED</code>, not entitled to broader access.</div>
+
+    <h3>Never run unattended when…</h3>
+    <ul class="checklist">
+      <li>The goal is subjective, contradictory, or not testable.</li>
+      <li>The bug cannot be reproduced and evidence is mostly speculation.</li>
+      <li>Production, safety equipment, customer data, or regulated decisions are in scope.</li>
+      <li>Success requires legal, ethical, architecture, or product judgment.</li>
+      <li>The environment is unstable enough that pass/fail cannot be trusted.</li>
+      <li>The agent can modify its own policy, verifier, controller, or credential scope.</li>
+      <li>Rollback has not been proven or the action is irreversible.</li>
+      <li>A one-off supervised task is cheaper and clearer than automation.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="evaluation">
+    <span class="tag">Test and rollout</span>
+    <h2>Evaluate the loop as a product, not a demo</h2>
+    <p>A successful showcase proves possibility. A production decision needs a frozen task set, a baseline, repeated runs, failure injection, and operational metrics. Preserve transcripts and artifacts, then read samples—aggregate scores alone hide reward hacking and brittle behavior.</p>
+    <div class="timeline">
+      <div class="phase"><b>1 · DATASET</b><div>Create 20–50 representative tasks across easy, normal, ambiguous, unsafe, flaky, and impossible cases. Freeze inputs and acceptance criteria before tuning.</div></div>
+      <div class="phase"><b>2 · BASELINE</b><div>Measure the current human workflow and a single supervised agent pass. Compare quality, time, intervention, and cost.</div></div>
+      <div class="phase"><b>3 · ADVERSARIAL</b><div>Inject prompt-injection text, missing secrets, broken setup, flaky tests, dependency conflicts, stale state, and a required destructive action. The correct result is often safe refusal/escalation.</div></div>
+      <div class="phase"><b>4 · SHADOW</b><div>Run against real signals without writing branches or external systems. Compare proposed decisions with what engineers actually did.</div></div>
+      <div class="phase"><b>5 · CANARY</b><div>Enable one low-risk repository and one loop class with draft-only output, low concurrency, and immediate disable control.</div></div>
+      <div class="phase"><b>6 · SCALE</b><div>Expand only if quality, escape rate, rollback, cost, and human attention improve. Retire loop classes that do not earn their operational burden.</div></div>
+    </div>
+
+    <h3>Minimum scorecard</h3>
+    <div class="kpis">
+      <div class="kpi"><b>Accepted-task rate</b>Accepted outputs ÷ attempted tasks, segmented by task class.</div>
+      <div class="kpi"><b>Verifier escape rate</b>Defects found after the loop declared pass ÷ passed runs.</div>
+      <div class="kpi"><b>Convergence attempts</b>Median and p95 maker attempts per accepted result.</div>
+      <div class="kpi"><b>Human intervention</b>Minutes and number of handoffs per accepted result.</div>
+      <div class="kpi"><b>Cost per accepted change</b>Model + tools + CI + reviewer cost, including failed runs.</div>
+      <div class="kpi"><b>Scope amplification</b>Changed files/lines versus the smallest reviewed solution.</div>
+      <div class="kpi"><b>Rollback / reopen rate</b>Accepted changes later reverted, hotfixed, or reopened.</div>
+      <div class="kpi"><b>Safe-stop accuracy</b>Unsafe/impossible cases correctly blocked or escalated.</div>
+      <div class="kpi"><b>Evidence completeness</b>Runs with required provenance, commands, results, and risks.</div>
+      <div class="kpi"><b>Flake sensitivity</b>Decision variance across repeated identical cases.</div>
+    </div>
+    <div class="formula">promotion gate example:<br>
+accepted_task_rate ≥ baseline + target_gain<br>
+AND verifier_escape_rate ≤ baseline<br>
+AND safe_stop_accuracy = 100% on critical cases<br>
+AND p95 cost/time within budget<br>
+AND no automatic high-risk side effects</div>
+    <p>The included <a href="test-set/loop-engineering-evals.csv">starter test set</a> is a schema and seed—not a benchmark. Replace it with your repository’s actual failures, reviewer findings, incidents, and “should stop” cases.</p>
   </section>
 
   <section class="card" id="failures">
@@ -319,15 +640,19 @@ decision:
     <h2>Current sources and terminology</h2>
     <div class="grid">
       <article class="mini"><h3>OpenAI: Harness Engineering</h3><p>Describes engineering environments, mechanical constraints, self-review, additional agent reviews, and iterative PR loops.</p><a href="https://openai.com/index/harness-engineering/">Read source →</a></article>
+      <article class="mini"><h3>OpenAI: Symphony orchestration</h3><p>Shows an issue tracker used as a task state machine, one isolated workspace per task, and a versioned <code>WORKFLOW.md</code> contract.</p><a href="https://openai.com/index/open-source-codex-orchestration-symphony/">Read source →</a></article>
       <article class="mini"><h3>OpenAI: Codex agent loop</h3><p>Explains the core agent loop and execution logic behind Codex surfaces.</p><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Read source →</a></article>
       <article class="mini"><h3>OpenAI: Safe boundaries</h3><p>Explains fast low-risk work inside technical boundaries and explicit handling of higher-risk actions.</p><a href="https://openai.com/index/running-codex-safely/">Read source →</a></article>
+      <article class="mini"><h3>OpenAI: Codex scheduled tasks</h3><p>Current guidance for recurring web/desktop tasks, isolated worktrees, permissions, durable prompts, testing, and early-run review.</p><a href="https://learn.chatgpt.com/docs/automations">Read source →</a></article>
       <article class="mini"><h3>Anthropic: Scheduled prompts</h3><p>Documents session-scoped <code>/loop</code>, scheduling behavior, expiry, and persistent alternatives.</p><a href="https://code.claude.com/docs/en/scheduled-tasks">Read source →</a></article>
-      <article class="mini"><h3>Anthropic: Routines</h3><p>Documents saved agent configurations triggered by schedules, APIs, or GitHub events, with scoped repositories and connectors.</p><a href="https://code.claude.com/docs/en/routines">Read source →</a></article>
+      <article class="mini"><h3>Anthropic: Routines</h3><p>Documents autonomous cloud sessions triggered by schedules, APIs, or GitHub events, with scoped repositories, environments, and connectors.</p><a href="https://code.claude.com/docs/en/web-scheduled-tasks">Read source →</a></article>
+      <article class="mini"><h3>Anthropic: Agent evals</h3><p>Recommends multidimensional evals, layered graders, transcript review, production monitoring, and representative tasks.</p><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Read source →</a></article>
+      <article class="mini"><h3>Anthropic: Effective agents</h3><p>Describes evaluator–optimizer workflows as useful when criteria are clear and iteration creates measurable improvement.</p><a href="https://www.anthropic.com/engineering/building-effective-agents">Read source →</a></article>
       <article class="mini"><h3>Anthropic-verified Ralph Loop</h3><p>Demonstrates repeated self-referential agent work while preserving file and Git state; suitable only with clear success criteria.</p><a href="https://claude.com/plugins/ralph-loop">Read source →</a></article>
       <article class="mini"><h3>Emerging definition</h3><p>A recent practitioner guide distinguishes prompt, context, harness, and repeated-loop engineering.</p><a href="https://loopengineering.run/blog/what-is-loop-engineering">Read source →</a></article>
       <article class="mini"><h3>Research perspective</h3><p>A July 2026 paper frames loop engineering as distinct from prompt engineering and emphasizes verification and stop conditions.</p><a href="https://arxiv.org/abs/2607.00038">Read source →</a></article>
     </div>
-    <p class="small">Research completed 2026-07-17. Product features and emerging terminology can change; verify commands and availability against current official documentation before implementation.</p>
+    <p class="small">Research completed 2026-07-17. The system model, state schema, verifier ladder, convergence rules, threat model, and scorecard are this guide’s engineering synthesis of the cited sources—not a vendor standard. Product features and emerging terminology can change; verify commands and availability against current official documentation before implementation.</p>
   </section>
 </main>
 

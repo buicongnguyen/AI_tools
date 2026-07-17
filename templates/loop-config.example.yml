@@ -1,0 +1,87 @@
+# Illustrative provider-neutral controller configuration.
+# This is a design example, not a native Claude Code or Codex file format.
+schema_version: 1
+name: repair-failing-ci
+spec: .loop/spec.md
+
+trigger:
+  type: github_check_failure
+  filters:
+    branch: main
+    check_names: [unit, integration, typecheck]
+  idempotency_key: "{repository}:{commit}:{check}:{failure_signature}"
+  max_active_per_key: 1
+
+workspace:
+  isolation: disposable_worktree
+  base_ref: "{trigger.commit}"
+  setup: npm ci
+  allowed_write_paths: [src, tests]
+  protected_paths: [.github, .loop, package-lock.json, tests/acceptance]
+  network_allowlist: [registry.npmjs.org, api.github.com]
+  external_writes: [draft_pull_request]
+
+maker:
+  prompt: .loop/prompts/maker.md
+  output: minimal_patch_with_regression_test
+  max_changed_files: 8
+  forbidden:
+    - weaken_or_skip_tests
+    - change_public_api
+    - major_dependency_upgrade
+    - merge_or_deploy
+
+verifiers:
+  - name: protected_diff
+    type: policy
+    command: pwsh .loop/scripts/check-protected-diff.ps1
+    required: true
+  - name: target_regression
+    type: command
+    command: npm test -- --runInBand tests/regression
+    timeout_minutes: 10
+    required: true
+  - name: affected_suite
+    type: command
+    command: npm test -- --runInBand
+    timeout_minutes: 20
+    required: true
+  - name: static_checks
+    type: command
+    command: npm run typecheck && npm run lint
+    timeout_minutes: 10
+    required: true
+  - name: independent_review
+    type: fresh_agent
+    prompt: .loop/prompts/verifier.md
+    required: true
+
+retry:
+  require_reproducible_failure: true
+  require_changed_hypothesis: true
+  same_failure_patience: 2
+  no_progress_patience: 2
+  rollback_regressing_candidate: true
+
+budget:
+  max_attempts: 4
+  max_wall_minutes: 45
+  max_cost_usd: 12
+  max_workers: 1
+
+decisions:
+  pass: open_draft_pull_request
+  retryable: record_and_prepare_next_attempt
+  blocked: stop_and_request_input
+  human_gate: stop_and_request_approval
+  unsafe: stop_and_alert_owner
+  budget_exhausted: stop_with_partial_evidence
+
+evidence:
+  state_path: .loop/state/{run_id}.json
+  artifact_path: .loop/artifacts/{run_id}/
+  require_commit_sha: true
+  require_command_versions: true
+  require_artifact_hashes: true
+  redact_secrets: true
+

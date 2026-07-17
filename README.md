@@ -38,7 +38,7 @@ flowchart LR
 - `AI_AGENT_PLAYBOOK.md` — full reference.
 - `PROMPT_LIBRARY.md` — copy-ready engineering prompts and prompt-writing system.
 - `AI_HARNESS_GUIDE.md` — how agent harnesses work and how to engineer them efficiently.
-- `loop-engineering.html` — visual guide to safe, verified, budget-aware AI agent loops.
+- `loop-engineering.html` — deep visual implementation playbook for safe, convergent, evaluated AI agent loops.
 - `index.html` — visual, printable dashboard with diagrams.
 - `CONTENT_REVIEW.md` — content audit, problems found, and improvement roadmap.
 - `templates/PROJECT_CONTEXT.md` — shared project specification.
@@ -49,7 +49,13 @@ flowchart LR
 - `templates/DEBUG_RUNBOOK.md` — reproducible debugging workflow.
 - `templates/ENGINEERING_IDEA_BRIEF.md` — shared software/hardware idea specification.
 - `templates/HARDWARE_VALIDATION.md` — hardware, firmware, FPGA, and lab validation plan.
+- `templates/LOOP_SPEC.md` — provider-neutral loop contract: goal, state, verifiers, permissions, budgets, and gates.
+- `templates/loop-config.example.yml` — illustrative CI-repair controller configuration.
+- `templates/loop-state.example.json` — auditable persisted run-state example.
+- `templates/MAKER_PROMPT.md` — bounded change-producing agent contract.
+- `templates/VERIFIER_PROMPT.md` — fresh-context independent verifier contract.
 - `test-set/agent-evals.csv` — starter evaluation dataset.
+- `test-set/loop-engineering-evals.csv` — success, unsafe, flaky, blocked, and hardware loop cases.
 - `scripts/check-environment.ps1` — read-only local tool/version checks.
 - `SOURCES.md` — official sources and verification date.
 
