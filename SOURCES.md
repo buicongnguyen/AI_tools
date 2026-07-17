@@ -1,6 +1,6 @@
 # Official Sources
 
-Verified 2026-07-17. Product documentation changes frequently; recheck before installation, model selection, automation, or deployment.
+Verified 2026-07-18. Product documentation changes frequently; recheck before installation, model selection, automation, or deployment.
 
 ## Anthropic / Claude Code
 
@@ -18,6 +18,8 @@ Verified 2026-07-17. Product documentation changes frequently; recheck before in
 - [Claude Code routines](https://code.claude.com/docs/en/routines)
 - [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library)
 - [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works)
+- [Claude Code worktrees](https://code.claude.com/docs/en/worktrees)
+- [Claude Code subagents](https://code.claude.com/docs/en/sub-agents)
 
 ## OpenAI / Codex / ChatGPT / GPT-5.6
 
@@ -35,6 +37,12 @@ Verified 2026-07-17. Product documentation changes frequently; recheck before in
 - [Codex for knowledge work](https://openai.com/index/codex-for-knowledge-work/)
 - [How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)
 - [OpenAI prompting guide](https://learn.chatgpt.com/docs/prompting)
+- [Codex prompting guide](https://developers.openai.com/codex/prompting/)
+- [Codex best practices](https://learn.chatgpt.com/guides/best-practices)
+- [Codex code review](https://learn.chatgpt.com/docs/code-review?surface=app)
+- [Codex skills](https://developers.openai.com/codex/skills/)
+- [Codex hooks](https://developers.openai.com/codex/hooks/)
+- [Codex MCP](https://developers.openai.com/codex/mcp/)
 - [Unlocking the Codex harness](https://openai.com/index/unlocking-the-codex-harness/)
 - [Harness engineering with Codex](https://openai.com/index/harness-engineering/)
 - [Claude Code sandboxing](https://www.anthropic.com/engineering/claude-code-sandboxing)
@@ -70,5 +78,5 @@ harness, scheduling, sandboxing, and verification sources.
 - Anthropic's current Windows setup includes WinGet and npm installation. The current npm package documentation states Node.js 22+.
 - Search-engine snippets can lag or conflict with live documentation. The playbook uses the live official pages opened on the verification date.
 - Video advice is treated as demonstration material. Current commands and security behavior are verified against written official documentation.
-- Recent-source pass completed 2026-07-17, including current agent-loop, routines, scheduling, safety, and Loop Engineering material.
+- Recent-source pass completed 2026-07-18, including current Claude Code/Codex professional workflows, agent-loop, routines, scheduling, safety, and Loop Engineering material.
 - The Loop Engineering state model, verifier ladder, convergence rules, threat model, scorecard, and templates are an engineering synthesis of these sources, not a vendor-defined standard.

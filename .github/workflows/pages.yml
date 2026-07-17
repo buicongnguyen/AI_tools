@@ -27,15 +27,19 @@ jobs:
           $required = @(
             "index.html",
             "loop-engineering.html",
+            "professional-ai-engineering.html",
             "README.md",
             "AI_AGENT_PLAYBOOK.md",
+            "PROFESSIONAL_PRACTICE_GUIDE.md",
             "SOURCES.md",
+            "templates/PROFESSIONAL_TASK_BRIEF.md",
             "templates/LOOP_SPEC.md",
             "templates/loop-config.example.yml",
             "templates/loop-state.example.json",
             "templates/MAKER_PROMPT.md",
             "templates/VERIFIER_PROMPT.md",
-            "test-set/loop-engineering-evals.csv"
+            "test-set/loop-engineering-evals.csv",
+            "test-set/professional-practice-scorecard.csv"
           )
           foreach ($file in $required) {
             if (-not (Test-Path -LiteralPath $file)) {
@@ -55,6 +59,16 @@ jobs:
               $loopHtml -notmatch "Convergence engineering" -or
               $loopHtml -notmatch "Verifier architecture") {
             throw "loop-engineering.html is missing required content"
+          }
+          $professionalHtml = Get-Content -Raw -LiteralPath "professional-ai-engineering.html"
+          if ($professionalHtml -notmatch "(?i)<!doctype html>" -or $professionalHtml -notmatch "(?i)</html>") {
+            throw "professional-ai-engineering.html failed the structure check"
+          }
+          if ($professionalHtml -notmatch "Professional Software Engineering with Claude Code \+ Codex" -or
+              $professionalHtml -notmatch "Six-week curriculum" -or
+              $professionalHtml -notmatch "Your professional practice checklist" -or
+              $professionalHtml -notmatch "data-tool-choice") {
+            throw "professional-ai-engineering.html is missing required content"
           }
 
   deploy:

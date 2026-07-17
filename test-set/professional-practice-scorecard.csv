@@ -1,0 +1,13 @@
+task_id,practice_goal,date,task_type,risk_level,tool,task_mode,verified_result_minutes,human_corrections,first_pass_verified,evidence_complete,scope_drift,escaped_defect,safe_stop_correct,cost_usd,learning_encoded,notes
+P-01,"Frame and verify a small local fix",,small_fix,low,,,,,,,,,,,,
+P-02,"Debug from a reproduction and ranked hypotheses",,unknown_bug,medium,,,,,,,,,,,,
+P-03,"Implement a feature from an acceptance vector",,feature,medium,,,,,,,,,,,,
+P-04,"Recover cleanly after a fresh context or handoff",,context_engineering,low,,,,,,,,,,,,
+P-05,"Improve AGENTS.md or CLAUDE.md and validate discovery",,repository_instructions,medium,,,,,,,,,,,,
+P-06,"Separate implementation from independent review",,writer_reviewer,medium,,,,,,,,,,,,
+P-07,"Complete independent work in an isolated worktree",,parallel_isolation,medium,,,,,,,,,,,,
+P-08,"Add one deterministic hook with a safe failure mode",,hook,medium,,,,,,,,,,,,
+P-09,"Package a repeated procedure as a reusable skill",,skill,medium,,,,,,,,,,,,
+P-10,"Build and run a representative evaluation set",,evaluation,medium,,,,,,,,,,,,
+P-11,"Run a bounded automated loop with observability",,automation,high,,,,,,,,,,,,
+P-12,"Trigger and correctly honor a human safety gate",,safe_stop,high,,,,,,,,,,,,
