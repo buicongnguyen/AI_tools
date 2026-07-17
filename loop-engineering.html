@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practical, evidence-based guide to Loop Engineering with AI coding agents: feedback loops, independent verification, state, budgets, stop conditions, and human gates.">
+  <title>Loop Engineering for AI Agents</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink:#172033; --muted:#5e6879; --paper:#f7f5f1; --card:#fff;
+      --line:#ddd8cf; --accent:#d85d1a; --accent2:#244f9e; --good:#087f5b;
+      --warn:#9b5b00; --soft:#fff1e7; --code:#111827; --code-ink:#e5e7eb;
+      --hero-a:#29180f; --hero-b:#843712; --shadow:0 10px 28px rgba(48,32,22,.08);
+    }
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --ink:#edf0f7; --muted:#aeb8c9; --paper:#0c111c; --card:#151d2b;
+      --line:#303a4c; --accent:#ff985e; --accent2:#8aafff; --good:#63d4ad;
+      --warn:#ffc66d; --soft:#352113; --code:#070b12; --code-ink:#edf0f7;
+      --hero-a:#07090f; --hero-b:#54240e; --shadow:none;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    a { color:var(--accent2); }
+    header { color:#fff; background:radial-gradient(circle at 82% 12%,rgba(255,166,92,.32),transparent 28%),linear-gradient(135deg,var(--hero-a),var(--hero-b)); padding:24px 22px 64px; }
+    .wrap { width:min(1120px,calc(100% - 40px)); margin:auto; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .eyebrow,.tag { display:inline-flex; align-items:center; border-radius:999px; padding:5px 10px; font-size:.78rem; font-weight:800; letter-spacing:.03em; }
+    .eyebrow { color:#ffe5d3; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.24); }
+    .tag { color:var(--accent); background:color-mix(in srgb,var(--accent) 11%,var(--card)); }
+    .theme { border:1px solid rgba(255,255,255,.35); border-radius:999px; padding:8px 12px; color:#fff; background:rgba(255,255,255,.08); font:inherit; font-weight:750; cursor:pointer; }
+    h1 { max-width:860px; margin:42px 0 16px; font-size:clamp(2.7rem,7vw,5.8rem); line-height:.95; letter-spacing:-.055em; }
+    .lede { max-width:790px; color:#f4e8e1; font-size:clamp(1.05rem,2vw,1.28rem); }
+    .actions { display:flex; flex-wrap:wrap; gap:11px; margin-top:28px; }
+    .button { display:inline-flex; min-height:44px; align-items:center; justify-content:center; padding:10px 15px; border:1px solid var(--line); border-radius:10px; color:var(--ink); background:var(--card); font-weight:780; text-decoration:none; cursor:pointer; }
+    .button.primary { color:#3b1907; background:#ffd7bd; border-color:#ffd7bd; }
+    .button.ghost { color:#fff; background:transparent; border-color:rgba(255,255,255,.38); }
+    nav { position:sticky; top:0; z-index:10; border-bottom:1px solid var(--line); background:color-mix(in srgb,var(--paper) 92%,transparent); backdrop-filter:blur(12px); }
+    nav .wrap { display:flex; gap:5px; overflow-x:auto; padding-top:9px; padding-bottom:9px; }
+    nav a { flex:0 0 auto; padding:7px 10px; border-radius:8px; color:var(--muted); font-size:.88rem; font-weight:750; text-decoration:none; }
+    nav a:hover { color:var(--ink); background:var(--card); }
+    main { padding:34px 0 74px; }
+    section { scroll-margin-top:72px; margin:22px 0; }
+    .card { padding:clamp(20px,3vw,30px); border:1px solid var(--line); border-radius:18px; background:var(--card); box-shadow:var(--shadow); }
+    h2 { margin:6px 0 10px; font-size:clamp(1.65rem,3vw,2.25rem); line-height:1.15; letter-spacing:-.025em; }
+    h3 { margin-bottom:6px; }
+    p { margin-top:7px; }
+    .small { color:var(--muted); font-size:.9rem; }
+    .callout { margin:18px 0; padding:15px 17px; border-left:4px solid var(--accent); border-radius:8px; background:var(--soft); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(235px,1fr)); gap:15px; margin:18px 0; }
+    .mini { padding:17px; border:1px solid var(--line); border-radius:13px; background:var(--paper); }
+    .mini h3 { margin-top:0; }
+    .layers { display:grid; grid-template-columns:repeat(4,minmax(180px,1fr)); gap:10px; overflow-x:auto; padding-bottom:8px; }
+    .layer { min-width:180px; min-height:145px; padding:16px; border:1px solid var(--line); border-top:5px solid var(--accent2); border-radius:13px; background:var(--card); }
+    .layer:last-child { border-top-color:var(--accent); }
+    .loop { display:flex; align-items:center; gap:8px; overflow-x:auto; padding:12px 2px 18px; }
+    .node { flex:1 0 142px; min-width:142px; min-height:96px; display:grid; place-items:center; padding:12px; border:2px solid var(--line); border-radius:50%; text-align:center; background:var(--card); font-weight:800; }
+    .node.verify { border-color:var(--good); }
+    .node.gate { border-color:var(--accent); }
+    .arrow { flex:0 0 auto; color:var(--accent); font-size:1.5rem; font-weight:900; }
+    table { width:100%; border-collapse:collapse; background:var(--card); }
+    th,td { padding:11px 12px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:var(--paper); }
+    .table-wrap { overflow-x:auto; }
+    .step { display:grid; grid-template-columns:46px 1fr; gap:14px; margin:13px 0; padding:16px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
+    .step-num { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--accent); font-weight:900; }
+    .step h3 { margin:0; }
+    pre { overflow:auto; padding:17px; border-radius:12px; color:var(--code-ink); background:var(--code); }
+    code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    .code-note { color:var(--muted); font-size:.86rem; }
+    .calculator { display:grid; grid-template-columns:repeat(4,minmax(135px,1fr)); gap:12px; margin:18px 0; }
+    label { display:grid; gap:5px; color:var(--muted); font-size:.9rem; font-weight:700; }
+    input { width:100%; padding:10px 11px; border:1px solid var(--line); border-radius:9px; color:var(--ink); background:var(--paper); font:inherit; }
+    .result { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+    .metric { padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--paper); }
+    .metric b { display:block; color:var(--accent); font-size:1.55rem; }
+    .checklist { columns:2; column-gap:28px; padding-left:21px; }
+    .checklist li { break-inside:avoid; margin:8px 0; }
+    footer { padding:26px 0 44px; color:var(--muted); border-top:1px solid var(--line); }
+    @media(max-width:760px) {
+      .wrap { width:min(100% - 28px,1120px); }
+      .calculator,.result { grid-template-columns:1fr 1fr; }
+      .checklist { columns:1; }
+    }
+    @media(max-width:480px) { .calculator,.result { grid-template-columns:1fr; } }
+    @media print { nav,.theme,.actions,.calculator button { display:none; } body { background:#fff; color:#172033; } .card { box-shadow:none; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <span class="eyebrow">RESEARCHED 2026-07-17 · EMERGING PRACTICE</span>
+      <button class="theme" id="theme" type="button" aria-label="Switch to dark mode">☾ Dark</button>
+    </div>
+    <h1>Loop Engineering</h1>
+    <p class="lede">Design the system that keeps an AI agent moving: discover work, package context, execute in isolation, verify independently, record state, and stop safely.</p>
+    <div class="actions">
+      <a class="button primary" href="#build">Build your first loop</a>
+      <a class="button ghost" href="#examples">See real engineering loops</a>
+      <a class="button ghost" href="index.html">← AI Engineering Launchpad</a>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="Page sections">
+  <div class="wrap">
+    <a href="#definition">Definition</a>
+    <a href="#anatomy">Anatomy</a>
+    <a href="#build">How to build</a>
+    <a href="#controller">Controller</a>
+    <a href="#examples">Examples</a>
+    <a href="#failures">Failure modes</a>
+    <a href="#budget">Budget</a>
+    <a href="#checklist">Checklist</a>
+    <a href="#sources">Sources</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="card" id="definition">
+    <span class="tag">What it means</span>
+    <h2>A prompt asks once. A loop keeps returning to the work.</h2>
+    <p><b>Loop Engineering</b> is the practice of designing repeatable, bounded feedback cycles around AI agents. The loop finds or receives work, gives an agent the right state and tools, checks the result with real evidence, saves what happened, and decides whether to iterate, stop, or request human judgment.</p>
+    <div class="callout"><b>Important:</b> “Loop Engineering” is an emerging mid-2026 practitioner term, not a finalized industry standard. The underlying ideas—agent loops, feedback, evaluators, state, budgets, isolation, and human gates—are established and appear in current OpenAI and Anthropic engineering guidance.</div>
+    <div class="layers" aria-label="Prompt, context, harness, and loop engineering comparison">
+      <article class="layer"><h3>Prompt engineering</h3><p>Optimizes one instruction.</p><b>Output:</b> a better request.</article>
+      <article class="layer"><h3>Context engineering</h3><p>Optimizes what one model run can see.</p><b>Output:</b> relevant files, facts, and constraints.</article>
+      <article class="layer"><h3>Harness engineering</h3><p>Optimizes one agent run.</p><b>Output:</b> tools, permissions, execution, and verification.</article>
+      <article class="layer"><h3>Loop engineering</h3><p>Optimizes repeated agent work.</p><b>Output:</b> triggers, state, isolation, agents, gates, and stop rules.</article>
+    </div>
+  </section>
+
+  <section class="card" id="anatomy">
+    <span class="tag">Core cycle</span>
+    <h2>The loop must observe reality—not only its own text</h2>
+    <div class="loop" aria-label="Loop engineering cycle">
+      <div class="node">Trigger or discover</div><div class="arrow">→</div>
+      <div class="node">Shape task + context</div><div class="arrow">→</div>
+      <div class="node">Act in isolation</div><div class="arrow">→</div>
+      <div class="node verify">Verify with evidence</div><div class="arrow">→</div>
+      <div class="node gate">Stop, escalate, or iterate</div><div class="arrow">↺</div>
+    </div>
+    <div class="grid">
+      <article class="mini"><h3>1. Trigger</h3><p>Schedule, issue, alert, failed check, deployment event, measurement, or human request.</p></article>
+      <article class="mini"><h3>2. State</h3><p>Goal, current attempt, completed work, evidence, failures, decisions, and remaining budget.</p></article>
+      <article class="mini"><h3>3. Workspace</h3><p>Disposable branch/worktree or sandbox with scoped network, secrets, and tools.</p></article>
+      <article class="mini"><h3>4. Maker</h3><p>The agent that investigates and produces the next bounded change or experiment.</p></article>
+      <article class="mini"><h3>5. Verifier</h3><p>Independent tests, measurements, policies, and preferably a fresh reviewer context.</p></article>
+      <article class="mini"><h3>6. Controller</h3><p>Applies stop conditions, retry policy, budgets, human gates, and state transitions.</p></article>
+    </div>
+  </section>
+
+  <section class="card" id="build">
+    <span class="tag">Implementation guide</span>
+    <h2>Build the smallest safe loop first</h2>
+    <div class="step"><div class="step-num">0</div><div><h3>Prove the workflow manually</h3><p>Run one task with a human steering the agent. Record the prompt, context, commands, evidence, judgment, and recovery. Do not automate a workflow you cannot yet review.</p></div></div>
+    <div class="step"><div class="step-num">1</div><div><h3>Define the goal and terminal states</h3><p>Write machine-checkable success where possible. Define <code>passed</code>, <code>retryable failure</code>, <code>blocked</code>, <code>budget exhausted</code>, and <code>human approval required</code>.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div><h3>Externalize loop state</h3><p>Store state outside conversation history: task ID, branch, attempt number, evidence, last failure, decisions, and next action. Use a JSON/Markdown artifact, database record, issue, or workflow state.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div><h3>Isolate every attempt</h3><p>Use a clean branch, worktree, container, or cloud environment. Pin setup and dependency versions. Never let parallel makers silently edit the same checkout.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div><h3>Write a bounded maker contract</h3><p>Give the maker one outcome, relevant state, allowed tools, constraints, evidence requirements, and maximum scope. Ask it to return a patch or experiment—not a declaration of success.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div><h3>Build independent verification</h3><p>Prefer deterministic tests and real measurements. Separate generator and evaluator roles. The verifier receives requirements, the candidate change, and evidence—not the maker’s persuasive narrative.</p></div></div>
+    <div class="step"><div class="step-num">6</div><div><h3>Add budgets and recovery</h3><p>Limit attempts, wall time, tokens/cost, changed files, commands, and concurrency. Save partial evidence, clean abandoned workspaces, and escalate repeated or unsafe failures.</p></div></div>
+    <div class="step"><div class="step-num">7</div><div><h3>Introduce triggers last</h3><p>Start on demand. Then add GitHub events, alerts, schedules, or APIs only after the loop reliably stops, reports, and preserves review boundaries.</p></div></div>
+  </section>
+
+  <section class="card" id="controller">
+    <span class="tag">Reference design</span>
+    <h2>A loop is a state machine, not an infinite prompt</h2>
+    <p class="code-note">The following <code>loop.yml</code> is an illustrative design schema—not a standard file format for Claude Code or Codex.</p>
+    <pre><code>name: repair-failing-ci
+trigger:
+  event: github.check_failed
+
+workspace:
+  isolation: disposable-worktree
+  network: allowlisted
+  secrets: read-only-ci-token
+
+state:
+  store: .loop/runs/{run_id}.json
+  fields: [task, attempt, branch, evidence, last_failure, decision]
+
+maker:
+  goal: "Produce the smallest root-cause fix and regression test"
+  constraints:
+    max_changed_files: 8
+    forbidden: [production_deploy, secret_output, dependency_major_upgrade]
+
+verifiers:
+  - command: npm test -- --runInBand
+  - command: npm run typecheck
+  - command: npm run lint
+  - agent_review: correctness-security-scope
+
+budget:
+  max_attempts: 4
+  max_minutes: 45
+  max_cost_usd: 12
+
+decision:
+  pass: open_draft_pr
+  retryable: feed_failure_to_next_attempt
+  repeated_failure: escalate_with_evidence
+  risky_change: require_human_approval
+  budget_exhausted: stop_and_report</code></pre>
+
+    <h3>Controller pseudocode</h3>
+    <pre><code>while budget.remaining() and not state.terminal:
+    signal = discover_or_resume(state)
+    task = shape_task(signal, state, policy)
+    candidate = maker.run(task, isolated_workspace())
+    evidence = deterministic_checks(candidate)
+    review = independent_verifier(candidate, evidence, requirements)
+    decision = controller.decide(evidence, review, policy)
+    state.record(candidate, evidence, review, decision)
+
+    if decision == PASS:
+        open_draft_change_for_human_review()
+        break
+    if decision in [BLOCKED, UNSAFE, BUDGET_EXHAUSTED]:
+        escalate_with_evidence()
+        break
+    prepare_next_attempt_from_specific_failures()</code></pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Verifier result</th><th>Controller action</th><th>What must be recorded</th></tr></thead>
+        <tbody>
+          <tr><td>All required checks pass</td><td>Stop; create reviewable artifact</td><td>Patch, commands, results, assumptions, risks</td></tr>
+          <tr><td>Specific retryable failure</td><td>Retry with that failure as bounded feedback</td><td>Failure signature and changed hypothesis</td></tr>
+          <tr><td>Same failure repeats</td><td>Stop and escalate</td><td>Attempts, evidence, missing capability</td></tr>
+          <tr><td>Risky/destructive action needed</td><td>Request human approval</td><td>Why, blast radius, recovery plan</td></tr>
+          <tr><td>Budget reached</td><td>Stop without pretending completion</td><td>Spend, partial progress, best next step</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="examples">
+    <span class="tag">Practical patterns</span>
+    <h2>Loops that produce useful engineering evidence</h2>
+    <div class="grid">
+      <article class="mini"><h3>CI repair loop</h3><p><b>Trigger:</b> failed check.<br><b>Maker:</b> reproduce and patch.<br><b>Verify:</b> regression + affected suite.<br><b>Stop:</b> draft PR or repeated failure.</p></article>
+      <article class="mini"><h3>Dependency update loop</h3><p><b>Trigger:</b> scheduled scan.<br><b>Maker:</b> one bounded update.<br><b>Verify:</b> build, tests, API diff, security.<br><b>Stop:</b> PR; major/breaking change escalates.</p></article>
+      <article class="mini"><h3>UI parity loop</h3><p><b>Trigger:</b> approved design.<br><b>Maker:</b> implement one screen state.<br><b>Verify:</b> screenshots, DOM, accessibility, flows.<br><b>Stop:</b> thresholds met and designer review.</p></article>
+      <article class="mini"><h3>Deploy verification loop</h3><p><b>Trigger:</b> preview/pilot deployment.<br><b>Observe:</b> smoke flows, errors, latency, health.<br><b>Decide:</b> go, rollback, or human incident gate.</p></article>
+      <article class="mini"><h3>Firmware fault loop</h3><p><b>Trigger:</b> reproducible timeout trace.<br><b>Maker:</b> one recovery hypothesis.<br><b>Verify:</b> HIL fault injection, timing, power, recovery.<br><b>Stop:</b> repeated target evidence.</p></article>
+      <article class="mini"><h3>FPGA optimization loop</h3><p><b>Goal:</b> throughput under correctness/PPA limits.<br><b>Maker:</b> one architecture variant.<br><b>Verify:</b> golden vectors, assertions, timing, resources, board benchmark.</p></article>
+    </div>
+    <div class="callout"><b>Hardware rule:</b> keep simulation, implementation reports, and physical measurements as separate verifiers. A loop must not treat simulation success as electrical, timing, thermal, or field signoff.</div>
+  </section>
+
+  <section class="card" id="failures">
+    <span class="tag">Anti-patterns</span>
+    <h2>Why autonomous loops fail</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Failure</th><th>What happens</th><th>Engineering control</th></tr></thead>
+        <tbody>
+          <tr><td>Infinite retry</td><td>The agent repeats without new information</td><td>Attempt/time/cost caps; repeated-failure escalation</td></tr>
+          <tr><td>Self-grading</td><td>The maker rationalizes its own change</td><td>Deterministic checks plus independent verifier context</td></tr>
+          <tr><td>Reward hacking</td><td>The agent weakens tests or changes the metric</td><td>Protect verifier files; compare tests/spec before and after</td></tr>
+          <tr><td>Context drift</td><td>The original goal disappears across iterations</td><td>Immutable requirements and externalized state</td></tr>
+          <tr><td>Flaky feedback</td><td>Noise sends the loop in random directions</td><td>Stabilize/repeat measurements; label inconclusive results</td></tr>
+          <tr><td>State corruption</td><td>Two runs overwrite decisions or branches</td><td>Run IDs, atomic writes, locks, isolated workspaces</td></tr>
+          <tr><td>Scope explosion</td><td>A small fix becomes a platform rewrite</td><td>Changed-file limits, allowed paths, smallest-patch review</td></tr>
+          <tr><td>Privilege creep</td><td>The loop requests broader access to make progress</td><td>Fail closed; human approval for capability expansion</td></tr>
+          <tr><td>Cost explosion</td><td>Parallel retries consume unbounded time/tokens</td><td>Per-run and daily budgets; concurrency caps</td></tr>
+          <tr><td>Unsafe completion</td><td>Passing checks trigger merge/deploy automatically</td><td>Human gates for irreversible or material-risk actions</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="budget">
+    <span class="tag">Budget calculator</span>
+    <h2>Know the worst case before starting the loop</h2>
+    <p>Budget the controller, not only the model. The calculator shows maximum exposure if every allowed attempt runs.</p>
+    <div class="calculator">
+      <label>Maximum attempts<input id="attempts" type="number" min="1" max="100" value="4"></label>
+      <label>Minutes per attempt<input id="minutes" type="number" min="0" step="1" value="12"></label>
+      <label>Cost per attempt (USD)<input id="cost" type="number" min="0" step="0.01" value="2.50"></label>
+      <label>Parallel workers<input id="workers" type="number" min="1" max="50" value="1"></label>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="metric"><span>Maximum agent runs</span><b id="runs">4</b></div>
+      <div class="metric"><span>Maximum wall time</span><b id="time">48 min</b></div>
+      <div class="metric"><span>Maximum estimated cost</span><b id="total">$10.00</b></div>
+    </div>
+    <p class="small">This is a simple upper-bound planning aid. Actual billing, parallel wall time, tool costs, retries, and provider limits vary.</p>
+  </section>
+
+  <section class="card" id="checklist">
+    <span class="tag">Readiness gate</span>
+    <h2>Do not automate until these answers are clear</h2>
+    <ul class="checklist">
+      <li>The goal is specific and testable.</li>
+      <li>Success and terminal failure states are explicit.</li>
+      <li>State survives restarts and context compaction.</li>
+      <li>Every run has a unique ID and isolated workspace.</li>
+      <li>The maker cannot silently alter protected verifiers.</li>
+      <li>At least one verifier observes real system behavior.</li>
+      <li>Flaky or inconclusive evidence is handled explicitly.</li>
+      <li>Attempts, time, cost, scope, and concurrency are capped.</li>
+      <li>Repeated failures escalate instead of looping forever.</li>
+      <li>Secrets, network, branches, and connectors use least privilege.</li>
+      <li>Irreversible changes require a human gate.</li>
+      <li>Every run leaves an auditable evidence package.</li>
+      <li>Rollback and cleanup are tested.</li>
+      <li>The loop can be paused or disabled immediately.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="sources">
+    <span class="tag">Research trail</span>
+    <h2>Current sources and terminology</h2>
+    <div class="grid">
+      <article class="mini"><h3>OpenAI: Harness Engineering</h3><p>Describes engineering environments, mechanical constraints, self-review, additional agent reviews, and iterative PR loops.</p><a href="https://openai.com/index/harness-engineering/">Read source →</a></article>
+      <article class="mini"><h3>OpenAI: Codex agent loop</h3><p>Explains the core agent loop and execution logic behind Codex surfaces.</p><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Read source →</a></article>
+      <article class="mini"><h3>OpenAI: Safe boundaries</h3><p>Explains fast low-risk work inside technical boundaries and explicit handling of higher-risk actions.</p><a href="https://openai.com/index/running-codex-safely/">Read source →</a></article>
+      <article class="mini"><h3>Anthropic: Scheduled prompts</h3><p>Documents session-scoped <code>/loop</code>, scheduling behavior, expiry, and persistent alternatives.</p><a href="https://code.claude.com/docs/en/scheduled-tasks">Read source →</a></article>
+      <article class="mini"><h3>Anthropic: Routines</h3><p>Documents saved agent configurations triggered by schedules, APIs, or GitHub events, with scoped repositories and connectors.</p><a href="https://code.claude.com/docs/en/routines">Read source →</a></article>
+      <article class="mini"><h3>Anthropic-verified Ralph Loop</h3><p>Demonstrates repeated self-referential agent work while preserving file and Git state; suitable only with clear success criteria.</p><a href="https://claude.com/plugins/ralph-loop">Read source →</a></article>
+      <article class="mini"><h3>Emerging definition</h3><p>A recent practitioner guide distinguishes prompt, context, harness, and repeated-loop engineering.</p><a href="https://loopengineering.run/blog/what-is-loop-engineering">Read source →</a></article>
+      <article class="mini"><h3>Research perspective</h3><p>A July 2026 paper frames loop engineering as distinct from prompt engineering and emphasizes verification and stop conditions.</p><a href="https://arxiv.org/abs/2607.00038">Read source →</a></article>
+    </div>
+    <p class="small">Research completed 2026-07-17. Product features and emerging terminology can change; verify commands and availability against current official documentation before implementation.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">Part of the <a href="index.html">AI Engineering Launchpad</a> · Evidence first · Human responsibility retained</div></footer>
+
+<script>
+  (() => {
+    const root = document.documentElement;
+    const themeButton = document.getElementById("theme");
+    const saved = localStorage.getItem("loop-engineering-theme");
+    const initial = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
+    function setTheme(theme) {
+      root.dataset.theme = theme;
+      const dark = theme === "dark";
+      themeButton.textContent = dark ? "☀ Light" : "☾ Dark";
+      themeButton.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    }
+
+    setTheme(initial);
+    themeButton.addEventListener("click", () => {
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("loop-engineering-theme", next);
+      setTheme(next);
+    });
+
+    const fields = ["attempts", "minutes", "cost", "workers"].map((id) => document.getElementById(id));
+    const updateBudget = () => {
+      const attempts = Math.max(1, Number(fields[0].value) || 1);
+      const minutes = Math.max(0, Number(fields[1].value) || 0);
+      const cost = Math.max(0, Number(fields[2].value) || 0);
+      const workers = Math.max(1, Number(fields[3].value) || 1);
+      const runs = attempts * workers;
+      document.getElementById("runs").textContent = String(runs);
+      document.getElementById("time").textContent = `${attempts * minutes} min`;
+      document.getElementById("total").textContent = `$${(runs * cost).toFixed(2)}`;
+    };
+    fields.forEach((field) => field.addEventListener("input", updateBudget));
+    updateBudget();
+  })();
+</script>
+</body>
+</html>

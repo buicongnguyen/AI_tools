@@ -1,6 +1,6 @@
 # Official Sources
 
-Verified 2026-07-16. Product documentation changes frequently; recheck before installation, model selection, automation, or deployment.
+Verified 2026-07-17. Product documentation changes frequently; recheck before installation, model selection, automation, or deployment.
 
 ## Anthropic / Claude Code
 
@@ -38,6 +38,20 @@ Verified 2026-07-16. Product documentation changes frequently; recheck before in
 - [Unlocking the Codex harness](https://openai.com/index/unlocking-the-codex-harness/)
 - [Harness engineering with Codex](https://openai.com/index/harness-engineering/)
 - [Claude Code sandboxing](https://www.anthropic.com/engineering/claude-code-sandboxing)
+- [Unrolling the Codex agent loop](https://openai.com/index/unrolling-the-codex-agent-loop/)
+- [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/)
+- [Claude Code scheduled tasks and `/loop`](https://code.claude.com/docs/en/scheduled-tasks)
+- [Claude Code routines](https://code.claude.com/docs/en/routines)
+- [Anthropic-verified Ralph Loop plugin](https://claude.com/plugins/ralph-loop)
+
+## Loop Engineering — emerging terminology
+
+- [What Is Loop Engineering?](https://loopengineering.run/blog/what-is-loop-engineering)
+- [Stop Hand-Holding Your Coding Agent: Engineering the Loops](https://arxiv.org/abs/2607.00038)
+
+“Loop Engineering” is treated as an emerging practitioner term, not a finalized
+standard. The site derives implementation guidance primarily from official agent-loop,
+harness, scheduling, sandboxing, and verification sources.
 
 ## Official video and course resources
 
@@ -52,4 +66,4 @@ Verified 2026-07-16. Product documentation changes frequently; recheck before in
 - Anthropic's current Windows setup includes WinGet and npm installation. The current npm package documentation states Node.js 22+.
 - Search-engine snippets can lag or conflict with live documentation. The playbook uses the live official pages opened on the verification date.
 - Video advice is treated as demonstration material. Current commands and security behavior are verified against written official documentation.
-- Recent-source pass completed 2026-07-16, including Anthropic April 2026 changelog material and OpenAI product/research publications through July 2026.
+- Recent-source pass completed 2026-07-17, including current agent-loop, routines, scheduling, safety, and Loop Engineering material.

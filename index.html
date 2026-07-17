@@ -103,6 +103,7 @@
   <div class="hero-actions">
     <a class="button primary" href="#start">Start an idea in 15 minutes</a>
     <a class="button secondary" href="#real-cases">See realistic engineering cases</a>
+    <a class="button secondary" href="loop-engineering.html">Learn Loop Engineering ↻</a>
   </div>
 </div></header>
 <nav aria-label="Page sections">
@@ -110,6 +111,7 @@
     <a href="#start">Quick start</a>
     <a href="#prompts">Prompts</a>
     <a href="#harness">AI harness</a>
+    <a href="loop-engineering.html">Loop engineering</a>
     <a href="#real-cases">Real cases</a>
     <a href="#workflow">Workflow</a>
     <a href="#tools">Tools</a>
@@ -310,6 +312,21 @@ before/after examples, migration phases, risks, and measurable completion criter
     <div class="level"><b>Level 5</b><span>Operational. Deployment, monitoring, rollback, audit, and policy are integrated.</span></div>
     <div class="warning"><b>Do not jump directly to high autonomy.</b> Increase autonomy only after the current level repeatedly produces correct, reviewable evidence inside safe boundaries.</div>
     <p><a class="button" href="AI_HARNESS_GUIDE.md">Open the complete AI harness guide →</a></p>
+  </section>
+
+  <section class="card">
+    <span class="tag">New: Loop Engineering</span>
+    <h2>Design the system that keeps prompting, checking, and stopping agents</h2>
+    <p>Prompt engineering improves one instruction. Harness engineering improves one agent run. <b>Loop Engineering</b> designs repeated agent work: triggers, external state, isolated makers, independent verifiers, budgets, recovery, and human gates.</p>
+    <div class="harness-loop" aria-label="Loop engineering cycle">
+      <div class="harness-node">Trigger or<br>discover work</div>
+      <div class="harness-node">Shape task<br>and state</div>
+      <div class="harness-node model">Maker acts<br>in isolation</div>
+      <div class="harness-node verify">Verifier checks<br>real evidence</div>
+      <div class="harness-node">Stop, escalate,<br>or iterate ↻</div>
+    </div>
+    <div class="warning"><b>Safe-loop rule:</b> every loop needs explicit terminal states, attempt/time/cost budgets, protected verifiers, and human approval before irreversible or material-risk actions.</div>
+    <p><a class="button" href="loop-engineering.html">Open the visual Loop Engineering guide →</a></p>
   </section>
 
   <section class="card" id="real-cases">

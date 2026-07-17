@@ -26,6 +26,7 @@ jobs:
         run: |
           $required = @(
             "index.html",
+            "loop-engineering.html",
             "README.md",
             "AI_AGENT_PLAYBOOK.md",
             "SOURCES.md"
@@ -38,6 +39,13 @@ jobs:
           $html = Get-Content -Raw -LiteralPath "index.html"
           if ($html -notmatch "(?i)<!doctype html>" -or $html -notmatch "(?i)</html>") {
             throw "index.html failed the structure check"
+          }
+          $loopHtml = Get-Content -Raw -LiteralPath "loop-engineering.html"
+          if ($loopHtml -notmatch "(?i)<!doctype html>" -or $loopHtml -notmatch "(?i)</html>") {
+            throw "loop-engineering.html failed the structure check"
+          }
+          if ($loopHtml -notmatch "Loop Engineering" -or $loopHtml -notmatch "Budget calculator") {
+            throw "loop-engineering.html is missing required content"
           }
 
   deploy:
@@ -66,4 +74,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-
