@@ -3,6 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practical operating system for software engineers using Claude Code, Codex, ChatGPT, AI harnesses, and Loop Engineering to build, verify, and deploy ideas.">
+  <link rel="canonical" href="https://buicongnguyen.github.io/AI_tools/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI Engineering Launchpad">
+  <meta property="og:description" content="Evidence-first workflows, practical cases, prompts, harnesses, and deployment guidance for software engineers using Claude Code and Codex.">
+  <meta property="og:url" content="https://buicongnguyen.github.io/AI_tools/">
   <title>AI Engineering Launchpad</title>
   <style>
     :root { color-scheme:light; --ink:#172033; --muted:#5d687a; --paper:#f5f7fb; --card:#fff; --blue:#2457d6; --green:#087f5b; --amber:#a15c00; --line:#dbe1ea; --code:#111827; --code-ink:#e5e7eb; --table-head:#eef2f8; --hero-a:#101a34; --hero-b:#284fa4; --tag-bg:#e9efff; --gate-bg:#fff8e8; --ok-bg:#edfff8; }
@@ -29,15 +35,17 @@
     .nav-inner a:hover { color:var(--ink); background:var(--card); }
     main { padding:32px 20px 72px; }
     .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; margin:22px 0; }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:0 8px 24px rgba(19,33,68,.06); }
+    .card { min-width:0; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:0 8px 24px rgba(19,33,68,.06); }
     .tag { display:inline-block; border-radius:99px; padding:4px 9px; background:var(--tag-bg); color:var(--blue); font-size:.8rem; font-weight:700; }
-    header .tag { color:#dbe7ff; }
+    header .tag { color:#173f9e; }
+    [data-theme="dark"] header .tag { color:#dbe7ff; }
     .theme-toggle { display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:9px 14px; color:#fff; background:rgba(255,255,255,.1); font:inherit; font-weight:700; cursor:pointer; }
     .theme-toggle:hover { background:rgba(255,255,255,.2); }
     .theme-toggle:focus-visible { outline:3px solid #fff; outline-offset:3px; }
     pre { overflow:auto; padding:16px; border-radius:12px; background:var(--code); color:var(--code-ink); }
     code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
     table { width:100%; border-collapse:collapse; background:var(--card); }
+    .table-wrap { max-width:100%; overflow-x:auto; }
     th,td { padding:12px; border:1px solid var(--line); text-align:left; vertical-align:top; }
     th { background:var(--table-head); }
     .flow { display:flex; align-items:center; gap:8px; margin:24px 0; overflow-x:auto; padding:4px 2px 12px; }
@@ -62,7 +70,7 @@
     .quick-start { counter-reset:start; }
     .quick-start article { position:relative; padding-left:54px; }
     .quick-start article::before { counter-increment:start; content:counter(start); position:absolute; left:0; top:0; width:38px; height:38px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--blue); font-weight:850; }
-    .prompt-formula { display:grid; grid-template-columns:repeat(6,minmax(120px,1fr)); gap:9px; margin:20px 0; overflow-x:auto; }
+    .prompt-formula { width:100%; max-width:100%; min-width:0; display:grid; grid-template-columns:repeat(6,minmax(120px,1fr)); gap:9px; margin:20px 0; overflow-x:auto; }
     .prompt-part { min-width:120px; border:1px solid var(--line); border-top:4px solid var(--blue); border-radius:12px; padding:13px; background:var(--card); }
     .prompt-part b { display:block; margin-bottom:5px; }
     .prompt-card { margin:12px 0; border:1px solid var(--line); border-radius:12px; background:var(--card); overflow:hidden; }
@@ -85,11 +93,13 @@
     .level b { min-width:88px; }
     .small { color:var(--muted); font-size:.9rem; }
     a { color:var(--blue); }
-    @media(max-width:800px) { .sequence,.case-grid,.compare { grid-template-columns:1fr; } .sequence .arrow { transform:rotate(90deg); } }
+    @media(max-width:800px) { .sequence,.case-grid,.compare,.prompt-formula { grid-template-columns:1fr; } .prompt-formula { overflow-x:visible; } .prompt-part { min-width:0; } nav { max-width:100vw; overflow:hidden; } .nav-inner { max-width:100vw; } .sequence .arrow { transform:rotate(90deg); } }
     @media print { body { background:#fff; color:#172033; } .card { box-shadow:none; break-inside:avoid; } header { padding:30px 20px; } .theme-toggle { display:none; } }
   </style>
+  <link rel="stylesheet" href="assets/accessibility.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header><div>
   <div class="header-top">
     <div class="tag">Verified 2026-07-18</div>
@@ -124,7 +134,7 @@
     <a href="#sources">Sources</a>
   </div>
 </nav>
-<main>
+<main id="main-content">
   <section class="card" id="start">
     <span class="tag">Start here</span>
     <h2>Your first 15 minutes with an engineering idea</h2>
@@ -141,7 +151,7 @@
     <span class="tag">Prompt engineering</span>
     <h2>A good prompt is an executable engineering brief</h2>
     <p>For important tasks, use six blocks. Add only the detail that changes the result.</p>
-    <div class="prompt-formula" aria-label="Six parts of a good engineering prompt">
+    <div class="prompt-formula" role="img" aria-label="Six parts of a good engineering prompt">
       <div class="prompt-part"><b>1. Goal</b><span>Observable outcome</span></div>
       <div class="prompt-part"><b>2. Context</b><span>System, files, symptom</span></div>
       <div class="prompt-part"><b>3. Constraints</b><span>Scope, safety, compatibility</span></div>
@@ -282,7 +292,7 @@ before/after examples, migration phases, risks, and measurable completion criter
     <span class="tag">AI harness</span>
     <h2>The model thinks; the harness makes engineering work possible</h2>
     <p>An AI harness is the controlled system around a model: context, tools, execution, permissions, verification, memory, and feedback. Claude Code is the harness around Claude; Codex provides the same kind of agent runtime around OpenAI models.</p>
-    <div class="harness-loop" aria-label="AI harness feedback loop">
+    <div class="harness-loop" role="img" aria-label="AI harness feedback loop">
       <div class="harness-node">Human goal<br>and boundaries</div>
       <div class="harness-node">Context<br>and instructions</div>
       <div class="harness-node model">Model reasons<br>and selects tools</div>
@@ -322,7 +332,7 @@ before/after examples, migration phases, risks, and measurable completion criter
     <span class="tag">New: Loop Engineering</span>
     <h2>Design the system that keeps prompting, checking, and stopping agents</h2>
     <p>Prompt engineering improves one instruction. Harness engineering improves one agent run. <b>Loop Engineering</b> designs repeated agent work: triggers, external state, isolated makers, independent verifiers, budgets, recovery, and human gates.</p>
-    <div class="harness-loop" aria-label="Loop engineering cycle">
+    <div class="harness-loop" role="img" aria-label="Loop engineering cycle">
       <div class="harness-node">Trigger or<br>discover work</div>
       <div class="harness-node">Shape task<br>and state</div>
       <div class="harness-node model">Maker acts<br>in isolation</div>
@@ -337,7 +347,7 @@ before/after examples, migration phases, risks, and measurable completion criter
     <span class="tag">New: Professional practice</span>
     <h2>Turn Claude Code and Codex into measurable software-engineering skill</h2>
     <p>Use synchronized Claude Code/Codex views, a six-week curriculum, task-mode selector, reusable brief, twelve practical exercises, and a scorecard. The goal is verified software-engineering throughput—not more prompts or generated lines.</p>
-    <div class="harness-loop" aria-label="Professional AI engineering improvement cycle">
+    <div class="harness-loop" role="img" aria-label="Professional AI engineering improvement cycle">
       <div class="harness-node">Frame the<br>task contract</div>
       <div class="harness-node">Implement the<br>smallest change</div>
       <div class="harness-node verify">Verify real<br>evidence</div>
@@ -348,6 +358,7 @@ before/after examples, migration phases, risks, and measurable completion criter
     <p>
       <a class="button" href="professional-ai-engineering.html">Open the professional practice guide →</a>
       <a class="button" href="software-engineering-cases.html">Try six practical cases</a>
+      <a class="button" href="https://github.com/buicongnguyen/AI_tools/tree/main/labs/auth-refresh-race">Run the executable race lab</a>
       <a class="button" href="test-set/professional-practice-scorecard.csv">Open the practice scorecard</a>
     </p>
   </section>
@@ -356,9 +367,9 @@ before/after examples, migration phases, risks, and measurable completion criter
     <span class="tag">Realistic cases</span>
     <h2>Choose the engineering situation closest to yours</h2>
     <div class="path-tabs" role="tablist" aria-label="Engineering case studies">
-      <button class="path-tab" role="tab" aria-selected="true" aria-controls="case-software" id="tab-software">Software product</button>
-      <button class="path-tab" role="tab" aria-selected="false" aria-controls="case-embedded" id="tab-embedded">Embedded failure</button>
-      <button class="path-tab" role="tab" aria-selected="false" aria-controls="case-fpga" id="tab-fpga">FPGA accelerator</button>
+      <button class="path-tab" type="button" role="tab" aria-selected="true" aria-controls="case-software" id="tab-software">Software product</button>
+      <button class="path-tab" type="button" role="tab" aria-selected="false" aria-controls="case-embedded" id="tab-embedded">Embedded failure</button>
+      <button class="path-tab" type="button" role="tab" aria-selected="false" aria-controls="case-fpga" id="tab-fpga">FPGA accelerator</button>
     </div>
     <div class="path-panel" id="case-software" role="tabpanel" aria-labelledby="tab-software">
       <div class="case-grid">
@@ -398,7 +409,7 @@ before/after examples, migration phases, risks, and measurable completion criter
   <section class="card" id="workflow">
     <span class="tag">One shared workflow</span>
     <h2>Move ideas through evidence-based engineering gates</h2>
-    <div class="flow">
+    <div class="flow" role="img" aria-label="Evidence-based engineering workflow" tabindex="0">
       <div class="step">Idea + real problem</div><div class="arrow">→</div>
       <div class="step">Requirements + budgets</div><div class="arrow">→</div>
       <div class="step">Architecture + interfaces</div><div class="arrow">→</div>
@@ -411,11 +422,11 @@ before/after examples, migration phases, risks, and measurable completion criter
   </section>
 
   <section class="grid" id="tools">
-    <article class="card"><span class="tag">Claude Code</span><h2>Terminal agent</h2><pre><code>winget install Anthropic.ClaudeCode
+    <article class="card"><span class="tag">Claude Code</span><h2>Terminal agent</h2><pre tabindex="0"><code>winget install Anthropic.ClaudeCode
 claude
 claude doctor
 # inside Claude: /init</code></pre><p>Store durable repository guidance in <code>CLAUDE.md</code>.</p></article>
-    <article class="card"><span class="tag">Codex</span><h2>Coding agent</h2><pre><code>npm install -g @openai/codex
+    <article class="card"><span class="tag">Codex</span><h2>Coding agent</h2><pre tabindex="0"><code>npm install -g @openai/codex
 codex
 # inside Codex: /init</code></pre><p>Store durable repository guidance in <code>AGENTS.md</code>.</p></article>
     <article class="card"><span class="tag">ChatGPT</span><h2>Research and synthesis</h2><p>Use a Project, attach context and rubrics, request web search for current claims, and require direct citations plus a verification date.</p></article>
@@ -447,7 +458,8 @@ codex
 
   <section class="card">
     <h2>Choose the smallest effective workflow</h2>
-    <table>
+    <div class="table-wrap" tabindex="0"><table>
+      <caption class="visually-hidden">Recommended workflow by type of engineering work</caption>
       <thead><tr><th>Work</th><th>Efficient pattern</th></tr></thead>
       <tbody>
         <tr><td>Small obvious edit</td><td>Implement directly, run one focused check, inspect the diff.</td></tr>
@@ -457,7 +469,7 @@ codex
         <tr><td>Large repeated migration</td><td>Test 2–3 samples → refine prompt → bounded batch automation.</td></tr>
         <tr><td>High-risk result</td><td>Builder → fresh independent reviewer → human approval.</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </section>
 
   <section class="grid">
@@ -502,7 +514,8 @@ codex
 
   <section class="card">
     <h2>AI across the engineering stack</h2>
-    <table>
+    <div class="table-wrap" tabindex="0"><table>
+      <caption class="visually-hidden">AI assistance and required engineering verification across the engineering stack</caption>
       <thead><tr><th>Layer</th><th>AI can help</th><th>Engineer must verify</th></tr></thead>
       <tbody>
         <tr><td>Product/system</td><td>Research, requirements, architecture options, risk register</td><td>User need, business constraints, safety and compliance</td></tr>
@@ -511,7 +524,7 @@ codex
         <tr><td>RTL/FPGA/ASIC</td><td>Modules, assertions, testbenches, report and waveform analysis</td><td>Synthesis, CDC/RDC, timing, PPA, tool warnings, signoff</td></tr>
         <tr><td>Board/physical</td><td>Bring-up plan, datasheet comparison, measurement correlation</td><td>Electrical safety, SI/PI, thermal, instruments, manufacturing</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </section>
 
   <section class="grid" id="debug">
@@ -536,7 +549,8 @@ codex
 
   <section class="card">
     <h2>Test-set architecture</h2>
-    <table>
+    <div class="table-wrap" tabindex="0"><table>
+      <caption class="visually-hidden">Test-set layers, what they prove, and required evidence</caption>
       <thead><tr><th>Layer</th><th>What it proves</th><th>Evidence</th></tr></thead>
       <tbody>
         <tr><td>Happy path</td><td>Primary user outcome works</td><td>Assertions + critical-flow smoke test</td></tr>
@@ -545,7 +559,7 @@ codex
         <tr><td>Regression</td><td>Known failures stay fixed</td><td>Frozen fixtures</td></tr>
         <tr><td>Human rubric</td><td>Usefulness, clarity, accessibility</td><td>Blind scored review</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </section>
 
   <section class="card">

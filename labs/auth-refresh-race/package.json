@@ -1,0 +1,11 @@
+{
+  "name": "auth-refresh-race-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "reproduce": "node --test test/auth-refresh.test.js",
+    "verify:solution": "node --test test/solution.test.js",
+    "verify:lab": "node scripts/verify-lab.mjs"
+  }
+}

@@ -4,12 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A practical, evidence-based guide to Loop Engineering with AI coding agents: feedback loops, independent verification, state, budgets, stop conditions, and human gates.">
+  <link rel="canonical" href="https://buicongnguyen.github.io/AI_tools/loop-engineering.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Loop Engineering for AI Agents">
+  <meta property="og:description" content="Design convergent, observable, budgeted AI-agent loops with independent verification and human gates.">
+  <meta property="og:url" content="https://buicongnguyen.github.io/AI_tools/loop-engineering.html">
   <title>Loop Engineering for AI Agents</title>
   <style>
     :root {
       color-scheme: light;
       --ink:#172033; --muted:#5e6879; --paper:#f7f5f1; --card:#fff;
-      --line:#ddd8cf; --accent:#d85d1a; --accent2:#244f9e; --good:#087f5b;
+      --line:#ddd8cf; --accent:#9c3e08; --accent2:#244f9e; --good:#087f5b;
       --warn:#9b5b00; --soft:#fff1e7; --code:#111827; --code-ink:#e5e7eb;
       --hero-a:#29180f; --hero-b:#843712; --shadow:0 10px 28px rgba(48,32,22,.08);
     }
@@ -116,8 +121,10 @@
     @media(max-width:480px) { .calculator,.result { grid-template-columns:1fr; } }
     @media print { nav,.theme,.actions,.calculator button { display:none; } body { background:#fff; color:#172033; } .card { box-shadow:none; } }
   </style>
+  <link rel="stylesheet" href="assets/accessibility.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header>
   <div class="wrap">
     <div class="topbar">
@@ -157,13 +164,13 @@
   </div>
 </nav>
 
-<main class="wrap">
+<main class="wrap" id="main-content">
   <section class="card" id="definition">
     <span class="tag">What it means</span>
     <h2>A prompt asks once. A loop keeps returning to the work.</h2>
     <p><b>Loop Engineering</b> is the practice of designing repeatable, bounded feedback cycles around AI agents. The loop finds or receives work, gives an agent the right state and tools, checks the result with real evidence, saves what happened, and decides whether to iterate, stop, or request human judgment.</p>
     <div class="callout"><b>Important:</b> “Loop Engineering” is an emerging mid-2026 practitioner term, not a finalized industry standard. The underlying ideas—agent loops, feedback, evaluators, state, budgets, isolation, and human gates—are established and appear in current OpenAI and Anthropic engineering guidance.</div>
-    <div class="layers" aria-label="Prompt, context, harness, and loop engineering comparison">
+    <div class="layers" role="img" aria-label="Prompt, context, harness, and loop engineering comparison">
       <article class="layer"><h3>Prompt engineering</h3><p>Optimizes one instruction.</p><b>Output:</b> a better request.</article>
       <article class="layer"><h3>Context engineering</h3><p>Optimizes what one model run can see.</p><b>Output:</b> relevant files, facts, and constraints.</article>
       <article class="layer"><h3>Harness engineering</h3><p>Optimizes one agent run.</p><b>Output:</b> tools, permissions, execution, and verification.</article>
@@ -175,13 +182,14 @@
     <span class="tag">Deep system model</span>
     <h2>There are three loops, operating at different speeds</h2>
     <p>An agent already has an internal reason–act–observe cycle. Loop Engineering adds an <b>external, inspectable control loop</b> around one or more agent runs. A third loop connects shipped results to real users and operating data. Keep their state, evidence, and stop rules separate.</p>
-    <div class="nested" aria-label="Three levels of engineering loops">
+    <div class="nested" role="img" aria-label="Three levels of engineering loops">
       <article class="ring" data-speed="SECONDS → MINUTES"><h3>1. Agent action loop</h3><p>Read context → choose tool → act → observe. The harness manages this inside one session.</p><b>Stops:</b> response, tool limit, error, or agent judgment.</article>
       <article class="ring" data-speed="MINUTES → HOURS"><h3>2. Engineering loop</h3><p>Shape task → make change → verify → retry or hand off. Your controller owns this.</p><b>Stops:</b> evidence, policy, risk, or budget.</article>
       <article class="ring" data-speed="DAYS → WEEKS"><h3>3. Product learning loop</h3><p>Deploy → observe telemetry/users → evaluate impact → change backlog, tests, or harness.</p><b>Stops:</b> product decision or next experiment.</article>
     </div>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Three nested engineering loops, state, truth sources, ownership, and common mistakes</caption>
         <thead><tr><th>Loop</th><th>Primary state</th><th>Truth source</th><th>Owner</th><th>Typical mistake</th></tr></thead>
         <tbody>
           <tr><td>Agent action</td><td>Conversation and tool results</td><td>Files, commands, tools</td><td>Agent harness</td><td>Assuming a fluent answer proves correctness</td></tr>
@@ -200,14 +208,14 @@ Sₜ₊₁ = Record(Sₜ, Uₜ, Eₜ₊₁, Dₜ₊₁)</div>
     <p>The model matters because it locates responsibility. The maker proposes an action. The verifier produces evidence. The controller—not the maker—decides whether the run passes, retries, blocks, escalates, or exhausts its budget.</p>
 
     <h3>Named state transitions</h3>
-    <div class="state-flow" aria-label="Loop state machine">
+    <div class="state-flow" role="img" aria-label="Loop state machine">
       <span class="state">NEW</span><span class="arrow">→</span>
       <span class="state">READY</span><span class="arrow">→</span>
       <span class="state">RUNNING</span><span class="arrow">→</span>
       <span class="state">VERIFYING</span><span class="arrow">→</span>
       <span class="state terminal">PASSED</span>
     </div>
-    <div class="state-flow" aria-label="Loop retry and stop branches">
+    <div class="state-flow" role="img" aria-label="Loop retry and stop branches">
       <span class="state">VERIFYING</span><span class="arrow">→</span>
       <span class="state">RETRYABLE</span><span class="arrow">↺</span>
       <span class="state">READY</span>
@@ -220,7 +228,7 @@ Sₜ₊₁ = Record(Sₜ, Uₜ, Eₜ₊₁, Dₜ₊₁)</div>
   <section class="card" id="anatomy">
     <span class="tag">Core cycle</span>
     <h2>The loop must observe reality—not only its own text</h2>
-    <div class="loop" aria-label="Loop engineering cycle">
+    <div class="loop" role="img" aria-label="Loop engineering cycle">
       <div class="node">Trigger or discover</div><div class="arrow">→</div>
       <div class="node">Shape task + context</div><div class="arrow">→</div>
       <div class="node">Act in isolation</div><div class="arrow">→</div>
@@ -311,6 +319,7 @@ decision:
 
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Verifier results, controller actions, and required records</caption>
         <thead><tr><th>Verifier result</th><th>Controller action</th><th>What must be recorded</th></tr></thead>
         <tbody>
           <tr><td>All required checks pass</td><td>Stop; create reviewable artifact</td><td>Patch, commands, results, assumptions, risks</td></tr>
@@ -329,6 +338,7 @@ decision:
     <p>A bounded loop should move toward a measurable acceptance region. It should not merely generate more activity. Define an <b>acceptance vector</b> rather than one vague score, because an average can hide a critical regression.</p>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Acceptance vector dimensions, thresholds, and protected invariants</caption>
         <thead><tr><th>Acceptance dimension</th><th>Example threshold</th><th>Invariant that cannot regress</th></tr></thead>
         <tbody>
           <tr><td>Functional correctness</td><td>Target regression and affected suite pass</td><td>No test deletion, skip, or weakened assertion</td></tr>
@@ -361,6 +371,7 @@ stop if: pass OR unsafe OR blocked OR repeated_failure ≥ patience OR budget ex
     <p>No one layer catches every defect. Build from deterministic checks upward, and require the layers appropriate to the change’s risk. AI review is useful for semantic gaps, but it should not replace executable or physical evidence.</p>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Verification levels, evidence, strengths, and weaknesses</caption>
         <thead><tr><th>Level</th><th>Evidence</th><th>Good for</th><th>Weakness</th></tr></thead>
         <tbody>
           <tr><td>L0 · Maker report</td><td>Claim, diff summary, commands it says it ran</td><td>Navigation only</td><td>Not independent; never sufficient</td></tr>
@@ -411,6 +422,7 @@ and the smallest useful next experiment. Never approve missing required evidence
     <h2>Choose the smallest automation surface that fits the lifetime</h2>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Claude Code and Codex automation surfaces and recommended boundaries</caption>
         <thead><tr><th>Need</th><th>Claude Code</th><th>Codex</th><th>Recommended boundary</th></tr></thead>
         <tbody>
           <tr><td>One supervised engineering run</td><td>Interactive CLI session with <code>CLAUDE.md</code></td><td>CLI/app/IDE task with <code>AGENTS.md</code></td><td>Human approves commands and final change</td></tr>
@@ -480,6 +492,7 @@ Never merge, deploy, close review threads without evidence, or broaden scope.</c
     </div>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Worked loop attempts, new information, changes, evidence, and decisions</caption>
         <thead><tr><th>Attempt</th><th>New information</th><th>Candidate change</th><th>Verifier evidence</th><th>Decision</th></tr></thead>
         <tbody>
           <tr><td>1</td><td>Cancellation correlates with retry wait</td><td>Pre-wait cancellation check</td><td>18/20 stress passes</td><td>Retry: still flaky</td></tr>
@@ -511,6 +524,7 @@ Never merge, deploy, close review threads without evidence, or broaden scope.</c
     <p>Repeated autonomy increases exposure: the agent sees more untrusted inputs, calls more tools, and gets more chances to affect state. Model every external string—issue text, logs, web pages, test fixtures, dependency metadata, and review comments—as untrusted data, not instructions.</p>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Loop Engineering threats, failure paths, controls, and mandatory stops</caption>
         <thead><tr><th>Threat</th><th>Failure path</th><th>Control</th><th>Mandatory stop</th></tr></thead>
         <tbody>
           <tr><td>Prompt injection</td><td>Issue/log/web text tells the agent to reveal secrets or ignore policy</td><td>Separate instructions from data; source labels; tool allowlists; no secret echo</td><td>Instruction conflicts with loop policy</td></tr>
@@ -579,6 +593,7 @@ AND no automatic high-risk side effects</div>
     <h2>Why autonomous loops fail</h2>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Autonomous-loop failure modes and engineering controls</caption>
         <thead><tr><th>Failure</th><th>What happens</th><th>Engineering control</th></tr></thead>
         <tbody>
           <tr><td>Infinite retry</td><td>The agent repeats without new information</td><td>Attempt/time/cost caps; repeated-failure escalation</td></tr>

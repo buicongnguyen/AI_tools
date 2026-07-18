@@ -1,90 +1,45 @@
 name: Deploy GitHub Pages
 
 on:
+  pull_request:
+    branches: [main]
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
-    name: Validate static site
+    name: Quality gates
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Verify required files and HTML structure
-        shell: pwsh
-        run: |
-          $required = @(
-            "index.html",
-            "loop-engineering.html",
-            "professional-ai-engineering.html",
-            "software-engineering-cases.html",
-            "README.md",
-            "AI_AGENT_PLAYBOOK.md",
-            "PROFESSIONAL_PRACTICE_GUIDE.md",
-            "SOURCES.md",
-            "templates/PROFESSIONAL_TASK_BRIEF.md",
-            "templates/LOOP_SPEC.md",
-            "templates/loop-config.example.yml",
-            "templates/loop-state.example.json",
-            "templates/MAKER_PROMPT.md",
-            "templates/VERIFIER_PROMPT.md",
-            "test-set/loop-engineering-evals.csv",
-            "test-set/professional-practice-scorecard.csv",
-            "test-set/software-engineering-practice-cases.csv"
-          )
-          foreach ($file in $required) {
-            if (-not (Test-Path -LiteralPath $file)) {
-              throw "Missing required file: $file"
-            }
-          }
-          $html = Get-Content -Raw -LiteralPath "index.html"
-          if ($html -notmatch "(?i)<!doctype html>" -or $html -notmatch "(?i)</html>") {
-            throw "index.html failed the structure check"
-          }
-          $loopHtml = Get-Content -Raw -LiteralPath "loop-engineering.html"
-          if ($loopHtml -notmatch "(?i)<!doctype html>" -or $loopHtml -notmatch "(?i)</html>") {
-            throw "loop-engineering.html failed the structure check"
-          }
-          if ($loopHtml -notmatch "Loop Engineering" -or
-              $loopHtml -notmatch "Budget calculator" -or
-              $loopHtml -notmatch "Convergence engineering" -or
-              $loopHtml -notmatch "Verifier architecture") {
-            throw "loop-engineering.html is missing required content"
-          }
-          $professionalHtml = Get-Content -Raw -LiteralPath "professional-ai-engineering.html"
-          if ($professionalHtml -notmatch "(?i)<!doctype html>" -or $professionalHtml -notmatch "(?i)</html>") {
-            throw "professional-ai-engineering.html failed the structure check"
-          }
-          if ($professionalHtml -notmatch "Professional Software Engineering with Claude Code \+ Codex" -or
-              $professionalHtml -notmatch "Six-week curriculum" -or
-              $professionalHtml -notmatch "Your professional practice checklist" -or
-              $professionalHtml -notmatch "data-tool-choice") {
-            throw "professional-ai-engineering.html is missing required content"
-          }
-          $caseHtml = Get-Content -Raw -LiteralPath "software-engineering-cases.html"
-          if ($caseHtml -notmatch "(?i)<!doctype html>" -or $caseHtml -notmatch "(?i)</html>") {
-            throw "software-engineering-cases.html failed the structure check"
-          }
-          if ($caseHtml -notmatch "Practical Software Engineering with Claude Code \+ Codex" -or
-              $caseHtml -notmatch "Users are randomly logged out during token refresh" -or
-              $caseHtml -notmatch "Stop consumer memory growth without losing messages" -or
-              $caseHtml -notmatch "data-tool-choice") {
-            throw "software-engineering-cases.html is missing required content"
-          }
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate content, lab, accessibility, and interactions
+        run: npm test
 
   deploy:
     name: Deploy site
+    if: github.event_name != 'pull_request'
     needs: validate
     permissions:
       contents: read

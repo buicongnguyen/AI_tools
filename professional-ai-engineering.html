@@ -4,12 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A software-engineering-first professional guide for using Claude Code and Codex efficiently, with tool-specific views for coding, debugging, testing, review, worktrees, skills, automation, and measurable practice.">
+  <link rel="canonical" href="https://buicongnguyen.github.io/AI_tools/professional-ai-engineering.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Professional Software Engineering with Claude Code + Codex">
+  <meta property="og:description" content="A six-week, evidence-first curriculum with synchronized Claude Code and Codex workflows, prompts, reviews, and measurable practice.">
+  <meta property="og:url" content="https://buicongnguyen.github.io/AI_tools/professional-ai-engineering.html">
   <title>Professional Software Engineering with Claude Code + Codex</title>
   <style>
     :root {
       color-scheme:light;
       --ink:#172033; --muted:#606b7c; --paper:#f4f7f6; --card:#fff; --line:#d8e1df;
-      --accent:#087f72; --accent2:#315bc5; --gold:#a26200; --soft:#e8f7f4; --blue-soft:#edf2ff;
+      --accent:#06685f; --accent2:#315bc5; --gold:#a26200; --soft:#e8f7f4; --blue-soft:#edf2ff;
       --warn:#fff4df; --code:#101722; --code-ink:#eef3f7; --hero-a:#082b2a; --hero-b:#17645e;
       --shadow:0 10px 28px rgba(18,55,51,.08);
     }
@@ -125,8 +130,10 @@
     }
     @media print { nav,.theme,.actions,.copy,.mode-tabs,.reset,.tool-switch { display:none; } body { background:#fff; color:#172033; } .card { box-shadow:none; } .mode-panel[hidden],[data-tool] { display:block !important; } }
   </style>
+  <link rel="stylesheet" href="assets/accessibility.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header>
   <div class="wrap">
     <div class="topbar">
@@ -163,7 +170,7 @@
   </div>
 </nav>
 
-<main class="wrap">
+<main class="wrap" id="main-content">
   <section class="card" id="start" data-tool-section>
     <span class="tag">Start here</span>
     <h2>Use one real task—not another tutorial</h2>
@@ -193,7 +200,7 @@
       <article class="mini"><h3>Migration</h3><p>Rename a database field through expand/contract while mixed versions and rollback remain safe.</p></article>
       <article class="mini"><h3>Production incident</h3><p>Stop consumer memory growth without message loss, duplicate effects, or blind tuning.</p></article>
     </div>
-    <p><a class="button" href="software-engineering-cases.html">Open the practical software-engineering casebook →</a></p>
+    <p><a class="button" href="software-engineering-cases.html">Open the practical software-engineering casebook →</a> <a class="button" href="https://github.com/buicongnguyen/AI_tools/tree/main/labs/auth-refresh-race">Run the executable race lab</a></p>
   </section>
 
   <section class="card" id="assessment" data-tool-section>
@@ -204,7 +211,7 @@
       <article class="tool-note" data-tool="claude"><b>Claude Code mastery proof</b>Use <code>CLAUDE.md</code>, scoped rules, Plan mode, a fresh subagent review, a skill, a hook, and an isolated worktree correctly across real software tasks.</article>
       <article class="tool-note" data-tool="codex"><b>Codex mastery proof</b>Use <code>AGENTS.md</code>, <code>/plan</code>, <code>/review</code>, a side task, a skill or hook, and a worktree correctly across real software tasks.</article>
     </div>
-    <div class="ladder" aria-label="Professional AI coding maturity ladder">
+    <div class="ladder" role="img" aria-label="Professional AI coding maturity ladder">
       <article class="level"><b>Level 1 · Prompt user</b><span>Requests code and manually checks the result.</span></article>
       <article class="level"><b>Level 2 · Evidence operator</b><span>Defines acceptance, runs tests, and reviews diffs.</span></article>
       <article class="level current"><b>Level 3 · Systemizer</b><span>Uses durable instructions, templates, runbooks, skills, and repeatable workflows.</span></article>
@@ -226,7 +233,7 @@
       <article class="tool-note" data-tool="claude"><b>Claude Code execution lens</b>Explore first, use Plan mode for ambiguity, edit in a bounded scope, run repository checks, then use a fresh subagent or review skill. Use <code>/clear</code> or <code>/compact</code> before context becomes noisy.</article>
       <article class="tool-note" data-tool="codex"><b>Codex execution lens</b>Keep the task contract in the task, use <code>/plan</code> when interfaces are uncertain, implement in the active worktree, run checks, then invoke <code>/review</code> or a detached review task. Use a new/side task for unrelated work.</article>
     </div>
-    <div class="flow" aria-label="Professional AI coding workflow">
+    <div class="flow" role="img" aria-label="Professional AI coding workflow" tabindex="0">
       <div class="node">Define outcome</div><div class="arrow">→</div>
       <div class="node">Inspect context</div><div class="arrow">→</div>
       <div class="node">Reproduce / plan</div><div class="arrow">→</div>
@@ -237,6 +244,7 @@
     </div>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Professional AI engineering phases, responsibilities, and exit evidence</caption>
         <thead><tr><th>Phase</th><th>Engineer responsibility</th><th>Agent responsibility</th><th>Exit evidence</th></tr></thead>
         <tbody>
           <tr><td>Define</td><td>Choose outcome, risk, boundaries, and acceptance</td><td>Challenge ambiguity and expose missing decisions</td><td>Self-contained task brief</td></tr>
@@ -259,11 +267,11 @@
       <article class="tool-note" data-tool="codex"><b>Codex mode selection</b>Direct task for a local fix; <code>/plan</code> for features; a clean debugging task for unknown bugs; app worktrees or isolated tasks for independent work; explicit sandbox, approval, and deployment gates for high risk.</article>
     </div>
     <div class="mode-tabs" role="tablist" aria-label="Task workflow modes">
-      <button class="mode-tab" role="tab" aria-selected="true" aria-controls="mode-small" id="tab-small">Small fix</button>
-      <button class="mode-tab" role="tab" aria-selected="false" aria-controls="mode-bug" id="tab-bug">Unknown bug</button>
-      <button class="mode-tab" role="tab" aria-selected="false" aria-controls="mode-feature" id="tab-feature">Feature</button>
-      <button class="mode-tab" role="tab" aria-selected="false" aria-controls="mode-scale" id="tab-scale">Migration / scale</button>
-      <button class="mode-tab" role="tab" aria-selected="false" aria-controls="mode-risk" id="tab-risk">High risk</button>
+      <button class="mode-tab" type="button" role="tab" aria-selected="true" aria-controls="mode-small" id="tab-small">Small fix</button>
+      <button class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-bug" id="tab-bug">Unknown bug</button>
+      <button class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-feature" id="tab-feature">Feature</button>
+      <button class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-scale" id="tab-scale">Migration / scale</button>
+      <button class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-risk" id="tab-risk">High risk</button>
     </div>
     <div class="mode-panel" id="mode-small" role="tabpanel" aria-labelledby="tab-small"><h3>Direct implementation + focused check</h3><p>Use when the desired diff is obvious and local. State the file, exact change, boundary, and focused verification. Skip a formal plan.</p><ul><li>Examples: typo, rename, one assertion, a documented configuration correction.</li><li>Stop if the change expands beyond the named area.</li></ul></div>
     <div class="mode-panel" id="mode-bug" role="tabpanel" aria-labelledby="tab-bug" hidden><h3>Reproduce → hypotheses → distinguishing test → fix</h3><p>Do not ask for a fix first. Require exact reproduction, raw evidence, ranked hypotheses, and the smallest experiment that separates them.</p><ul><li>Add a regression that fails before editing.</li><li>Stop if the signal is not reproducible or the environment is unreliable.</li></ul></div>
@@ -300,6 +308,7 @@
     </div>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">Claude Code and Codex capabilities mapped to professional engineering rules</caption>
         <thead><tr><th>Need</th><th>Claude Code</th><th>Codex</th><th>Professional rule</th></tr></thead>
         <tbody>
           <tr><td>Persistent repository guidance</td><td><code>CLAUDE.md</code> and scoped <code>.claude/rules/</code></td><td><code>AGENTS.md</code>, including nested files</td><td>Keep only commands and non-obvious rules needed broadly</td></tr>
@@ -466,6 +475,7 @@ or stated requirements; list style preferences as optional.</code></pre>
   <section class="card" id="scorecard" data-tool-section>
     <span class="tag">Measure outcomes</span>
     <h2>Track professional performance, not prompt cleverness</h2>
+    <div class="callout"><b>Evidence status:</b> zero completed comparative benchmark runs are published as of 2026-07-18. Use the <a href="MEASUREMENT_PROTOCOL.md">measurement protocol</a>; these fields and targets are a method, not a result.</div>
     <div class="tool-guidance">
       <article class="tool-note" data-tool="claude"><b>Claude Code measurement</b>Log model/surface, Plan-mode use, context resets/compaction, subagent or worktree use, permission prompts, and whether the reviewer found an issue.</article>
       <article class="tool-note" data-tool="codex"><b>Codex measurement</b>Log model/surface, <code>/plan</code>/<code>/review</code> use, side/worktree tasks, skill/hook use, approvals, and whether the reviewer found an issue.</article>
@@ -480,7 +490,7 @@ or stated requirements; list style preferences as optional.</code></pre>
       <div class="metric"><b>Safe-stop accuracy</b>Unsafe/impossible tasks correctly block or escalate.</div>
       <div class="metric"><b>Cost per accepted task</b>Model, tools, CI, retry, and human review cost.</div>
     </div>
-    <p><a class="button" href="test-set/professional-practice-scorecard.csv">Download the CSV practice scorecard →</a></p>
+    <p><a class="button" href="test-set/professional-practice-scorecard.csv">Download the CSV practice scorecard →</a> <a class="button" href="MEASUREMENT_PROTOCOL.md">Read the measurement protocol</a></p>
     <div class="callout"><b>Starting target:</b> after 20 tasks, require evidence on 100% of accepted work, zero unauthorized high-risk actions, correct safe stops on all critical cases, and a decreasing median correction count. Calibrate speed and cost targets to your repository.</div>
   </section>
 
@@ -493,6 +503,7 @@ or stated requirements; list style preferences as optional.</code></pre>
     </div>
     <div class="table-wrap">
       <table>
+        <caption class="visually-hidden">AI-assisted engineering anti-patterns and professional corrections</caption>
         <thead><tr><th>Anti-pattern</th><th>Why it wastes time</th><th>Professional correction</th></tr></thead>
         <tbody>
           <tr><td>Kitchen-sink session</td><td>Unrelated history buries the current goal</td><td>Clear/start a new task and reload durable artifacts</td></tr>

@@ -1,0 +1,18 @@
+{
+  "name": "ai-tools-operating-system",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:static": "node scripts/validate-site.mjs",
+    "test:html": "html-validate \"*.html\"",
+    "test:lab": "npm --prefix labs/auth-refresh-race run verify:lab",
+    "test:browser": "playwright test",
+    "test": "npm run test:static && npm run test:html && npm run test:lab && npm run test:browser"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
+    "html-validate": "^11.5.6"
+  }
+}
