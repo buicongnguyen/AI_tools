@@ -1,0 +1,26 @@
+name: Content improvement
+description: Propose clearer, newer, or more practical engineering guidance.
+title: "[Content]: "
+labels: [documentation]
+body:
+  - type: textarea
+    id: audience
+    attributes:
+      label: Engineer need
+      description: Which task or decision is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed improvement
+      description: Describe the example, comparison, diagram, or correction.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Primary sources or evidence
+      description: Prefer official documentation and reproducible data; include access dates.
+    validations:
+      required: true

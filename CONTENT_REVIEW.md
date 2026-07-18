@@ -1,52 +1,50 @@
-# Content Evaluation
+# Content and repository review
 
-Reviewed: 2026-07-16
+Reviewed: 2026-07-18
 
-## Executive assessment
+## Outcome
 
-The original content was technically broad and responsible, but it read more
-like a reference manual than a field guide. It explained many good practices
-without quickly showing an engineer what a successful real task looks like.
+The guide now has a strong software-engineering focus, explicit Claude Code/Codex differences, recent primary-source references, practical prompts, Loop Engineering, and useful diagrams. This hardening pass closes the largest credibility gap: readers can run a deterministic lab and the repository verifies its own website and examples before deployment.
 
-Initial assessment: **6.5/10**
+## Scorecard
 
-## What was already strong
-
-- Clear emphasis on tests, evidence, review, security, and human approval.
-- Useful coverage across software, firmware, FPGA, and hardware.
-- Current official sources for Claude Code, Codex, ChatGPT, and GPT-5.6.
-- Reusable project, debugging, evaluation, and validation templates.
-- Dark mode and a deployable static site.
-
-## Problems found
-
-| Finding | User impact | Change made |
+| Area | Status | Evidence |
 |---|---|---|
-| The idea-to-deploy lifecycle appeared twice | Repetition delayed useful detail | Replaced it with one shared engineering workflow |
-| Tool installation appeared before practical value | Page felt tool-led rather than outcome-led | Added a 15-minute start path and realistic cases first |
-| Advice was mostly abstract | Engineers could agree but not immediately apply it | Added software, embedded-debug, and FPGA case studies |
-| Software and hardware guidance was mixed together | Users had to scan irrelevant material | Added selectable engineering paths |
-| Templates were buried in prose | Low conversion from reading to action | Linked the idea brief and eval set from the quick start |
-| Failure modes were dispersed | The guide felt more idealized than field-realistic | Added six common failure patterns and countermeasures |
-| Tables and flow boxes used white backgrounds | Dark-mode contrast was inconsistent | Switched them to theme variables |
-| Long flow diagrams did not scale well | Layout could become cramped | Changed flows to horizontally scrollable flex sequences |
-| No navigation | Long page was difficult to revisit | Added sticky section navigation |
-| No dedicated prompt-writing system | Users had examples but no reusable construction method | Added the G-C-C-R-V-O pattern and a role-based prompt library |
+| Audience and navigation | Strong | Three goal-based entry paths and synchronized tool views |
+| Practicality | Improved | Six cases plus one executable token-refresh concurrency lab |
+| Evidence discipline | Strong foundation | Dated source inventory, measurement protocol, explicit zero-results disclosure |
+| Accessibility and responsive behavior | Automated | Skip links, focus visibility, table captions, reduced motion, axe and mobile checks |
+| Repository reliability | Automated | Static, HTML, lab, browser, and deployment gates use the same `npm test` command |
+| Governance | Improved | Contributing, security, issue/PR templates, CODEOWNERS, Dependabot |
+| Licensing | Owner decision required | No license selected; options documented without granting rights |
+| Measured tool comparison | Not started | Zero completed benchmark runs; scorecards are templates only |
 
-## Content principles applied
+## Changes completed in this pass
 
-1. Lead with a useful outcome, not product names.
-2. Show a believable situation, imperfect evidence, and a bounded result.
-3. Distinguish what the agent can do from what the engineer must prove.
-4. Make every major section answer “what do I do next?”
-5. Keep safety and review gates, but express them in operational language.
-6. Treat compilation, simulation, screenshots, and demos as partial evidence.
+1. Added an executable auth-refresh race lab with a broken baseline, deterministic reproduction, reference fix, independent tests, and evidence log.
+2. Added a measurement protocol that controls task, environment, permissions, human intervention, evidence, and minimum sample size.
+3. Replaced shallow deployment checks with static validation, HTML validation, lab verification, Playwright interaction tests, axe accessibility checks, and mobile overflow checks.
+4. Added shared keyboard-focus, skip-link, and reduced-motion behavior to every page, plus captions for every table.
+5. Added canonical/OpenGraph metadata, a sitemap, robots policy, and a custom 404 page.
+6. Added contributor, security, ownership, issue, pull-request, and dependency-maintenance files.
+7. Reorganized the README around three engineer outcomes and made evidence status explicit.
 
-## Recommended next improvements
+## Next professional improvements
 
-- Add one complete downloadable example project showing artifacts from idea brief
-  through deployment and postmortem.
-- Add automated HTML, accessibility, link, and mobile-layout tests to CI.
-- Record short screen-capture walkthroughs using the three case studies.
-- Add filters for role, project phase, and tool once the content grows further.
-- Revisit model names, installation commands, and product features monthly.
+| Priority | Improvement | Completion evidence |
+|---|---|---|
+| P0 | Choose and publish an appropriate license | Owner-approved `LICENSE` file and README update |
+| P0 | Run the first 20 controlled practice tasks | Complete rows, linked patches/logs, limitations, and aggregate analysis |
+| P1 | Add executable labs for memory growth and optimistic UI races | Each lab contains a failing baseline, reference fix, independent verifier, and CI gate |
+| P1 | Extract repeated inline page styles/scripts into versioned shared assets | No behavioral regression; bundle size and duplication reported |
+| P1 | Add lightweight source freshness automation | Stale or redirected references produce a review issue, not a silent failure |
+| P2 | Add screenshots and short narrated walkthroughs | Captions/transcripts, current UI, and no unsupported claims |
+
+## Editorial rules going forward
+
+- Prefer a runnable artifact over another abstract section.
+- Put provider differences in the Claude/Codex switcher; keep engineering invariants shared.
+- Cite current product behavior from official sources and technical claims from primary sources.
+- Keep failure cases, abandoned attempts, human corrections, and limitations in evaluation data.
+- Convert repeated agent mistakes into tests, repository instructions, hooks, or evaluation cases.
+- Never present model self-evaluation as independent evidence.

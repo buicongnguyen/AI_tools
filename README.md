@@ -1,21 +1,22 @@
 # AI Tools Operating System
 
+[![Deploy GitHub Pages](https://github.com/buicongnguyen/AI_tools/actions/workflows/pages.yml/badge.svg)](https://github.com/buicongnguyen/AI_tools/actions/workflows/pages.yml)
+
 Last verified: 2026-07-18
 
-This repository is a practical system for coding, software, firmware, embedded,
-FPGA, and hardware engineers using Claude Code, Codex, ChatGPT, and GPT-5.6 to
-turn ideas into verified implementations and deployments.
+An evidence-first field guide for software engineers using Claude Code and Codex to research, plan, implement, debug, test, review, and deploy real work. It also covers prompt design, agent harnesses, Loop Engineering, and engineering-specific ChatGPT/GPT-5.6 workflows.
 
-## Start here
+**Live guide:** https://buicongnguyen.github.io/AI_tools/
 
-1. Open [`index.html`](index.html) in a browser for the visual launchpad.
-2. Use [`professional-ai-engineering.html`](professional-ai-engineering.html) to assess your level and follow the six-week curriculum.
-3. Try the six realistic exercises in [`software-engineering-cases.html`](software-engineering-cases.html).
-4. Start real work from [`templates/PROFESSIONAL_TASK_BRIEF.md`](templates/PROFESSIONAL_TASK_BRIEF.md).
-5. Record deliberate practice in [`test-set/professional-practice-scorecard.csv`](test-set/professional-practice-scorecard.csv).
-6. Read [`AI_AGENT_PLAYBOOK.md`](AI_AGENT_PLAYBOOK.md) for commands, workflows, prompts, and checklists.
-7. Copy the relevant files in [`templates`](templates) into a real project.
-8. Run [`scripts/check-environment.ps1`](scripts/check-environment.ps1) in PowerShell.
+## Choose a path
+
+| Goal | Start here | Then do this |
+|---|---|---|
+| Ship a real task | [`index.html`](index.html) | Copy [`templates/PROFESSIONAL_TASK_BRIEF.md`](templates/PROFESSIONAL_TASK_BRIEF.md), define acceptance evidence, then use the Claude/Codex path. |
+| Build professional habits | [`professional-ai-engineering.html`](professional-ai-engineering.html) | Follow the six-week curriculum and record outcomes in the scorecard. |
+| Practice on realistic failures | [`software-engineering-cases.html`](software-engineering-cases.html) | Run the executable [token-refresh race lab](labs/auth-refresh-race/README.md), then attempt the other five cases. |
+
+The guide switches between Claude Code and Codex wherever their controls, instruction files, or review workflows differ. Shared engineering principles remain provider-neutral.
 
 ## The operating loop
 
@@ -26,7 +27,7 @@ flowchart LR
     C --> D[Ask agent to plan]
     D --> E[Implement small slice]
     E --> F[Run tests and debug]
-    F --> G[Independent AI review]
+    F --> G[Independent review]
     G --> H{Evidence sufficient?}
     H -- No --> C
     H -- Yes --> I[Preview deploy]
@@ -36,38 +37,49 @@ flowchart LR
     L --> A
 ```
 
+## Run the proof, not just the prose
+
+The repository includes a deterministic Node.js lab with an intentionally broken baseline and a verified single-flight token-refresh solution.
+
+```powershell
+npm --prefix labs/auth-refresh-race run verify:lab
+```
+
+The command succeeds only when the baseline reproduces the race and the reference solution passes concurrency, failure, and secret-log checks.
+
+## Repository quality gates
+
+Requires Node.js 24 or newer.
+
+```powershell
+npm ci
+npx playwright install chromium
+npm test
+```
+
+The suite checks required artifacts, internal links and anchors, HTML, CSV schemas, the executable lab, WCAG A/AA issues, console errors, synchronized Claude/Codex controls, dark mode, filters, and mobile overflow. GitHub Actions runs the same gates before Pages deployment.
+
+## Evidence status
+
+The repository currently publishes a protocol and blank scorecards, not comparative performance results. As of 2026-07-18 there are **zero completed benchmark runs**. Follow [`MEASUREMENT_PROTOCOL.md`](MEASUREMENT_PROTOCOL.md) before making claims about quality or speed.
+
 ## File map
 
-- `AI_AGENT_PLAYBOOK.md` — full reference.
-- `PROMPT_LIBRARY.md` — copy-ready engineering prompts and prompt-writing system.
-- `AI_HARNESS_GUIDE.md` — how agent harnesses work and how to engineer them efficiently.
-- `professional-ai-engineering.html` — software-engineering-first guide with synchronized Claude Code/Codex views, task modes, prompts, curriculum, and interactive practice.
-- `software-engineering-cases.html` — six realistic debugging, backend, performance, frontend, migration, and incident exercises with tool-specific paths.
-- `PROFESSIONAL_PRACTICE_GUIDE.md` — printable Markdown companion to the professional practice page.
-- `loop-engineering.html` — deep visual implementation playbook for safe, convergent, evaluated AI agent loops.
-- `index.html` — visual, printable dashboard with diagrams.
-- `CONTENT_REVIEW.md` — content audit, problems found, and improvement roadmap.
-- `templates/PROJECT_CONTEXT.md` — shared project specification.
-- `templates/AGENTS.md` — durable Codex instructions.
-- `templates/CLAUDE.md` — durable Claude Code instructions.
-- `templates/IDEA_EVALUATION.md` — evidence-based idea review prompt.
-- `templates/RESEARCH_AND_VERIFY.md` — web research and verification protocol.
-- `templates/DEBUG_RUNBOOK.md` — reproducible debugging workflow.
-- `templates/ENGINEERING_IDEA_BRIEF.md` — shared software/hardware idea specification.
-- `templates/HARDWARE_VALIDATION.md` — hardware, firmware, FPGA, and lab validation plan.
-- `templates/PROFESSIONAL_TASK_BRIEF.md` — evidence-first task contract, acceptance vector, human gates, review, and retrospective.
-- `templates/LOOP_SPEC.md` — provider-neutral loop contract: goal, state, verifiers, permissions, budgets, and gates.
-- `templates/loop-config.example.yml` — illustrative CI-repair controller configuration.
-- `templates/loop-state.example.json` — auditable persisted run-state example.
-- `templates/MAKER_PROMPT.md` — bounded change-producing agent contract.
-- `templates/VERIFIER_PROMPT.md` — fresh-context independent verifier contract.
-- `test-set/agent-evals.csv` — starter evaluation dataset.
-- `test-set/loop-engineering-evals.csv` — success, unsafe, flaky, blocked, and hardware loop cases.
-- `test-set/professional-practice-scorecard.csv` — twelve deliberate-practice exercises and measurable professional outcomes.
-- `test-set/software-engineering-practice-cases.csv` — case metadata, minimum acceptance, review focus, and results fields for the six practical exercises.
-- `scripts/check-environment.ps1` — read-only local tool/version checks.
-- `SOURCES.md` — official sources and verification date.
+- [`AI_AGENT_PLAYBOOK.md`](AI_AGENT_PLAYBOOK.md) — commands, workflows, prompts, and checklists.
+- [`PROMPT_LIBRARY.md`](PROMPT_LIBRARY.md) — copy-ready software and design-system prompts.
+- [`AI_HARNESS_GUIDE.md`](AI_HARNESS_GUIDE.md) — context, tools, permissions, memory, verification, and observability.
+- [`loop-engineering.html`](loop-engineering.html) — safe, convergent, evaluated agent loops.
+- [`professional-ai-engineering.html`](professional-ai-engineering.html) — synchronized Claude/Codex views, curriculum, and scorecard.
+- [`software-engineering-cases.html`](software-engineering-cases.html) — six debugging, backend, performance, frontend, migration, and incident cases.
+- [`labs/auth-refresh-race`](labs/auth-refresh-race/README.md) — executable debugging lab.
+- [`templates`](templates) — task briefs, agent instructions, evaluator prompts, debug runbook, and loop contracts.
+- [`test-set`](test-set) — starter evaluations and practice scorecards.
+- [`SOURCES.md`](SOURCES.md) — official and primary references with verification date.
+- [`CONTENT_REVIEW.md`](CONTENT_REVIEW.md) — current assessment and improvement backlog.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md), and [`LICENSE_DECISION.md`](LICENSE_DECISION.md) — project governance.
 
 ## Core rule
 
-Do not accept “looks good” as completion. Require changed files, commands run, test results, unresolved risks, and source links for current facts.
+Do not accept “looks good” as completion. Require changed files, commands run, exit codes, test results, unresolved risks, and source links for current facts.
+
+> License note: no open-source license has been selected yet. See [`LICENSE_DECISION.md`](LICENSE_DECISION.md) before reuse or contribution.
